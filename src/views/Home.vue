@@ -13,13 +13,9 @@ onBeforeMount(async () => {
 
   jokes.value = data.value;
   isLoadingJokes.value = isLoading.value;
-
-  console.log(isLoading.value);
 });
 </script>
 
-<template>
-  <h1>loading jokes</h1>
-</template>
+<template></template>
 
 <style lang="scss" scoped></style>
