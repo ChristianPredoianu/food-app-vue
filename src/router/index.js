@@ -3,7 +3,11 @@ import Home from '@/views/Home.vue';
 /* import { getAuth } from 'firebase/auth'; */
 
 const routes = [
-  { path: '/', name: 'Home', component: Home },
+  {
+    path: '/',
+    name: 'Home',
+    component: Home,
+  },
 
   /* {
     path: '/signin',
