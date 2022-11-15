@@ -2,20 +2,30 @@
 import { onBeforeMount, ref } from 'vue';
 import { useFetch } from '@/composables/useFetch';
 
-const jokes = ref(null);
-const isLoadingJokes = ref(true);
+import SearchBox from '@/components/SearchBox.vue';
+
+const mealsData = ref(null);
+const isLoadingMeals = ref(true);
 const isFetchError = ref(false);
 
 onBeforeMount(async () => {
   const { data, isLoading } = await useFetch(
-    'https://api.chucknorris.io/jokes/random'
+    'https://api.edamam.com/api/recipes/v2?type=public&app_id=2d7284f7&app_key=0a6f557d15da76ad2dea06845fbe542c&diet=balanced&dishType=Main%20course'
   );
 
-  jokes.value = data.value;
-  isLoadingJokes.value = isLoading.value;
+  mealsData.value = data.value;
+  isLoadingMeals.value = isLoading.value;
+  console.log(mealsData.value.hits);
 });
 </script>
 
-<template></template>
+<template>
+  <div class="showcase">
+    <img src="@/assets/food.jpg" alt="food" class="showcase-img" />
+    <SearchBox />
+  </div>
+</template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@use '@/sass/views/home';
+</style>
