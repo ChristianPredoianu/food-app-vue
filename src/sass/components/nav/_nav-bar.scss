@@ -1,1 +1,122 @@
-@use '../../abstracts/' as *;
+@use '@/sass/abstracts/' as *;
+
+.header {
+  padding: 2rem 0;
+  background-color: hsl(0, 0%, 96%);
+}
+
+.nav {
+  @include flex-config($justify: space-between, $align: center);
+}
+
+.logo {
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.2rem;
+
+  &__span {
+    color: var(--clr-green-400);
+  }
+}
+
+.nav-links {
+  min-height: 80vh;
+  width: 100%;
+  @include flex-config($direction: column, $justify: center);
+  gap: 4rem;
+  @include position($pos: absolute, $top: 0, $left: 0);
+  z-index: 2;
+  background-color: var(--clr-green-400);
+  color: var(--clr-white);
+
+  @include mq(sm) {
+    position: initial;
+    flex-direction: row;
+    justify-content: space-around;
+    min-height: auto;
+    width: 60%;
+    background-color: transparent;
+    color: var(--clr-black-800);
+
+    @include mq(md) {
+      width: 40%;
+    }
+
+    @include mq(lg) {
+      width: 30%;
+    }
+  }
+
+  &__item {
+    @include flex-config($direction: column, $align: center);
+    gap: 0.5rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+
+    @include mq(sm) {
+      flex-direction: row;
+      gap: 1rem;
+      font-size: 1.3rem;
+    }
+
+    &--btn-transparent {
+      @include mq(sm) {
+        padding: 0.5rem 0.8rem;
+        border: 1px solid var(--clr-black-800);
+        border-radius: 2rem;
+      }
+    }
+
+    &--btn-green {
+      padding: 0.5rem 0.8rem;
+      background-color: var(--clr-green-400);
+      color: var(--clr-white);
+      border-radius: 2rem;
+    }
+  }
+}
+
+.link-icon {
+  width: 1.5rem;
+  display: none;
+
+  @include mq(sm) {
+    display: flex;
+  }
+}
+
+.hamburger {
+  cursor: pointer;
+  z-index: 3;
+
+  @include mq(sm) {
+    top: 3rem;
+    right: 5rem;
+  }
+
+  @include mq(sm) {
+    display: none;
+  }
+
+  .active &__bar:nth-child(2) {
+    transform: translateY(1px) rotate(137deg);
+  }
+
+  .active &__bar:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+  }
+
+  &__bar {
+    display: block;
+    width: 2.5rem;
+    height: 0.3rem;
+    background-color: black;
+    margin: 0.5rem auto;
+    transition: all 0.3s ease-in-out;
+
+    @include mq(sm) {
+      height: 0.4rem;
+    }
+  }
+}
