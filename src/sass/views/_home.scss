@@ -1,0 +1,11 @@
+@use '../abstracts/' as *;
+
+.showcase {
+  position: relative;
+}
+
+.showcase-img {
+  height: 50vh;
+  width: 100%;
+  object-fit: cover;
+}
