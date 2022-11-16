@@ -37,7 +37,7 @@
     min-height: auto;
     width: 60%;
     background-color: transparent;
-    color: var(--clr-black-800);
+    color: var(--clr-dark-800);
 
     @include mq(md) {
       width: 40%;
@@ -63,7 +63,7 @@
     &--btn-transparent {
       @include mq(sm) {
         padding: 0.5rem 0.8rem;
-        border: 1px solid var(--clr-black-800);
+        border: 1px solid var(--clr-dark-800);
         border-radius: 2rem;
       }
     }
@@ -111,7 +111,7 @@
     display: block;
     width: 2.5rem;
     height: 0.3rem;
-    background-color: black;
+    background-color: var(--clr-dark-800);
     margin: 0.5rem auto;
     transition: all 0.3s ease-in-out;
 
