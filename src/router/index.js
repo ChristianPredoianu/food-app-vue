@@ -14,6 +14,13 @@ const routes = [
     name: 'SignIn',
     component: () => import('@/views/SignIn.vue'),
   }, */
+
+  {
+    path: '/meal-details/:id',
+    name: 'MealDetails',
+    component: () => import('@/views/MealDetails.vue'),
+    props: true,
+  },
 ];
 
 const router = createRouter({
