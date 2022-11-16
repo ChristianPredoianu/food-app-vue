@@ -2,9 +2,12 @@
 
 :root {
   --clr-white: hsl(0, 0%, 96%);
-  --clr-gray-700: hsl(0, 1%, 26%);
+  --clr-dark-400: hsl(0, 0%, 61%);
+  --clr-dark-800: hsl(0, 0%, 5%);
   --clr-green-400: hsl(120, 49%, 44%);
-  --clr-black-800: hsl(0, 0%, 5%);
 
   --fw-bold: 700;
+
+  --box-shadow: hsla(198, 45%, 10%, 0.12) 0px 2px 4px 0px,
+    hsla(198, 45%, 10%, 0.32) 0px 2px 16px 0px;
 }
