@@ -4,7 +4,7 @@
   @include position($pos: absolute, $bottom: -8rem, $left: 50%);
   width: 95%;
   transform: translateX(-50%);
-  background-color: rgb(150, 245, 158);
+  background-color: hsl(125, 83%, 77%);
   padding: 2rem;
   border-radius: 1rem;
 
@@ -18,7 +18,7 @@
 
   &__heading {
     font-size: clamp(1.5rem, 2vw, 2rem);
-    color: var(--clr-gray-700);
+    color: var(--clr-dark-400);
     text-align: center;
     margin-bottom: 1rem;
   }
@@ -37,7 +37,7 @@
   border-top-right-radius: 1rem;
   border-bottom-right-radius: 1rem;
   border-left: none;
-  border: 1px solid var(--clr-gray-700);
+  border: 1px solid var(--clr-dark-400);
 }
 
 .filter-btn {
@@ -52,6 +52,6 @@
 
 .input-icon {
   @include position($pos: absolute, $top: 1.5rem, $right: 5%);
-  color: var(--clr-black);
+  color: var(--clr-dark-800);
   font-size: 1.2rem;
 }
