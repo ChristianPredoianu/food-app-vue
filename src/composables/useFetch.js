@@ -2,7 +2,7 @@ import { reactive, toRefs } from 'vue';
 
 export async function useFetch(url) {
   const state = reactive({
-    isLoading: true,
+    isLoading: null,
     isError: false,
     errorMessage: '',
     data: null,
