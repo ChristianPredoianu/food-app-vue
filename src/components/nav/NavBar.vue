@@ -32,7 +32,7 @@ onUnmounted(() => {
           <font-awesome-icon icon="search" />Search
         </li>
         <li class="nav-links__item">
-          <font-awesome-icon icon="heart" />Favorite
+          <font-awesome-icon icon="fa-regular fa-heart" />Favorite
         </li>
         <li class="nav-links__item nav-links__item--btn-transparent">Login</li>
         <li class="nav-links__item nav-links__item--btn-green">Sign up</li>
