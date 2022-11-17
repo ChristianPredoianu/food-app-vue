@@ -2,42 +2,49 @@
 
 .section-meal {
   @include mq(md) {
-    display: flex;
-    justify-content: space-between;
+    @include flex-config($justify: space-between, $align: center);
+    margin-top: 10rem;
   }
 }
 
 .meal-info {
   text-align: center;
   padding: 5rem 0;
+  flex: 1;
 
   @include mq(md) {
     text-align: start;
   }
 }
 
-.meal-digest-list {
-  @include flex-config($justify: center);
-  margin-top: 5rem;
-  padding: 2rem 0;
+.meal-digest {
+  @include mq(md) {
+    @include flex-config();
+  }
+}
 
-  &__item {
-    padding: 0 2rem;
+.meal-img-container {
+  &__img {
+    border-radius: 2rem;
+    box-shadow: var(--box-shadow);
+    margin: 0 auto;
 
-    &:not(:last-of-type) {
-      border-right: 1px solid var(--clr-dark-400);
+    @include mq(md) {
+      margin: auto;
     }
   }
 }
 
-.digest-values {
-  &__label {
-    font-size: 1.5rem;
-  }
+.section-ingredients {
+  @include flex-config($justify: center);
+  margin-top: 10rem;
 
-  &__total {
-    font-size: 1.2rem;
-    font-weight: var(--fw-bold);
-    margin-top: 0.5rem;
+  @include mq(md) {
+    justify-content: flex-start;
   }
+}
+
+.loading-spinner {
+  @include flex-config($justify: center, $align: center);
+  min-height: 100vh;
 }
