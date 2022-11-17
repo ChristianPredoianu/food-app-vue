@@ -12,11 +12,11 @@ const state = reactive({
   isLoadingMeals: true,
   isFetchError: false,
 });
-/* const mealsData = ref(null);
-const isLoadingMeals = ref(true);
-const isFetchError = ref(false);
- */
+
 const router = useRouter();
+
+const mealsUrl =
+  'https://api.edamam.com/api/recipes/v2?type=public&app_id=2d7284f7&app_key=0a6f557d15da76ad2dea06845fbe542c&diet=balanced&dishType=Main%20course';
 
 function extractIdFromUri(uri) {
   return uri.split('#recipe_').pop();
@@ -32,9 +32,8 @@ function goToMealDetails(meal) {
 }
 
 onMounted(async () => {
-  const { data, isLoading } = await useFetch(
-    'https://api.edamam.com/api/recipes/v2?type=public&app_id=2d7284f7&app_key=0a6f557d15da76ad2dea06845fbe542c&diet=balanced&dishType=Main%20course'
-  );
+  const { data, isLoading } = await useFetch(mealsUrl);
+
   state.mealsData = data.value.hits;
   state.isLoadingMeals = isLoading.value;
 });
