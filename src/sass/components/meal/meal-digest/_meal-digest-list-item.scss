@@ -1,0 +1,25 @@
+.meal-digest-list {
+  &__item {
+    padding: 0 2rem;
+
+    &:first-of-type {
+      padding: 0 2rem 0 0;
+    }
+
+    &:not(:last-of-type) {
+      border-right: 1px solid var(--clr-dark-400);
+    }
+  }
+}
+
+.digest-values {
+  &__label {
+    font-size: 1.5rem;
+  }
+
+  &__total {
+    font-size: 1.2rem;
+    font-weight: var(--fw-bold);
+    margin-top: 0.5rem;
+  }
+}

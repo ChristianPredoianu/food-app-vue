@@ -1,0 +1,17 @@
+@use '@/sass/abstracts' as *;
+
+.ingredients-item {
+  @include flex-config($justify: space-between, $align: center);
+
+  &__img {
+    width: 6rem;
+    margin-right: 5rem;
+    border-radius: 4rem;
+  }
+
+  &__text {
+    font-size: 1.2rem;
+    font-weight: var(--fw-bold);
+    flex: 1;
+  }
+}
