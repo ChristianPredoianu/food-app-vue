@@ -1,0 +1,22 @@
+@use '@/sass/abstracts' as *;
+
+.nutrients-list-item {
+  font-size: 1.1rem;
+
+  &:not(:first-of-type) {
+    padding-top: 0.3rem;
+  }
+}
+
+.nutrient {
+  @include flex-config($justify: space-around);
+
+  &__label {
+    flex: 1;
+    font-weight: var(--fw-bold);
+  }
+
+  &__value {
+    font-weight: var(--fw-bold);
+  }
+}
