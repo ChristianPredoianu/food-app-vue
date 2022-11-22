@@ -6,6 +6,8 @@ import { useFetch } from '@/composables/useFetch';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import MealDigestList from '@/components/meal/meal-digest/MealDigestList.vue';
 import IngredientsList from '@/components/meal/ingredients/IngredientsList.vue';
+import NutrientsList from '@/components/meal/nutrients/NutrientsList.vue';
+import MealTagsList from '@/components/meal/meal-tags/MealTagsList.vue';
 
 const state = reactive({
   mealData: null,
@@ -39,15 +41,15 @@ if (state.mealData) {
       <LoadingSpinner />
     </div>
 
-    <main class="main container" v-if="state.mealData">
-      <section class="section-meal" v-if="!state.isLoadingMeal">
+    <main class="main container" v-if="state.mealData && !state.isLoadingMeal">
+      <section class="section-meal">
         <div class="meal-info">
           <h1 class="heading-primary">{{ state.mealData.recipe.label }}</h1>
           <h2 class="heading-secondary">
             {{ capitalizeFirstLetter(state.mealData.recipe.dishType[0]) }}
           </h2>
           <div class="meal-digest">
-            <MealDigestList :mealData="state.mealData" />
+            <MealDigestList :mealDigest="state.mealData.recipe.digest" />
           </div>
         </div>
         <div class="meal-img-container">
@@ -58,8 +60,22 @@ if (state.mealData) {
           />
         </div>
       </section>
-      <section class="section-ingredients" v-if="!state.isLoadingMeal">
-        <IngredientsList :mealData="state.mealData" />
+      <section class="section-ingredients">
+        <div class="ingredients-wrapper">
+          <h3 class="heading-tertiary">Ingredients</h3>
+          <IngredientsList
+            :mealIngredients="state.mealData.recipe.ingredients"
+          />
+        </div>
+        <div class="nutrients-wrapper">
+          <h3 class="heading-tertiary">Daily Nutrients</h3>
+          <NutrientsList :mealNutrients="state.mealData.recipe.totalDaily" />
+        </div>
+      </section>
+      <section class="meal-tags">
+        <div class="meal-tags">
+          <MealTagsList :mealTags="state.mealData.recipe.healthLabels" />
+        </div>
       </section>
     </main>
   </div>
