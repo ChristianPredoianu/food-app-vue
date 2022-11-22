@@ -1,13 +1,13 @@
 <script setup>
 const props = defineProps({
-  mealData: Object,
+  mealIngredients: Array,
 });
 </script>
 
 <template>
   <li
     class="ingredients-list__item"
-    v-for="ingredient in props.mealData.recipe.ingredients"
+    v-for="ingredient in mealIngredients"
     :key="ingredient.image"
   >
     <div class="ingredients-item">

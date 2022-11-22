@@ -1,21 +1,20 @@
 <script setup>
 import { computed } from 'vue';
+import { useRoundNumber } from '@/composables/useRoundNumber';
 
 const props = defineProps({
-  mealData: Object,
+  mealDigest: Array,
 });
 
-const digestValues = computed(() => props.mealData.recipe.digest.slice(0, 3));
+const { roundNumber } = useRoundNumber();
 
-function roundNumber(num) {
-  return Math.round(num);
-}
+const firstThreeDigestValues = computed(() => props.mealDigest.slice(0, 3));
 </script>
 
 <template>
   <li
     class="meal-digest-list__item"
-    v-for="digestValue in digestValues"
+    v-for="digestValue in firstThreeDigestValues"
     :key="digestValue.label"
   >
     <div class="digest-values">

@@ -2,13 +2,13 @@
 import IngredientsListItem from '@/components/meal/ingredients/IngredientsListItem.vue';
 
 const props = defineProps({
-  mealData: Object,
+  mealIngredients: Array,
 });
 </script>
 
 <template>
   <ul class="ingredients-list">
-    <IngredientsListItem :mealData="mealData" />
+    <IngredientsListItem :mealIngredients="mealIngredients" />
   </ul>
 </template>
 

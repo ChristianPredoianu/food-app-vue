@@ -2,13 +2,13 @@
 import MealDigestListItem from '@/components/meal/meal-digest/MealDigestListItem.vue';
 
 const props = defineProps({
-  mealData: Object,
+  mealDigest: Array,
 });
 </script>
 
 <template>
   <ul class="meal-digest-list">
-    <MealDigestListItem :mealData="mealData" />
+    <MealDigestListItem :mealDigest="mealDigest" />
   </ul>
 </template>
 
