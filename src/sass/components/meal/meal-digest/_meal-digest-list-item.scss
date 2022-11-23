@@ -1,14 +1,12 @@
-.meal-digest-list {
-  &__item {
-    padding: 0 2rem;
+.meal-digest-list-item {
+  padding: 0 2rem;
 
-    &:first-of-type {
-      padding: 0 2rem 0 0;
-    }
+  &:first-of-type {
+    padding: 0 2rem 0 0;
+  }
 
-    &:not(:last-of-type) {
-      border-right: 1px solid var(--clr-dark-400);
-    }
+  &:not(:last-of-type) {
+    border-right: 1px solid var(--clr-dark-400);
   }
 }
 
