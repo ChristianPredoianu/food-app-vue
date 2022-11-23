@@ -5,11 +5,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <li
-    class="ingredients-list__item"
-    v-for="ingredient in mealIngredients"
-    :key="ingredient.image"
-  >
+  <li v-for="ingredient in mealIngredients" :key="ingredient.image">
     <div class="ingredients-item">
       <img
         :src="ingredient.image"
