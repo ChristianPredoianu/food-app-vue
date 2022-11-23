@@ -60,6 +60,10 @@
   @include mq(md) {
     justify-content: space-between;
   }
+
+  @include mq(lg) {
+    margin-top: 20rem;
+  }
 }
 
 .ingredients-wrapper {
@@ -86,6 +90,15 @@
   }
 }
 
+.meal-link {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
 .section-meal-tags {
   margin: 10rem 0;
+
+  @include mq(lg) {
+    margin: 20rem 0;
+  }
 }

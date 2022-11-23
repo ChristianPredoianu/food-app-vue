@@ -30,10 +30,6 @@ onMounted(async () => {
   state.isLoadingMeal = isLoading.value;
   console.log(data.value);
 });
-
-if (state.mealData) {
-  console.log(state.mealData.value);
-}
 </script>
 <template>
   <div>
@@ -72,10 +68,11 @@ if (state.mealData) {
           <NutrientsList :mealNutrients="state.mealData.recipe.totalDaily" />
         </div>
       </section>
-      <section class="meal-tags">
-        <div class="meal-tags">
-          <MealTagsList :mealTags="state.mealData.recipe.healthLabels" />
-        </div>
+      <a :href="state.mealData.recipe.utl" class="meal-link"
+        ><h4>Cook this meal</h4></a
+      >
+      <section class="section-meal-tags">
+        <MealTagsList :mealTags="state.mealData.recipe.healthLabels" />
       </section>
     </main>
   </div>
