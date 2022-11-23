@@ -13,7 +13,7 @@ const firstThreeDigestValues = computed(() => props.mealDigest.slice(0, 3));
 
 <template>
   <li
-    class="meal-digest-list__item"
+    class="meal-digest-list-item"
     v-for="digestValue in firstThreeDigestValues"
     :key="digestValue.label"
   >
