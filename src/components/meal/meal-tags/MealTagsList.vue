@@ -1,5 +1,5 @@
 <script setup>
-import MealTagItem from '@/components/meal/meal-tags/MealTagItem.vue';
+import MealTagListItem from '@/components/meal/meal-tags/MealTagListItem.vue';
 
 const props = defineProps({
   mealTags: Array,
@@ -8,7 +8,7 @@ const props = defineProps({
 
 <template>
   <ul class="meal-tags-list">
-    <MealTagItem :mealTags="mealTags" />
+    <MealTagListItem :mealTags="mealTags" />
   </ul>
 </template>
 
