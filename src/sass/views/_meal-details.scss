@@ -41,11 +41,20 @@
 }
 
 .section-ingredients {
-  @include flex-config($direction: column, $justify: space-between);
+  @include flex-config(
+    $direction: column,
+    $justify: space-between,
+    $align: center
+  );
   margin-top: 10rem;
+  gap: 5rem;
 
   @include mq(sm) {
-    @include flex-config($direction: row, $justify: space-around);
+    @include flex-config(
+      $direction: row,
+      $justify: space-around,
+      $align: flex-start
+    );
   }
 
   @include mq(md) {
@@ -54,6 +63,12 @@
 }
 
 .ingredients-wrapper {
+  width: 80%;
+
+  @include mq(sm) {
+    width: 50%;
+  }
+
   @include mq(md) {
     width: 40%;
   }
@@ -61,11 +76,16 @@
 
 .nutrients-wrapper {
   width: 80%;
+
+  @include mq(sm) {
+    width: 50%;
+  }
+
   @include mq(sm) {
     width: 40%;
   }
 }
 
-.meal-tags {
-  margin-top: 5rem;
+.section-meal-tags {
+  margin: 10rem 0;
 }
