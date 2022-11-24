@@ -3,10 +3,12 @@ import { onBeforeMount, onUpdated, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useFetch } from '@/composables/useFetch';
 import { useInfiniteScroll } from '@/composables/useInfiniteScroll';
+import { useModal } from '@/composables/useModal';
 
 import SearchBox from '@/components/SearchBox.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import MealCard from '@/components/cards/MealCard.vue';
+import Backdrop from '@/components/modal/Backdrop.vue';
 
 const state = reactive({
   mealsData: null,
@@ -20,6 +22,7 @@ const scrollComponent = ref(null);
 const router = useRouter();
 
 const { isFetching } = useInfiniteScroll(fetchMoreMeals);
+const { isModalOpen, openModal, closeModal } = useModal();
 
 const mealsUrl =
   'https://api.edamam.com/api/recipes/v2?type=public&app_id=2d7284f7&app_key=0a6f557d15da76ad2dea06845fbe542c&diet=balanced&dishType=Main%20course';
@@ -56,6 +59,10 @@ async function fetchMoreMeals() {
 </script>
 
 <template>
+  <Transition name="slide-fade">
+    <Backdrop @closeModall="closeModal" v-if="isModalOpen" />
+  </Transition>
+
   <div class="showcase">
     <img src="@/assets/food.jpg" alt="food" class="showcase-img" />
     <SearchBox />
@@ -76,7 +83,22 @@ async function fetchMoreMeals() {
     </div>
   </section>
 </template>
-
 <style lang="scss" scoped>
 @use '@/sass/views/home';
+</style>
+
+<style lang="scss" scoped>
+.slide-fade-enter-active {
+  transition: all 10.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 10.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}
 </style>
