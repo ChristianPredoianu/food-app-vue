@@ -12,14 +12,15 @@ export function useInfiniteScroll(callback) {
   });
 
   watch(isFetching, (newValue, oldValue) => {
-    if (isFetching.value) return;
+    if (!isFetching.value) return;
     callback();
   });
 
   function handleScroll() {
     if (
       window.innerHeight + document.documentElement.scrollTop !==
-      document.documentElement.offsetHeight
+        document.documentElement.offsetHeight ||
+      isFetching.value
     )
       return;
     isFetching.value = true;

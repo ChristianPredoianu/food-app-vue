@@ -50,8 +50,8 @@ async function fetchMoreMeals() {
   if (state.mealsData.hits.length < 60) {
     const { data } = await useFetch(nextMealsUrl);
     state.mealsData.hits.push(...data.value.hits);
-    console.log(isFetching.value);
   }
+  isFetching.value = false;
 }
 </script>
 
@@ -71,7 +71,7 @@ async function fetchMoreMeals() {
         @click="goToMealDetails(meal)"
       />
     </div>
-    <div class="loading-spinner" v-if="!isFetching">
+    <div class="loading-spinner" v-if="isFetching">
       <LoadingSpinner />
     </div>
   </section>
