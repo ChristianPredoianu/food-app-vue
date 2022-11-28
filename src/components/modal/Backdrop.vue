@@ -1,8 +1,8 @@
 <script setup>
-const emit = defineEmits(['closeModall']);
+const emit = defineEmits(['closeModal']);
 
 function onCloseModal() {
-  emit('closeModall');
+  emit('closeModal');
 }
 </script>
 
