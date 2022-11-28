@@ -60,7 +60,7 @@ async function fetchMoreMeals() {
 
 <template>
   <Transition name="slide-fade">
-    <Backdrop @closeModall="closeModal" v-if="isModalOpen" />
+    <Backdrop @closeModal="closeModal" v-if="isModalOpen" />
   </Transition>
 
   <div class="showcase">
