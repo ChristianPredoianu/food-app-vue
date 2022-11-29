@@ -11,18 +11,6 @@ const selectedOptions = reactive({
   cuisineType: null,
 });
 
-/* function getMealType(val) {
-  selectedOptions.mealType = val;
-}
-
-function getDishType(val) {
-  selectedOptions.dishType = val;
-}
-
-function getCuisineType(val) {
-  selectedOptions.cuisineType = val;
-} */
-
 function test(val, index) {
   val === '' ? (selectedOptions[index] = null) : (selectedOptions[index] = val);
 }
@@ -34,17 +22,6 @@ function test(val, index) {
       <div class="dropdown" v-for="(meal, index) in meals">
         <SelectDropdown :meals="meal" :index="index" @emitValue="test" />
       </div>
-
-      <!--    <SelectDropdown
-        :label="labels[1]"
-        :category="dishTypes"
-        @emitValue="getDishType"
-      />
-      <SelectDropdown
-        :label="labels[2]"
-        :category="cuisineTypes"
-        @emitValue="getCuisineType"
-      /> -->
     </div>
   </div>
   <div class="meal-tags">
