@@ -1,0 +1,9 @@
+@use '@/sass/abstracts' as *;
+
+.select-container {
+  @include flex-config($direction: column);
+  gap: 1rem;
+}
+
+.select {
+}
