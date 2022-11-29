@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 
 export function useModal() {
-  const isModalOpen = ref(true);
+  const isModalOpen = ref(false);
 
   function openModal() {
     isModalOpen.value = true;
