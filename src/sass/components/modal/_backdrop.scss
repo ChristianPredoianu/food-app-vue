@@ -4,15 +4,5 @@
   width: 100%;
   min-height: 100vh;
   background: hsla(0, 1%, 22%, 0.55);
-  z-index: 100;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.4s linear;
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
+  z-index: 50;
 }

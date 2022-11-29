@@ -1,0 +1,18 @@
+@use '@/sass/abstracts' as *;
+
+.modal-overlay {
+  background-color: red;
+}
+
+.selects {
+  @include flex-config($direction: column, $align: center);
+  gap: 2rem;
+
+  @include mq(sm) {
+    flex-direction: row;
+  }
+}
+
+.meal-tag {
+  padding: 1rem;
+}
