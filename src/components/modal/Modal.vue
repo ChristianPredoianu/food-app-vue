@@ -1,11 +1,11 @@
 <script setup>
-import ModalOverlayVue from '@/components/modal/ModalOverlay.vue';
+import ModalOverlay from '@/components/modal/ModalOverlay.vue';
 </script>
 
 <template>
   <teleport to="#overlay-root">
     <div class="modal">
-      <ModalOverlayVue />
+      <ModalOverlay />
     </div>
   </teleport>
 </template>
