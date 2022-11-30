@@ -1,32 +1,53 @@
 <script setup>
-import { reactive } from 'vue';
+import { computed, reactive } from 'vue';
 
 import { meals } from '@/utils/filterData.js';
 
 import SelectDropdown from '@/components/filters/SelectDropdown.vue';
 
 const selectedOptions = reactive({
+  Diet: null,
+  Health: null,
   mealType: null,
   dishType: null,
   cuisineType: null,
 });
 
-function test(val, index) {
-  val === '' ? (selectedOptions[index] = null) : (selectedOptions[index] = val);
+const dishTags = computed(() => {
+  const dishValues = Object.values(selectedOptions);
+
+  const tags = [];
+
+  for (let i = 0; i < dishValues.length; i++) {
+    if (dishValues[i] !== null) {
+      tags.push(dishValues[i]);
+    }
+  }
+
+  return tags;
+});
+
+function getSelectValue(value, index) {
+  value === ''
+    ? (selectedOptions[index] = null)
+    : (selectedOptions[index] = value);
 }
 </script>
 
 <template>
   <div class="modal-overlay">
     <div class="selects">
-      <div class="dropdown" v-for="(meal, index) in meals">
-        <SelectDropdown :meals="meal" :index="index" @emitValue="test" />
-      </div>
+      <SelectDropdown
+        v-for="(meal, index) in meals"
+        :meals="meal"
+        :index="index"
+        @emitValue="getSelectValue"
+      />
     </div>
-  </div>
-  <div class="meal-tags">
-    <div class="meal-tag" v-for="selectedOption in selectedOptions">
-      {{ selectedOption }}
+    <div class="meal-tags">
+      <p class="tags" v-for="selectedOption in dishTags">
+        {{ selectedOption }}
+      </p>
     </div>
   </div>
 </template>
