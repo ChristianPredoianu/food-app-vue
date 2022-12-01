@@ -1,0 +1,15 @@
+@use '@/sass/abstracts' as *;
+
+.meal-tag-list-item {
+  background-color: var(--clr-green-200);
+  font-size: 1.4rem;
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+  letter-spacing: 0.05rem;
+  box-shadow: var(--box-shadow);
+  cursor: pointer;
+
+  &__remove {
+    padding-left: 1rem;
+  }
+}

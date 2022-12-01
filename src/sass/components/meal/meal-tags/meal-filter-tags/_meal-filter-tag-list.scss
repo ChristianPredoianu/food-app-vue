@@ -1,0 +1,6 @@
+@use '@/sass/abstracts' as *;
+
+.meal-tag-list {
+  @include flex-config($justify: center, $wrap: wrap);
+  gap: 2rem;
+}
