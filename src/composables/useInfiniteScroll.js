@@ -11,7 +11,7 @@ export function useInfiniteScroll(callback) {
     window.removeEventListener('scroll', handleScroll);
   });
 
-  watch(isFetching, (newValue, oldValue) => {
+  watch(isFetching, () => {
     if (!isFetching.value) return;
     callback();
   });
