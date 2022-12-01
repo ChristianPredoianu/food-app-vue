@@ -1,13 +1,13 @@
 <script setup>
-import { computed, reactive } from 'vue';
-
+import { computed, ref, reactive } from 'vue';
 import { meals } from '@/utils/filterData.js';
 
 import SelectDropdown from '@/components/filters/SelectDropdown.vue';
+import MealFilterTagList from '@/components/meal/meal-tags/meal-filter-tags/MealFilterTagList.vue';
 
 const selectedOptions = reactive({
-  Diet: null,
-  Health: null,
+  diet: null,
+  health: null,
   mealType: null,
   dishType: null,
   cuisineType: null,
@@ -32,6 +32,18 @@ function getSelectValue(value, index) {
     ? (selectedOptions[index] = null)
     : (selectedOptions[index] = value);
 }
+
+function removeTagHandler(tag) {
+  const foundTag = dishTags.value
+    .filter((element) => element === tag)
+    .toString();
+
+  for (const key in selectedOptions) {
+    if (selectedOptions[key] === foundTag) {
+      selectedOptions[key] = null;
+    }
+  }
+}
 </script>
 
 <template>
@@ -45,10 +57,9 @@ function getSelectValue(value, index) {
       />
     </div>
     <div class="meal-tags">
-      <p class="tags" v-for="selectedOption in dishTags">
-        {{ selectedOption }}
-      </p>
+      <MealFilterTagList :dishTags="dishTags" @removeTag="removeTagHandler" />
     </div>
+    <button class="search-btn">Search Recepies</button>
   </div>
 </template>
 
