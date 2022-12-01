@@ -19,15 +19,10 @@
 }
 
 .meal-tags {
-  @include flex-config($justify: space-around);
-  padding: 2rem 0;
-  background-color: red;
+  margin-top: 5rem;
 }
 
-.meal-tag {
-  background-color: hsl(157, 84%, 71%);
-}
-
-.tags {
-  @include flex-config($justify: space-around);
+.search-btn {
+  background-color: var(--clr-green-400);
+  text-align: center;
 }
