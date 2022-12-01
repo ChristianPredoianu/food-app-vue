@@ -22,10 +22,6 @@ const { capitalizeFirstLetter } = useCapitalizeFirstLetter();
 
 const mealUrl = `https://api.edamam.com/api/recipes/v2/${route.params.id}?type=public&app_id=2d7284f7&app_key=0a6f557d15da76ad2dea06845fbe542c`;
 
-/* function capitalizeFirstLetter(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-} */
-
 onMounted(async () => {
   const { data, isLoading } = await useFetch(mealUrl);
 
