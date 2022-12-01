@@ -1,5 +1,5 @@
 <script async setup>
-import { onBeforeMount, onUpdated, reactive, ref } from 'vue';
+import { onBeforeMount, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useFetch } from '@/composables/useFetch';
 import { useInfiniteScroll } from '@/composables/useInfiniteScroll';
