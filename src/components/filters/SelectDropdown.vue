@@ -8,12 +8,13 @@ const props = defineProps({
   index: String,
 });
 
-const selected = ref(null);
+const selectedDishType = ref('');
 
 const emit = defineEmits(['emitValue']);
 
 function onEmitValue(selected) {
   emit('emitValue', selected, props.index);
+  selectedDishType.value = '';
 }
 
 const { capitalizeFirstLetter } = useCapitalizeFirstLetter();
@@ -21,14 +22,14 @@ const { capitalizeFirstLetter } = useCapitalizeFirstLetter();
 
 <template>
   <div class="select-container">
-    <label for="dish">{{
+    <label class="select-container__label" for="dish">{{
       capitalizeFirstLetter(index.split('Type')[0])
     }}</label>
     <select
-      class="select"
+      class="select-container__select"
       name="cuisine"
-      @change="onEmitValue(selected, index)"
-      v-model="selected"
+      @change="onEmitValue(selectedDishType, index)"
+      v-model="selectedDishType"
     >
       <option v-for="mealType in meals" :key="mealType" :value="mealType">
         {{ capitalizeFirstLetter(mealType) }}
