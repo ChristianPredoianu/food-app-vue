@@ -1,8 +1,8 @@
-//No possibility to fetch different dishTypes from API for filtering
+/* No possibility to fetch different dishTypes from API for filtering
+Edamam recepies API docs only provide the different categories to fetch data */
 
 export const meals = {
-  Diet: [
-    '',
+  diet: [
     'balanced',
     'high-fiber',
     'high-protein',
@@ -10,8 +10,7 @@ export const meals = {
     'low-fat',
     'low-sodium',
   ],
-  Health: [
-    '',
+  health: [
     'alcohol-cocktail',
     'alcohol-free',
     'celery-free',
@@ -49,9 +48,8 @@ export const meals = {
     'vegeterian',
     'wheat-free',
   ],
-  mealType: ['', 'breakfast', 'brunch', 'lunch/dinner', 'snack', 'teatime'],
+  mealType: ['breakfast', 'brunch', 'lunch/dinner', 'snack', 'teatime'],
   dishType: [
-    '',
     'alcohol cocktail',
     'biscuits and cookies',
     'bread',
@@ -79,7 +77,6 @@ export const meals = {
     'sweets',
   ],
   cuisineType: [
-    '',
     'american',
     'asian',
     'british',
