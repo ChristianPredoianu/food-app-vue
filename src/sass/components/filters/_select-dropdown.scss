@@ -3,24 +3,23 @@
 .select-container {
   @include flex-config($direction: column);
   gap: 1rem;
-  /*   background-color: blue; */
 
   @include mq(sm) {
     width: 15rem;
   }
-}
 
-label {
-  font-size: 1.5rem;
-}
+  &__label {
+    font-size: 1.5rem;
+  }
 
-.select {
-  width: 100%;
-  font-size: 1.4rem;
-  line-height: 1.1;
-  padding: 0.25rem 0.5rem;
-  border: 1px solid var(--clr-dark-800);
-  border-radius: 0.2rem;
-  background-color: hsl(128, 81%, 79%);
-  cursor: pointer;
+  &__select {
+    width: 100%;
+    font-size: 1.4rem;
+    line-height: 1.1;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--clr-dark-800);
+    border-radius: 0.2rem;
+    background-color: var(--clr-green-200);
+    cursor: pointer;
+  }
 }
