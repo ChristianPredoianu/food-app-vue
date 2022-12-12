@@ -1,7 +1,15 @@
 <script setup>
+import MainBtn from '@/components/buttons/MainBtn.vue';
+
 const props = defineProps({
   meal: Object,
 });
+
+const emit = defineEmits(['goToDetails']);
+
+function onGoToDetails() {
+  emit('goToDetails');
+}
 </script>
 
 <template>
@@ -10,7 +18,7 @@ const props = defineProps({
     <h3 class="meal-card__heading">{{ meal.recipe.label }}</h3>
     <div class="meal-card-cta">
       <font-awesome-icon icon="fa-regular fa-heart" class="meal-card__icon" />
-      <button class="meal-card-cta__btn">Details</button>
+      <MainBtn @handleClick="onGoToDetails">Details</MainBtn>
     </div>
   </div>
 </template>
