@@ -1,9 +1,10 @@
 <script setup>
 import { computed, ref, reactive } from 'vue';
 import { meals } from '@/utils/filterData.js';
-
+import { useFetch } from '@/composables/useFetch';
 import SelectDropdown from '@/components/filters/SelectDropdown.vue';
 import MealFilterTagList from '@/components/meal/meal-tags/meal-filter-tags/MealFilterTagList.vue';
+import MainBtn from '@/components/buttons/MainBtn.vue';
 
 const selectedOptions = reactive({
   diet: null,
@@ -12,6 +13,15 @@ const selectedOptions = reactive({
   dishType: null,
   cuisineType: null,
 });
+
+const mealsData = ref(null);
+
+const emit = defineEmits(['closeModal']);
+
+function onCloseModal() {
+  emit('closeModal');
+  console.log('emmiting');
+}
 
 const dishTags = computed(() => {
   const dishValues = Object.values(selectedOptions);
@@ -44,6 +54,45 @@ function removeTagHandler(tag) {
     }
   }
 }
+
+function filterMealsHandler() {
+  /*  const isOptionsSelected = isSelectedOptions();
+
+  const mealsUrl = `https://api.edamam.com/api/recipes/v2?type=public&app_id=2d7284f7&app_key=0a6f557d15da76ad2dea06845fbe542c${
+    selectedOptions.diet !== null ? `&diet=${selectedOptions.diet}` : ''
+  }${
+    selectedOptions.health !== null ? `&health=${selectedOptions.health}` : ''
+  }${
+    selectedOptions.cuisineType !== null
+      ? `&cuisineType=${selectedOptions.cuisineType}`
+      : ''
+  }${
+    selectedOptions.mealType !== null
+      ? `&mealType=${selectedOptions.mealType}`
+      : ''
+  }
+  ${
+    selectedOptions.dishType !== null
+      ? `&dishType=${selectedOptions.dishType}`
+      : ''
+  }
+ 
+`;
+
+  if (isOptionsSelected) {
+    const { data } = await useFetch(mealsUrl);
+    mealsData.value = data.value;
+  } else {
+    console.log('You need to select a filter');
+  } */
+  onCloseModal();
+}
+
+function isSelectedOptions() {
+  let isOptions = dishTags.value.length > 0 ? true : false;
+
+  return isOptions;
+}
 </script>
 
 <template>
@@ -59,7 +108,7 @@ function removeTagHandler(tag) {
     <div class="meal-tags">
       <MealFilterTagList :dishTags="dishTags" @removeTag="removeTagHandler" />
     </div>
-    <button class="search-btn">Search Recepies</button>
+    <MainBtn @handleClick="filterMealsHandler">Search Recepies</MainBtn>
   </div>
 </template>
 
