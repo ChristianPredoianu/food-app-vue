@@ -59,12 +59,16 @@ function goToMealDetails(meal) {
     },
   });
 }
+
+function setFilteredData(mealsData) {
+  state.mealsData = mealsData;
+}
 </script>
 
 <template>
   <div v-if="isModalOpen">
     <Backdrop @closeModal="closeModal" />
-    <Modal />
+    <Modal @closeModal="closeModal" @filteredData="setFilteredData" />
   </div>
   <div class="showcase">
     <img src="@/assets/food.jpg" alt="food" class="showcase-img" />
@@ -72,13 +76,12 @@ function goToMealDetails(meal) {
   </div>
   <section class="section-top-meals container" ref="scrollComponent">
     <h2 class="heading-secondary">This weeks top recepies</h2>
-
     <div class="meal-cards" v-if="!state.isLoadingMeals">
       <MealCard
         v-for="meal in state.mealsData.hits"
         :key="meal.recipe.image"
         :meal="meal"
-        @click="goToMealDetails(meal)"
+        @goToDetails="goToMealDetails(meal)"
       />
     </div>
     <div class="loading-spinner" v-if="isFetching">
@@ -86,6 +89,7 @@ function goToMealDetails(meal) {
     </div>
   </section>
 </template>
+
 <style lang="scss" scoped>
 @use '@/sass/views/home';
 </style>
