@@ -1,11 +1,14 @@
 <script setup>
 import ModalOverlay from '@/components/modal/ModalOverlay.vue';
 
-const emit = defineEmits(['closeModal']);
+const emit = defineEmits(['closeModal', 'filteredData']);
 
-function test() {
+function onCloseModal() {
   emit('closeModal');
-  console.log('emmiting from modal');
+}
+
+function onFilteredData(mealsData) {
+  emit('filteredData', mealsData);
 }
 </script>
 
@@ -13,7 +16,15 @@ function test() {
   <div>
     <teleport to="#overlay-root">
       <div class="modal">
-        <ModalOverlay @onCloseModal="test" />
+        <font-awesome-icon
+          icon="fa-solid fa-xmark"
+          class="close-icon"
+          @click="onCloseModal"
+        />
+        <ModalOverlay
+          @closeModal="onCloseModal"
+          @filteredData="onFilteredData"
+        />
       </div>
     </teleport>
   </div>
