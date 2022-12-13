@@ -23,6 +23,13 @@
 }
 
 .search-btn {
-  background-color: var(--clr-green-400);
+  @include flex-config($justify: center);
+  margin-top: 5rem;
+}
+
+.options-error {
+  font-size: 1.5rem;
   text-align: center;
+  margin-top: 4rem;
+  color: var(--clr-danger);
 }
