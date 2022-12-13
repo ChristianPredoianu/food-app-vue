@@ -3,6 +3,8 @@ import { ref } from 'vue';
 
 import { useCapitalizeFirstLetter } from '@/composables/useCapitalizeFirstLetter';
 
+const { capitalizeFirstLetter } = useCapitalizeFirstLetter();
+
 const props = defineProps({
   meals: Array,
   index: String,
@@ -16,8 +18,6 @@ function onEmitValue(selected) {
   emit('emitValue', selected, props.index);
   selectedDishType.value = '';
 }
-
-const { capitalizeFirstLetter } = useCapitalizeFirstLetter();
 </script>
 
 <template>
