@@ -1,13 +1,5 @@
 @use '@/sass/abstracts' as *;
 
-.modal-overlay {
-  width: 50%;
-
-  @include mq(sm) {
-    width: 100%;
-  }
-}
-
 .selects {
   @include flex-config($direction: column, $wrap: wrap);
   gap: 2rem;
