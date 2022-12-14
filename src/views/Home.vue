@@ -16,19 +16,28 @@ const state = reactive({
   isLoadingMeals: true,
   isFetchError: false,
   isLoadingMoreMeals: true,
+  isFoundMeals: true,
+  isInitialRecepies: true,
 });
 
 const scrollComponent = ref(null);
 
 const router = useRouter();
 
+console.log(router);
+
 const { isFetching } = useInfiniteScroll(fetchMoreMeals);
 const { isModalOpen, openModal, closeModal } = useModal();
 
-const mealsUrl =
-  'https://api.edamam.com/api/recipes/v2?type=public&app_id=2d7284f7&app_key=0a6f557d15da76ad2dea06845fbe542c&diet=balanced&dishType=Main%20course';
-
 onBeforeMount(async () => {
+  const baseUrl = `https://api.edamam.com/api/recipes/v2?type=public`,
+    appId = import.meta.env.VITE_APP_ID,
+    apiKey = import.meta.env.VITE_API_KEY,
+    diet = 'balanced',
+    dishType = 'Main%20course';
+
+  const mealsUrl = `${baseUrl}&app_id=${appId}&app_key=${apiKey}&diet=${diet}&dishType=${dishType}`;
+
   const { data, isLoading } = await useFetch(mealsUrl);
 
   state.mealsData = data.value;
@@ -60,23 +69,44 @@ function goToMealDetails(meal) {
   });
 }
 
-function setFilteredData(mealsData) {
-  state.mealsData = mealsData;
+function setFilteredMeals(mealsData) {
+  if (mealsData.hits.length > 0) {
+    state.isInitialRecepies = false;
+    state.mealsData = mealsData;
+    state.isFoundMeals = true;
+  } else {
+    state.mealsData = null;
+    state.isFoundMeals = false;
+  }
 }
 </script>
 
 <template>
   <div v-if="isModalOpen">
     <Backdrop @closeModal="closeModal" />
-    <Modal @closeModal="closeModal" @filteredData="setFilteredData" />
+    <Modal @closeModal="closeModal" @filteredData="setFilteredMeals" />
   </div>
   <div class="showcase">
     <img src="@/assets/food.jpg" alt="food" class="showcase-img" />
-    <SearchBox @openModal="openModal" />
+    <SearchBox @openModal="openModal" @queryMeals="setFilteredMeals" />
   </div>
   <section class="section-top-meals container" ref="scrollComponent">
-    <h2 class="heading-secondary">This weeks top recepies</h2>
-    <div class="meal-cards" v-if="!state.isLoadingMeals">
+    <h2 class="heading-secondary" v-if="state.isInitialRecepies">
+      This weeks top recepies
+    </h2>
+    <h2
+      class="heading-secondary"
+      v-if="state.isFoundMeals && !state.isInitialRecepies"
+    >
+      Found recepies
+    </h2>
+    <h3 class="heading-tertiary" v-if="!state.isFoundMeals">
+      No recepies found! Try another search query...
+    </h3>
+    <div
+      class="meal-cards"
+      v-if="!state.isLoadingMeals && state.mealsData !== null"
+    >
       <MealCard
         v-for="meal in state.mealsData.hits"
         :key="meal.recipe.image"
