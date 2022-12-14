@@ -14,7 +14,7 @@ const selectedOptions = reactive({
   cuisineType: null,
 });
 
-const isOptionsSelected = ref(false);
+const isOptionsSelected = ref(true);
 
 const emit = defineEmits(['closeModal', 'filteredData']);
 
@@ -72,6 +72,7 @@ function containsWhitespace(str) {
 }
 
 function fetchUrl() {
+  const baseUrl = 'https://api.edamam.com/api/recipes/v2?type=public';
   const appId = import.meta.env.VITE_APP_ID;
   const apiKey = import.meta.env.VITE_API_KEY;
 
@@ -88,7 +89,7 @@ function fetchUrl() {
       ? `&dishType=${containsWhitespace(selectedOptions.dishType)}`
       : '';
 
-  const mealsUrl = `https://api.edamam.com/api/recipes/v2?type=public&app_id=${appId}&app_key=${apiKey}${diet}${health}${cuisineType}${dishType}
+  const mealsUrl = `${baseUrl}&app_id=${appId}&app_key=${apiKey}${diet}${health}${cuisineType}${dishType}
 `;
 
   return mealsUrl;
