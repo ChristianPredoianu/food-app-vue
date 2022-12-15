@@ -1,5 +1,5 @@
 <script async setup>
-import { onBeforeMount, reactive, ref } from 'vue';
+import { onBeforeMount, reactive, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useFetch } from '@/composables/useFetch';
 import { useInfiniteScroll } from '@/composables/useInfiniteScroll';
@@ -10,6 +10,10 @@ import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import MealCard from '@/components/cards/MealCard.vue';
 import Backdrop from '@/components/modal/Backdrop.vue';
 import Modal from '@/components/modal/Modal.vue';
+
+const props = defineProps({
+  queriedMealData: Object,
+});
 
 const state = reactive({
   mealsData: null,
@@ -22,12 +26,10 @@ const state = reactive({
 
 const scrollComponent = ref(null);
 
-const router = useRouter();
-
-console.log(router);
-
 const { isFetching } = useInfiniteScroll(fetchMoreMeals);
 const { isModalOpen, openModal, closeModal } = useModal();
+
+const router = useRouter();
 
 onBeforeMount(async () => {
   const baseUrl = `https://api.edamam.com/api/recipes/v2?type=public`,
@@ -79,6 +81,13 @@ function setFilteredMeals(mealsData) {
     state.isFoundMeals = false;
   }
 }
+
+watch(
+  () => props.queriedMealData,
+  (queriedMeals) => {
+    setFilteredMeals(queriedMeals);
+  }
+);
 </script>
 
 <template>
