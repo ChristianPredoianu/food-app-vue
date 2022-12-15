@@ -35,7 +35,6 @@ onMounted(async () => {
     <div class="loading-spinner" v-if="state.isLoadingMeal">
       <LoadingSpinner />
     </div>
-
     <main class="main container" v-if="state.mealData && !state.isLoadingMeal">
       <section class="section-meal">
         <div class="meal-info">
