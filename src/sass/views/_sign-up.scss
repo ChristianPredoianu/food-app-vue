@@ -1,0 +1,42 @@
+@use '@/sass/abstracts' as *;
+
+.sign-up {
+  @include flex-config($justify: center, $align: center);
+  min-height: 90vh;
+
+  &__img {
+    display: none;
+  }
+
+  &__heading {
+    text-align: center;
+    padding: 2rem 2rem 4rem 2rem;
+    color: var(--clr-green-400);
+  }
+}
+
+.sign-up-form {
+  @include flex-config($direction: column);
+
+  &__label {
+    color: var(--clr-dark-400);
+    margin-top: 1rem;
+  }
+
+  &__input {
+    font-size: 1.5rem;
+    outline: 0;
+    border: none;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--clr-dark-400);
+  }
+}
+
+.validated {
+  border-bottom: 1px solid var(--clr-green-400);
+}
+
+.invalid {
+  border-bottom: 1px solid var(--clr-danger);
+}
