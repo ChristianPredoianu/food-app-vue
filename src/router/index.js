@@ -9,11 +9,16 @@ const routes = [
     component: Home,
   },
 
-  /* {
+  {
     path: '/signin',
     name: 'SignIn',
     component: () => import('@/views/SignIn.vue'),
-  }, */
+  },
+  {
+    path: '/signup',
+    name: 'SignUp',
+    component: () => import('@/views/SignUp.vue'),
+  },
 
   {
     path: '/meal-details/:id',
