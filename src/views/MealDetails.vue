@@ -27,7 +27,6 @@ onMounted(async () => {
 
   state.mealData = data.value;
   state.isLoadingMeal = isLoading.value;
-  console.log(data.value);
 });
 </script>
 <template>
