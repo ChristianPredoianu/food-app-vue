@@ -26,8 +26,6 @@ function validateSignUp(e) {
 
   state.errors = [];
 
-  console.log(state.errors.length);
-
   if (!isUsernameValid()) {
     state.errors.push('Username must be at least 4 charachers long');
     state.isInputValid = false;
@@ -42,7 +40,6 @@ function validateSignUp(e) {
     state.errors.push('Password and repeated password are not the same');
 
   if (!state.errors.length) {
-    console.log('sendign form');
     state.isInputValid = true;
   }
 }
