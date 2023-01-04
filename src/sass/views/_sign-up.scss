@@ -1,42 +1,32 @@
 @use '@/sass/abstracts' as *;
 
-.sign-up {
+.sign-up-container {
   @include flex-config($justify: center, $align: center);
   min-height: 90vh;
 
+  @include mq(lg) {
+    gap: 3rem;
+  }
+
   &__img {
     display: none;
-  }
 
-  &__heading {
-    text-align: center;
-    padding: 2rem 2rem 4rem 2rem;
-    color: var(--clr-green-400);
-  }
-}
-
-.sign-up-form {
-  @include flex-config($direction: column);
-
-  &__label {
-    color: var(--clr-dark-400);
-    margin-top: 1rem;
-  }
-
-  &__input {
-    font-size: 1.5rem;
-    outline: 0;
-    border: none;
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-    border-bottom: 1px solid var(--clr-dark-400);
+    @include mq(lg) {
+      display: block;
+      width: 33.5%;
+      box-shadow: var(--box-shadow);
+    }
   }
 }
 
-.validated {
-  border-bottom: 1px solid var(--clr-green-400);
-}
+.form-container {
+  width: 80%;
 
-.invalid {
-  border-bottom: 1px solid var(--clr-danger);
+  @include mq(sm) {
+    width: 45%;
+  }
+
+  @include mq(lg) {
+    width: 30%;
+  }
 }
