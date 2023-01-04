@@ -53,7 +53,9 @@ onUnmounted(() => {
 <template>
   <header class="header">
     <nav class="nav container">
-      <p class="logo">Foo<span class="logo__span">die</span></p>
+      <RouterLink to="/"
+        ><p class="logo">Foo<span class="logo__span">die</span></p></RouterLink
+      >
       <ul class="nav-links" v-if="isNavOpen">
         <li class="nav-links__item" v-if="!isMobileView">
           <div class="search-container">
@@ -79,10 +81,16 @@ onUnmounted(() => {
           <font-awesome-icon icon="fa-regular fa-heart" />Favorite
         </li> -->
         <div class="cta-btns">
-          <li class="nav-links__item nav-links__item--btn-transparent">
-            Login
-          </li>
-          <li class="nav-links__item nav-links__item--btn-green">Sign up</li>
+          <RouterLink to="/signin"
+            ><li class="nav-links__item nav-links__item--btn-transparent">
+              Login
+            </li></RouterLink
+          >
+          <RouterLink to="/signup"
+            ><li class="nav-links__item nav-links__item--btn-green">
+              Sign up
+            </li></RouterLink
+          >
         </div>
       </ul>
       <div class="hamburger" :class="{ active: isNavOpen }" @click="toggleNav">
