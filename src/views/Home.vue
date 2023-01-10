@@ -46,6 +46,7 @@ onBeforeMount(async () => {
   state.isLoadingMeals = isLoading.value;
 
   console.log(data.value.hits);
+  console.log(props.queriedMealData);
 });
 
 async function fetchMoreMeals() {
@@ -80,12 +81,15 @@ function setFilteredMeals(mealsData) {
     state.mealsData = null;
     state.isFoundMeals = false;
   }
+
+  console.log(state.isFoundMeals);
 }
 
 watch(
   () => props.queriedMealData,
   (queriedMeals) => {
     setFilteredMeals(queriedMeals);
+    console.log(queriedMeals);
   }
 );
 </script>
@@ -100,7 +104,10 @@ watch(
     <SearchBox @openModal="openModal" @queryMeals="setFilteredMeals" />
   </div>
   <section class="section-top-meals container" ref="scrollComponent">
-    <h2 class="heading-secondary" v-if="state.isInitialRecepies">
+    <h2
+      class="heading-secondary"
+      v-if="state.isInitialRecepies && state.isFoundMeals"
+    >
       This weeks top recepies
     </h2>
     <h2
