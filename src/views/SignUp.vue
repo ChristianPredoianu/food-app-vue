@@ -3,14 +3,16 @@ import SignUpForm from '@/components/forms/SignUpForm.vue';
 </script>
 
 <template>
-  <main class="sign-up-container container">
-    <img
-      src="@/assets/dose-juice.jpg"
-      alt="food"
-      class="sign-up-container__img"
-    />
-    <div class="form-container">
-      <SignUpForm />
+  <main class="main container">
+    <div class="sign-up-container">
+      <img
+        src="@/assets/food-plate.jpg"
+        alt="food"
+        class="sign-up-container__img"
+      />
+      <div class="form-container">
+        <SignUpForm />
+      </div>
     </div>
   </main>
 </template>
