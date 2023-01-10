@@ -1,14 +1,21 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { useQueryUrl } from '@/composables/useQueryUrl';
 import { useFetch } from '@/composables/useFetch';
+
+const emit = defineEmits(['queryMeals']);
 
 const isNavOpen = ref(false);
 const isMobileView = ref(true);
 const isSearchOpen = ref(false);
 const searchQuery = ref(null);
 
-const emit = defineEmits(['queryMeals']);
+const router = useRouter();
+
+const isHomeView = computed(() => {
+  if (router.currentRoute.value.path === '/') return true;
+});
 
 function onQueryMeals(mealsData) {
   emit('queryMeals', mealsData);
@@ -18,9 +25,17 @@ function toggleNav() {
   isNavOpen.value = !isNavOpen.value;
 }
 
+function setNavState() {
+  isMobileView.value ? (isNavOpen.value = false) : (isNavOpen.value = true);
+}
+
+function closeNav() {
+  setNavState();
+}
+
 function handleView() {
   isMobileView.value = window.innerWidth < 640;
-  isMobileView.value ? (isNavOpen.value = false) : (isNavOpen.value = true);
+  setNavState();
 }
 
 function toggleSearch() {
@@ -29,7 +44,6 @@ function toggleSearch() {
 
 function closeSearch() {
   isSearchOpen.value = false;
-  console.log('closing');
 }
 
 async function searchMeals() {
@@ -37,7 +51,9 @@ async function searchMeals() {
   const { data } = await useFetch(searchQueryUrl);
 
   onQueryMeals(data.value);
+  console.log(data.value);
   closeSearch();
+  searchQuery.value = null;
 }
 
 onMounted(() => {
@@ -57,7 +73,7 @@ onUnmounted(() => {
         ><p class="logo">Foo<span class="logo__span">die</span></p></RouterLink
       >
       <ul class="nav-links" v-if="isNavOpen">
-        <li class="nav-links__item" v-if="!isMobileView">
+        <li class="nav-links__item" v-if="!isMobileView && isHomeView">
           <div class="search-container">
             <Transition name="slide-fade">
               <input
@@ -82,12 +98,18 @@ onUnmounted(() => {
         </li> -->
         <div class="cta-btns">
           <RouterLink to="/signin"
-            ><li class="nav-links__item nav-links__item--btn-transparent">
+            ><li
+              class="nav-links__item nav-links__item--btn-transparent"
+              @click="closeNav"
+            >
               Login
             </li></RouterLink
           >
           <RouterLink to="/signup"
-            ><li class="nav-links__item nav-links__item--btn-green">
+            ><li
+              class="nav-links__item nav-links__item--btn-green"
+              @click="closeNav"
+            >
               Sign up
             </li></RouterLink
           >
