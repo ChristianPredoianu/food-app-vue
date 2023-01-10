@@ -1,0 +1,27 @@
+@use '@/sass/abstracts' as *;
+
+.main {
+  @include flex-config($justify: center, $align: center);
+  min-height: 90vh;
+  padding: 5rem 0;
+}
+
+.sign-in-container {
+  @include flex-config($direction: column, $align: center);
+
+  &__img {
+    width: 70%;
+
+    @include mq(sm) {
+      width: 60%;
+    }
+  }
+}
+
+.form-container {
+  width: 70%;
+
+  @include mq(sm) {
+    width: 60%;
+  }
+}
