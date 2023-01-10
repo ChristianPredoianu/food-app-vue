@@ -9,7 +9,7 @@ const emit = defineEmits(['queryMeals']);
 const isNavOpen = ref(false);
 const isMobileView = ref(true);
 const isSearchOpen = ref(false);
-const searchQuery = ref(null);
+const searchQuery = ref('');
 
 const router = useRouter();
 
@@ -53,7 +53,7 @@ async function searchMeals() {
   onQueryMeals(data.value);
   console.log(data.value);
   closeSearch();
-  searchQuery.value = null;
+  searchQuery.value = '';
 }
 
 onMounted(() => {
