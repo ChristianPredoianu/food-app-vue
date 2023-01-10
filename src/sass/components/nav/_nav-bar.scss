@@ -21,11 +21,11 @@
 }
 
 .nav-links {
-  min-height: 80vh;
+  height: 100%;
   width: 100%;
   @include flex-config($direction: column, $justify: center);
   gap: 4rem;
-  @include position($pos: absolute, $top: 0, $left: 0);
+  @include position($pos: fixed, $top: 0, $left: 0);
   z-index: 2;
   background-color: var(--clr-green-400);
   color: var(--clr-white);
@@ -34,18 +34,10 @@
     position: initial;
     flex-direction: row;
     justify-content: flex-end;
-    min-height: auto;
-    width: 60%;
+    height: auto;
+    width: 100%;
     background-color: transparent;
     color: var(--clr-dark-800);
-
-    @include mq(md) {
-      width: 40%;
-    }
-
-    @include mq(lg) {
-      width: 30%;
-    }
   }
 
   &__item {
@@ -106,6 +98,9 @@
 .hamburger {
   cursor: pointer;
   z-index: 3;
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
 
   @include mq(sm) {
     top: 3rem;
