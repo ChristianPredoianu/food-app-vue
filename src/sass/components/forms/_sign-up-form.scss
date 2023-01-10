@@ -31,3 +31,7 @@
 .invalid {
   border-bottom: 1px solid var(--clr-danger);
 }
+
+.invalid-message {
+  color: var(--clr-danger);
+}
