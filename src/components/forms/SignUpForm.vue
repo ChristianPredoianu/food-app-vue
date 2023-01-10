@@ -2,7 +2,6 @@
 import { reactive } from 'vue';
 import AuthCard from '@/components/cards/AuthCard.vue';
 import AuthSubmitBtn from '@/components/buttons/AuthSubmitBtn.vue';
-
 import { useAuthForm } from '@/composables/useAuthForm';
 
 const state = reactive({
@@ -62,6 +61,7 @@ function validateSignUp(e) {
       <input
         type="text"
         class="sign-up-form__input"
+        :class="[isEmailValid() || state.isInputValid ? 'validated' : '']"
         required
         v-model="state.email"
         @keypress="validateEmail"
@@ -70,6 +70,7 @@ function validateSignUp(e) {
       <input
         type="password"
         class="sign-up-form__input"
+        :class="[isPasswordValid() || state.isInputValid ? 'validated' : '']"
         required
         autocomplete="on"
         v-model="state.password"
@@ -81,13 +82,18 @@ function validateSignUp(e) {
       <input
         type="password"
         class="sign-up-form__input"
+        :class="[
+          isRepeatPasswordValid() || state.isInputValid ? 'validated' : '',
+        ]"
         required
         autocomplete="on"
         v-model="state.repeatPassword"
         @keypress="validateRepeatPassword"
       />
       <ul>
-        <li v-for="error in state.errors" :key="error">{{ error }}</li>
+        <li class="invalid-message" v-for="error in state.errors" :key="error">
+          {{ error }}
+        </li>
       </ul>
       <AuthSubmitBtn>Sign Up</AuthSubmitBtn>
     </form>
