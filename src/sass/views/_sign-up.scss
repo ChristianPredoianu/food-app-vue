@@ -1,20 +1,19 @@
 @use '@/sass/abstracts' as *;
 
-.sign-up-container {
+.main {
   @include flex-config($justify: center, $align: center);
   min-height: 90vh;
+  padding: 5rem 0;
+}
 
-  @include mq(lg) {
-    gap: 3rem;
-  }
+.sign-up-container {
+  @include flex-config($direction: column, $align: center);
 
   &__img {
-    display: none;
+    width: 80%;
 
-    @include mq(lg) {
-      display: block;
-      width: 33.5%;
-      box-shadow: var(--box-shadow);
+    @include mq(sm) {
+      width: 60%;
     }
   }
 }
@@ -23,10 +22,6 @@
   width: 80%;
 
   @include mq(sm) {
-    width: 45%;
-  }
-
-  @include mq(lg) {
-    width: 30%;
+    width: 60%;
   }
 }
