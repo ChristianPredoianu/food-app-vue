@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQueryUrl } from '@/composables/useQueryUrl';
 import { useFetch } from '@/composables/useFetch';
@@ -12,10 +12,6 @@ const isSearchOpen = ref(false);
 const searchQuery = ref('');
 
 const router = useRouter();
-
-const isHomeView = computed(() => {
-  if (router.currentRoute.value.path === '/') return true;
-});
 
 function onQueryMeals(mealsData) {
   emit('queryMeals', mealsData);
@@ -51,9 +47,9 @@ async function searchMeals() {
   const { data } = await useFetch(searchQueryUrl);
 
   onQueryMeals(data.value);
-  console.log(data.value);
   closeSearch();
   searchQuery.value = '';
+  router.push({ name: 'Home' });
 }
 
 onMounted(() => {
@@ -73,7 +69,7 @@ onUnmounted(() => {
         ><p class="logo">Foo<span class="logo__span">die</span></p></RouterLink
       >
       <ul class="nav-links" v-if="isNavOpen">
-        <li class="nav-links__item" v-if="!isMobileView && isHomeView">
+        <li class="nav-links__item" v-if="!isMobileView">
           <div class="search-container">
             <Transition name="slide-fade">
               <input
