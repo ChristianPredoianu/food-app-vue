@@ -1,8 +1,10 @@
 import { createApp } from 'vue';
+import App from '@/App.vue';
 import './style.css';
-import App from './App.vue';
 import router from '@/router/index';
 import '@/sass/main.scss';
+import { getAuth } from 'firebase/auth';
+import '@/plugins/firebase';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 
@@ -11,7 +13,13 @@ import { faHeart } from '@fortawesome/free-regular-svg-icons';
 
 library.add(faSearch, faHeart, faFilter, faXmark);
 
-createApp(App)
-  .use(router)
-  .component('font-awesome-icon', FontAwesomeIcon)
-  .mount('#app');
+let app;
+
+getAuth().onAuthStateChanged(() => {
+  if (!app) {
+    app = createApp(App)
+      .use(router)
+      .component('font-awesome-icon', FontAwesomeIcon)
+      .mount('#app');
+  }
+});
