@@ -23,6 +23,7 @@ function setMealsData(mealsData) {
 <template>
   <div>
     <NavBar @queryMeals="setMealsData" />
+
     <router-view :queriedMealData="propsToPass" />
   </div>
 </template>
