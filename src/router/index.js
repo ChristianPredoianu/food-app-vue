@@ -21,6 +21,15 @@ const routes = [
   },
 
   {
+    path: '/admin',
+    name: 'Admin',
+    component: () => import('@/views/Admin.vue'),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+
+  {
     path: '/meal-details/:id',
     name: 'MealDetails',
     component: () => import('@/views/MealDetails.vue'),
