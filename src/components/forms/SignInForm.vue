@@ -3,6 +3,7 @@ import { reactive } from 'vue';
 import AuthCard from '@/components/cards/AuthCard.vue';
 import AuthSubmitBtn from '@/components/buttons/AuthSubmitBtn.vue';
 import { useAuthForm } from '@/composables/useAuthForm';
+import { useFirebaseAuth } from '@/composables/useFirebaseAuth';
 
 const state = reactive({
   email: '',
@@ -12,6 +13,7 @@ const state = reactive({
 });
 
 const { isEmailValid, isPasswordValid } = useAuthForm(state);
+const { signUserIn, signInError } = useFirebaseAuth(state);
 
 function validateSignIn(e) {
   e.preventDefault();
@@ -25,6 +27,7 @@ function validateSignIn(e) {
 
   if (!state.errors.length) {
     state.isInputValid = true;
+    signUserIn();
   }
 }
 </script>
@@ -58,6 +61,7 @@ function validateSignIn(e) {
         </li>
       </ul>
       <AuthSubmitBtn>Sign Up</AuthSubmitBtn>
+      <p class="auth-error">{{ signInError }}</p>
     </form>
   </AuthCard>
 </template>
