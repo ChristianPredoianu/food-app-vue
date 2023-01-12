@@ -2,7 +2,7 @@
 
 .main {
   @include flex-config($justify: center, $align: center);
-  min-height: 90vh;
+  min-height: 100vh;
   padding: 5rem 0;
 }
 

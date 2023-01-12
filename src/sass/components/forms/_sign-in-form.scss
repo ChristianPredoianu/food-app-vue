@@ -35,3 +35,9 @@
 .invalid-message {
   color: var(--clr-danger);
 }
+
+.auth-error {
+  color: var(--clr-danger);
+  margin-top: 1rem;
+  font-size: 1.3rem;
+}
