@@ -3,6 +3,7 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQueryUrl } from '@/composables/useQueryUrl';
 import { useFetch } from '@/composables/useFetch';
+import { getAuth, signOut } from 'firebase/auth';
 
 const emit = defineEmits(['queryMeals']);
 
@@ -12,6 +13,10 @@ const isSearchOpen = ref(false);
 const searchQuery = ref('');
 
 const router = useRouter();
+
+const auth = getAuth();
+
+const currentUser = ref(auth.currentUser);
 
 function onQueryMeals(mealsData) {
   emit('queryMeals', mealsData);
@@ -52,9 +57,15 @@ async function searchMeals() {
   router.push({ name: 'Home' });
 }
 
+function signUserOut() {
+  signOut(auth);
+  closeNav();
+}
+
 onMounted(() => {
   handleView();
   window.addEventListener('resize', handleView);
+  console.log('mounted');
 });
 
 onUnmounted(() => {
@@ -92,24 +103,34 @@ onUnmounted(() => {
         <!--   <li class="nav-links__item" v-if="!isMobileView">
           <font-awesome-icon icon="fa-regular fa-heart" />Favorite
         </li> -->
-        <div class="cta-btns">
-          <RouterLink to="/signin"
-            ><li
-              class="nav-links__item nav-links__item--btn-transparent"
-              @click="closeNav"
-            >
-              Login
-            </li></RouterLink
+
+        <RouterLink to="/signin">
+          <li
+            class="nav-links__item nav-links__item--btn-transparent"
+            v-if="!currentUser"
+            @click="closeNav"
           >
-          <RouterLink to="/signup"
-            ><li
-              class="nav-links__item nav-links__item--btn-green"
-              @click="closeNav"
-            >
-              Sign up
-            </li></RouterLink
+            Login
+          </li>
+        </RouterLink>
+        <RouterLink to="/signup"
+          ><li
+            class="nav-links__item nav-links__item--btn-green"
+            @click="closeNav"
+            v-if="!currentUser"
           >
-        </div>
+            Sign Up
+          </li>
+        </RouterLink>
+        <RouterLink to="/"
+          ><li
+            class="nav-links__item nav-links__item--btn-green"
+            @click="signUserOut"
+            v-if="currentUser"
+          >
+            Sign Out
+          </li>
+        </RouterLink>
       </ul>
       <div class="hamburger" :class="{ active: isNavOpen }" @click="toggleNav">
         <span class="hamburger__bar"></span>
