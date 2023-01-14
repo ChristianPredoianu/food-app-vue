@@ -65,7 +65,6 @@ function signUserOut() {
 onMounted(() => {
   handleView();
   window.addEventListener('resize', handleView);
-  console.log('mounted');
 });
 
 onUnmounted(() => {
