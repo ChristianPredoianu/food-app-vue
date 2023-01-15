@@ -23,8 +23,6 @@ const {
 
 const { signUserUp, signUpError } = useFirebaseAuth(state);
 
-console.log(signUpError.value);
-
 function validateSignUp(e) {
   e.preventDefault();
 
