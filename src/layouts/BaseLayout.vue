@@ -7,8 +7,6 @@ const emit = defineEmits(['queryMeals']);
 
 const route = useRoute();
 
-console.log(route);
-
 const queriedMealsData = ref(null);
 
 // Pass the queriedMealsData only to Home view
