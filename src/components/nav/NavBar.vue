@@ -7,15 +7,13 @@ import { getAuth, signOut } from 'firebase/auth';
 
 const emit = defineEmits(['queryMeals']);
 
+const router = useRouter();
+const auth = getAuth();
+
 const isNavOpen = ref(false);
 const isMobileView = ref(true);
 const isSearchOpen = ref(false);
 const searchQuery = ref('');
-
-const router = useRouter();
-
-const auth = getAuth();
-
 const currentUser = ref(auth.currentUser);
 
 function onQueryMeals(mealsData) {
@@ -60,6 +58,7 @@ async function searchMeals() {
 function signUserOut() {
   signOut(auth);
   closeNav();
+  router.push({ name: 'SignIn' });
 }
 
 onMounted(() => {
@@ -75,9 +74,9 @@ onUnmounted(() => {
 <template>
   <header class="header">
     <nav class="nav container">
-      <RouterLink to="/"
-        ><p class="logo">Foo<span class="logo__span">die</span></p></RouterLink
-      >
+      <RouterLink to="/">
+        <p class="logo">Foo<span class="logo__span">die</span></p>
+      </RouterLink>
       <ul class="nav-links" v-if="isNavOpen">
         <li class="nav-links__item" v-if="!isMobileView">
           <div class="search-container">
@@ -121,15 +120,13 @@ onUnmounted(() => {
             Sign Up
           </li>
         </RouterLink>
-        <RouterLink to="/"
-          ><li
-            class="nav-links__item nav-links__item--btn-green"
-            @click="signUserOut"
-            v-if="currentUser"
-          >
-            Sign Out
-          </li>
-        </RouterLink>
+        <li
+          class="nav-links__item nav-links__item--btn-green"
+          @click="signUserOut"
+          v-if="currentUser"
+        >
+          Sign Out
+        </li>
       </ul>
       <div class="hamburger" :class="{ active: isNavOpen }" @click="toggleNav">
         <span class="hamburger__bar"></span>
