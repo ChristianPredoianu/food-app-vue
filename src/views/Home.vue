@@ -31,27 +31,6 @@ const { isModalOpen, openModal, closeModal } = useModal();
 
 const router = useRouter();
 
-onBeforeMount(async () => {
-  if (props.queriedMealData === null) {
-    const baseUrl = `https://api.edamam.com/api/recipes/v2?type=public`,
-      appId = import.meta.env.VITE_APP_ID,
-      apiKey = import.meta.env.VITE_API_KEY,
-      diet = 'balanced',
-      dishType = 'Main%20course';
-
-    const mealsUrl = `${baseUrl}&app_id=${appId}&app_key=${apiKey}&diet=${diet}&dishType=${dishType}`;
-
-    const { data, isLoading } = await useFetch(mealsUrl);
-
-    state.mealsData = data.value;
-    state.isLoadingMeals = isLoading.value;
-
-    console.log(data.value.hits);
-  } else {
-    setFilteredMeals(props.queriedMealData);
-  }
-});
-
 async function fetchMoreMeals() {
   const nextMealsUrl = state.mealsData._links.next.href;
 
@@ -86,6 +65,27 @@ function setFilteredMeals(mealsData) {
     state.isFoundMeals = false;
   }
 }
+
+onBeforeMount(async () => {
+  if (props.queriedMealData === null) {
+    const baseUrl = `https://api.edamam.com/api/recipes/v2?type=public`,
+      appId = import.meta.env.VITE_APP_ID,
+      apiKey = import.meta.env.VITE_API_KEY,
+      diet = 'balanced',
+      dishType = 'Main%20course';
+
+    const mealsUrl = `${baseUrl}&app_id=${appId}&app_key=${apiKey}&diet=${diet}&dishType=${dishType}`;
+
+    const { data, isLoading } = await useFetch(mealsUrl);
+
+    state.mealsData = data.value;
+    state.isLoadingMeals = isLoading.value;
+
+    console.log(data.value.hits);
+  } else {
+    setFilteredMeals(props.queriedMealData);
+  }
+});
 
 watch(
   () => props.queriedMealData,
