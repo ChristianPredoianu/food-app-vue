@@ -3,9 +3,9 @@ import { ref } from 'vue';
 import { useQueryUrl } from '@/composables/useQueryUrl';
 import { useFetch } from '@/composables/useFetch';
 
-const searchQuery = ref(null);
-
 const emit = defineEmits(['openModal', 'queryMeals']);
+
+const searchQuery = ref(null);
 
 function onOpenModal() {
   emit('openModal');
