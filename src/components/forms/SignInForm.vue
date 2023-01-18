@@ -1,9 +1,10 @@
 <script setup>
 import { reactive } from 'vue';
-import AuthCard from '@/components/cards/AuthCard.vue';
-import AuthSubmitBtn from '@/components/buttons/AuthSubmitBtn.vue';
 import { useAuthForm } from '@/composables/useAuthForm';
 import { useFirebaseAuth } from '@/composables/useFirebaseAuth';
+
+import AuthCard from '@/components/cards/AuthCard.vue';
+import AuthSubmitBtn from '@/components/buttons/AuthSubmitBtn.vue';
 
 const state = reactive({
   email: '',
