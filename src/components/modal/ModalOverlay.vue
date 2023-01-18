@@ -2,6 +2,7 @@
 import { computed, ref, reactive } from 'vue';
 import { meals } from '@/utils/filterData.js';
 import { useFetch } from '@/composables/useFetch';
+
 import SelectDropdown from '@/components/filters/SelectDropdown.vue';
 import MealFilterTagList from '@/components/meal/meal-tags/meal-filter-tags/MealFilterTagList.vue';
 import MainBtn from '@/components/buttons/MainBtn.vue';
