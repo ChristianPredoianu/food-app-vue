@@ -7,6 +7,8 @@ import SelectDropdown from '@/components/filters/SelectDropdown.vue';
 import MealFilterTagList from '@/components/meal/meal-tags/meal-filter-tags/MealFilterTagList.vue';
 import MainBtn from '@/components/buttons/MainBtn.vue';
 
+const emit = defineEmits(['closeModal', 'filteredData']);
+
 const selectedOptions = reactive({
   diet: null,
   health: null,
@@ -16,16 +18,6 @@ const selectedOptions = reactive({
 });
 
 const isOptionsSelected = ref(true);
-
-const emit = defineEmits(['closeModal', 'filteredData']);
-
-function onCloseModal() {
-  emit('closeModal');
-}
-
-function onFilteredData(mealsData) {
-  emit('filteredData', mealsData);
-}
 
 const dishTags = computed(() => {
   const dishValues = Object.values(selectedOptions);
@@ -40,6 +32,14 @@ const dishTags = computed(() => {
 
   return tags;
 });
+
+function onCloseModal() {
+  emit('closeModal');
+}
+
+function onFilteredData(mealsData) {
+  emit('filteredData', mealsData);
+}
 
 function getSelectValue(value, index) {
   value === ''
