@@ -77,7 +77,7 @@ onUnmounted(() => {
       <RouterLink to="/">
         <p class="logo">Foo<span class="logo__span">die</span></p>
       </RouterLink>
-      <ul class="nav-links" v-if="isNavOpen">
+      <ul class="nav-links" v-if="isNavOpen && currentUser === null">
         <li class="nav-links__item" v-if="!isMobileView">
           <div class="search-container">
             <Transition name="slide-fade">
@@ -111,6 +111,10 @@ onUnmounted(() => {
             Login
           </li>
         </RouterLink>
+        <li v-if="currentUser !== null && !isMobileView" class="welcome">
+          <p class="welcome__text">Welcome</p>
+          <p class="welcome__name">{{ currentUser.displayName }}</p>
+        </li>
         <RouterLink to="/signup"
           ><li
             class="nav-links__item nav-links__item--btn-green"
@@ -128,7 +132,12 @@ onUnmounted(() => {
           Sign Out
         </li>
       </ul>
-      <div class="hamburger" :class="{ active: isNavOpen }" @click="toggleNav">
+      <div
+        class="hamburger"
+        :class="{ active: isNavOpen }"
+        @click="toggleNav"
+        v-if="currentUser === null"
+      >
         <span class="hamburger__bar"></span>
         <span class="hamburger__bar"></span>
       </div>
