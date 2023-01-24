@@ -98,9 +98,9 @@ onUnmounted(() => {
           <p @click="toggleSearch">Search</p>
         </li>
 
-        <!--   <li class="nav-links__item" v-if="!isMobileView">
+        <li class="nav-links__item" v-if="!isMobileView">
           <font-awesome-icon icon="fa-regular fa-heart" />Favorite
-        </li> -->
+        </li>
 
         <RouterLink to="/signin">
           <li
