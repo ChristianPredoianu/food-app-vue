@@ -77,7 +77,11 @@ onUnmounted(() => {
       <RouterLink to="/">
         <p class="logo">Foo<span class="logo__span">die</span></p>
       </RouterLink>
-      <ul class="nav-links" v-if="isNavOpen && currentUser === null">
+      <ul class="nav-links" v-if="isNavOpen">
+        <li v-if="currentUser !== null && !isMobileView" class="welcome">
+          <p class="welcome__text">Welcome</p>
+          <p class="welcome__name">{{ currentUser.displayName }}</p>
+        </li>
         <li class="nav-links__item" v-if="!isMobileView">
           <div class="search-container">
             <Transition name="slide-fade">
@@ -97,11 +101,14 @@ onUnmounted(() => {
           </div>
           <p @click="toggleSearch">Search</p>
         </li>
-
-        <li class="nav-links__item" v-if="!isMobileView">
-          <font-awesome-icon icon="fa-regular fa-heart" />Favorite
-        </li>
-
+        <RouterLink to="admin">
+          <li class="nav-links__item">
+            <font-awesome-icon
+              icon="fa-regular fa-heart"
+              v-if="!isMobileView"
+            />Favorites
+          </li>
+        </RouterLink>
         <RouterLink to="/signin">
           <li
             class="nav-links__item nav-links__item--btn-transparent"
@@ -111,10 +118,6 @@ onUnmounted(() => {
             Login
           </li>
         </RouterLink>
-        <li v-if="currentUser !== null && !isMobileView" class="welcome">
-          <p class="welcome__text">Welcome</p>
-          <p class="welcome__name">{{ currentUser.displayName }}</p>
-        </li>
         <RouterLink to="/signup"
           ><li
             class="nav-links__item nav-links__item--btn-green"
@@ -132,12 +135,7 @@ onUnmounted(() => {
           Sign Out
         </li>
       </ul>
-      <div
-        class="hamburger"
-        :class="{ active: isNavOpen }"
-        @click="toggleNav"
-        v-if="currentUser === null"
-      >
+      <div class="hamburger" :class="{ active: isNavOpen }" @click="toggleNav">
         <span class="hamburger__bar"></span>
         <span class="hamburger__bar"></span>
       </div>
