@@ -23,6 +23,10 @@
   }
 }
 
+.favorite-meal-active {
+  color: var(--clr-danger);
+}
+
 .meal-card-cta {
   @include flex-config($justify: space-between, $align: center);
   width: 100%;
