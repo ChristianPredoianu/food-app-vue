@@ -21,20 +21,6 @@ const currentUser = ref(auth.currentUser);
 
 const db = getDatabase();
 
-const firstThreeDigestValues = computed(() =>
-  props.meal.recipe.digest.slice(0, 3)
-);
-
-const dishToAddToDb = {
-  id: extractIdFromUri(props.meal.recipe.uri),
-  label: props.meal.recipe.label,
-  dishType: props.meal.recipe.mealType,
-  digest: firstThreeDigestValues.value,
-  mealImage: props.meal.recipe.image,
-  ingredients: props.meal.recipe.ingredientLines,
-  nutrients: props.meal.recipe.totalDaily,
-};
-
 function onGoToDetails() {
   emit('goToDetails');
 }
@@ -49,6 +35,22 @@ function addFavoriteMealToDb() {
   if (currentUser.value === null) {
     router.push({ name: 'SignIn' });
   } else {
+    const firstThreeDigestValues = computed(() =>
+      props.meal.recipe.digest.slice(0, 3)
+    );
+
+    const dishToAddToDb = {
+      recipe: {
+        uri: extractIdFromUri(props.meal.recipe.uri),
+        label: props.meal.recipe.label,
+        dishType: props.meal.recipe.mealType,
+        digest: firstThreeDigestValues.value,
+        image: props.meal.recipe.image,
+        ingredients: props.meal.recipe.ingredientLines,
+        nutrients: props.meal.recipe.totalDaily,
+      },
+    };
+
     const mealsListRef = dbRef(
       db,
       `users/ ${currentUser.value.uid}/favoriteMeals/${extractIdFromUri(
