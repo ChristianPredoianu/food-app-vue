@@ -3,16 +3,16 @@
 .meal-card {
   @include flex-config($direction: column, $align: flex-start);
   box-shadow: var(--box-shadow);
-  padding: 1rem;
-  border-radius: 0.5rem;
+  padding: 1.8rem;
+  border-radius: 2rem;
 
   &__img {
-    border-radius: 0.5rem;
+    border-radius: 50%;
   }
 
   &__heading {
     font-size: 1.5rem;
-    padding: 1rem 0;
+    padding: 2rem 0;
     flex: 1;
   }
 
