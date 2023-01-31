@@ -1,8 +1,9 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import MainBtn from '@/components/buttons/MainBtn.vue';
 import { getAuth } from 'firebase/auth';
-import { getDatabase, ref as dbRef, set } from 'firebase/database';
+import { getDatabase, ref as dbRef, remove, set } from 'firebase/database';
 
 const props = defineProps({
   meal: Object,
@@ -11,25 +12,66 @@ const props = defineProps({
 const emit = defineEmits(['goToDetails']);
 
 const auth = getAuth();
+const router = useRouter();
 
 const isFavoriteMeal = ref(false);
 const currentUser = ref(auth.currentUser);
+
+const db = getDatabase();
+
+const firstThreeDigestValues = computed(() =>
+  props.meal.recipe.digest.slice(0, 3)
+);
+
+const dishToAddToDb = {
+  id: extractIdFromUri(props.meal.recipe.uri),
+  label: props.meal.recipe.label,
+  dishType: props.meal.recipe.mealType,
+  digest: firstThreeDigestValues.value,
+  mealImage: props.meal.recipe.image,
+  ingredients: props.meal.recipe.ingredientLines,
+  nutrients: props.meal.recipe.totalDaily,
+};
 
 function onGoToDetails() {
   emit('goToDetails');
 }
 
-function addMealToFavorites(meal) {
-  const db = getDatabase();
-  const mealsListRef = dbRef(db, 'meals');
-  /*   const newMealRef = push(mealsListRef);
-  isFavoriteMeal.value = !isFavoriteMeal.value; */
+function extractIdFromUri(uri) {
+  return uri.split('#recipe_').pop();
+}
 
-  set(dbRef(db, 'users/' + currentUser.value.uid), {
-    test: meal,
-  });
-  console.log(meal.recipe);
-  console.log(currentUser.value.uid);
+function addFavoriteMealToDb() {
+  isFavoriteMeal.value = !isFavoriteMeal.value;
+
+  if (currentUser.value === null) {
+    router.push({ name: 'SignIn' });
+  } else {
+    const mealsListRef = dbRef(
+      db,
+      `users/ ${currentUser.value.uid}/favoriteMeals/${extractIdFromUri(
+        props.meal.recipe.uri
+      )}`
+    );
+
+    if (isFavoriteMeal.value) {
+      set(mealsListRef, dishToAddToDb);
+    } else {
+      removeFavoriteMealFromDb();
+    }
+  }
+}
+
+function removeFavoriteMealFromDb() {
+  if (currentUser.value !== null) {
+    const mealsListRef = dbRef(
+      db,
+      `users/ ${currentUser.value.uid}/favoriteMeals/${extractIdFromUri(
+        props.meal.recipe.uri
+      )}`
+    );
+    remove(mealsListRef);
+  }
 }
 </script>
 
@@ -42,7 +84,7 @@ function addMealToFavorites(meal) {
         icon="fa-regular fa-heart"
         class="meal-card__icon"
         :class="isFavoriteMeal ? 'favorite-meal-active' : ''"
-        @click="addMealToFavorites(meal)"
+        @click="addFavoriteMealToDb"
       />
       <MainBtn @handleClick="onGoToDetails">Details</MainBtn>
     </div>
