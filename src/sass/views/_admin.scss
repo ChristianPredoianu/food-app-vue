@@ -1,0 +1,30 @@
+@use '@/sass/abstracts/' as *;
+@use '@/sass/base/typography' as *;
+
+.main {
+  margin-top: 5rem;
+
+  @include mq(md) {
+    margin-top: 10rem;
+  }
+}
+
+.meal-cards {
+  /*  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 5rem;
+
+  @include mq(sm) {
+    justify-content: flex-start;
+  } */
+  display: grid;
+  grid-gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  margin-top: 5rem;
+
+  @include mq(sm) {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
