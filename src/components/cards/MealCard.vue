@@ -14,7 +14,9 @@ const emit = defineEmits(['goToDetails']);
 const auth = getAuth();
 const router = useRouter();
 
-const isFavoriteMeal = ref(false);
+const isFavoriteMeal = ref(
+  localStorage.getItem(extractIdFromUri(props.meal.recipe.uri))
+);
 const currentUser = ref(auth.currentUser);
 
 const db = getDatabase();
@@ -43,7 +45,7 @@ function extractIdFromUri(uri) {
 
 function addFavoriteMealToDb() {
   isFavoriteMeal.value = !isFavoriteMeal.value;
-
+  console.log(isFavoriteMeal.value);
   if (currentUser.value === null) {
     router.push({ name: 'SignIn' });
   } else {
@@ -56,6 +58,7 @@ function addFavoriteMealToDb() {
 
     if (isFavoriteMeal.value) {
       set(mealsListRef, dishToAddToDb);
+      localStorage.setItem(extractIdFromUri(props.meal.recipe.uri), 'true');
     } else {
       removeFavoriteMealFromDb();
     }
@@ -71,6 +74,7 @@ function removeFavoriteMealFromDb() {
       )}`
     );
     remove(mealsListRef);
+    localStorage.removeItem(extractIdFromUri(props.meal.recipe.uri));
   }
 }
 </script>
