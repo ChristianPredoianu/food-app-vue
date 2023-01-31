@@ -59,6 +59,7 @@ function signUserOut() {
   signOut(auth);
   closeNav();
   router.push({ name: 'SignIn' });
+  localStorage.clear();
 }
 
 onMounted(() => {
