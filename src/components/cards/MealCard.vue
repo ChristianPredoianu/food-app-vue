@@ -1,9 +1,11 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
-import MainBtn from '@/components/buttons/MainBtn.vue';
+import { useExtractIdFromUri } from '@/composables/useExtractIdFromUri';
 import { getAuth } from 'firebase/auth';
 import { getDatabase, ref as dbRef, remove, set } from 'firebase/database';
+
+import MainBtn from '@/components/buttons/MainBtn.vue';
 
 const props = defineProps({
   meal: Object,
@@ -13,6 +15,7 @@ const emit = defineEmits(['goToDetails']);
 
 const auth = getAuth();
 const router = useRouter();
+const { extractIdFromUri } = useExtractIdFromUri();
 
 const isFavoriteMeal = ref(
   localStorage.getItem(extractIdFromUri(props.meal.recipe.uri))
@@ -25,13 +28,9 @@ function onGoToDetails() {
   emit('goToDetails');
 }
 
-function extractIdFromUri(uri) {
-  return uri.split('#recipe_').pop();
-}
-
 function addFavoriteMealToDb() {
   isFavoriteMeal.value = !isFavoriteMeal.value;
-  console.log(isFavoriteMeal.value);
+
   if (currentUser.value === null) {
     router.push({ name: 'SignIn' });
   } else {
