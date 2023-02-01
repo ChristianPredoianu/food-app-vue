@@ -4,10 +4,9 @@
   @include flex-config($direction: column, $align: flex-start);
   box-shadow: var(--box-shadow);
   padding: 1.8rem;
-  border-radius: 2rem;
 
   &__img {
-    border-radius: 50%;
+    border-radius: 1rem;
   }
 
   &__heading {
