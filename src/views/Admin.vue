@@ -52,12 +52,11 @@ onBeforeMount(() => {
 
 <template>
   <main class="main container">
-    <h1 class="heading-primary">
-      {{
-        userFavoriteMeals !== null
-          ? 'Your favorite recepies:'
-          : 'You have no recepies as favorite'
-      }}
+    <h1 class="heading-primary" v-if="userFavoriteMeals !== null">
+      {{ 'Your favorite recepies:' }}
+    </h1>
+    <h1 class="heading-primary" v-else>
+      {{ 'You have no favorite recepies yet' }}
     </h1>
     <div class="meal-cards">
       <MealCard
