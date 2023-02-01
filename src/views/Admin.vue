@@ -1,14 +1,28 @@
 <script setup>
 import { onBeforeMount, ref } from 'vue';
-import MealCard from '@/components/cards/MealCard.vue';
+import { useRouter } from 'vue-router';
+import { useExtractIdFromUri } from '@/composables/useExtractIdFromUri';
 import { getAuth } from 'firebase/auth';
 import { getDatabase, ref as dbRef, onValue } from 'firebase/database';
 
+import MealCard from '@/components/cards/MealCard.vue';
+
 const db = getDatabase();
 const auth = getAuth();
+const router = useRouter();
+const { extractIdFromUri } = useExtractIdFromUri();
 
 const currentUser = ref(auth.currentUser);
 const userFavoriteMeals = ref(null);
+
+function goToMealDetails(meal) {
+  router.push({
+    name: 'MealDetails',
+    params: {
+      id: extractIdFromUri(meal.recipe.uri),
+    },
+  });
+}
 
 onBeforeMount(() => {
   console.log('mounted');
@@ -39,6 +53,7 @@ onBeforeMount(() => {
         v-for="meal in userFavoriteMeals"
         :key="meal.mealImage"
         :meal="meal"
+        @goToDetails="goToMealDetails(meal)"
       />
     </div>
   </main>
