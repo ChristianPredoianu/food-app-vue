@@ -1,11 +1,12 @@
 @use '@/sass/abstracts/' as *;
 
 .meal-card {
-  @include flex-config($direction: column, $align: flex-start);
+  @include flex-config($direction: column, $align: center);
   box-shadow: var(--box-shadow);
   padding: 1.8rem;
 
   &__img {
+    width: 70%;
     border-radius: 1rem;
   }
 
