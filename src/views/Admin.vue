@@ -15,6 +15,15 @@ const { extractIdFromUri } = useExtractIdFromUri();
 const currentUser = ref(auth.currentUser);
 const userFavoriteMeals = ref(null);
 
+function setFavoriteMealsToLocalStorage() {
+  const ids = Object.keys(userFavoriteMeals.value);
+
+  for (let i = 0; i < ids.length; i++) {
+    console.log(ids[i]);
+    localStorage.setItem(ids[i], true);
+  }
+}
+
 function goToMealDetails(meal) {
   router.push({
     name: 'MealDetails',
@@ -24,8 +33,9 @@ function goToMealDetails(meal) {
   });
 }
 
+if (userFavoriteMeals.value !== null) console.log(userFavoriteMeals.value);
+
 onBeforeMount(() => {
-  console.log('mounted');
   const mealsListRef = dbRef(
     db,
     `users/ ${currentUser.value.uid}/favoriteMeals`
@@ -34,7 +44,8 @@ onBeforeMount(() => {
   onValue(mealsListRef, (snapshot) => {
     const data = snapshot.val();
     userFavoriteMeals.value = data;
-    console.log(userFavoriteMeals.value);
+
+    setFavoriteMealsToLocalStorage();
   });
 });
 </script>
