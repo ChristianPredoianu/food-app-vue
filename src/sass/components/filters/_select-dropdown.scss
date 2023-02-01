@@ -14,13 +14,15 @@
   }
 
   &__select {
-    width: 100%;
     font-size: 1.4rem;
-    line-height: 1.1;
-    padding: 0.25rem 0.5rem;
-    border: 1px solid var(--clr-dark-800);
+    padding: 0.5rem 0.5rem;
+    border: 1px solid var(--clr-green-400);
     border-radius: 0.2rem;
-    background-color: var(--clr-green-200);
+    /* background-color: var(--clr-green-200); */
     cursor: pointer;
+
+    &:focus {
+      outline: 1.5px solid var(--clr-green-400);
+    }
   }
 }
