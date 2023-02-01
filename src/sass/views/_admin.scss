@@ -27,8 +27,8 @@
 
   @include mq(sm) {
     display: grid;
-    grid-gap: 2rem;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 200px));
+    grid-gap: 5rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 250px));
     justify-content: start;
   }
 }
