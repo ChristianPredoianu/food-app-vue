@@ -2,7 +2,7 @@
 @use '@/sass/base/typography' as *;
 
 .main {
-  margin-top: 5rem;
+  margin-top: 3rem;
 
   @include mq(md) {
     margin-top: 10rem;
@@ -12,19 +12,23 @@
 .meal-cards {
   /*  display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+    justify-content: center; 
   gap: 2rem;
-  margin-top: 5rem;
+  margin-top: 5rem; */
 
-  @include mq(sm) {
+  /*   @include mq(lg) {
     justify-content: flex-start;
   } */
+  margin-top: 5rem;
   display: grid;
   grid-gap: 2rem;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  margin-top: 5rem;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 200px));
+  justify-content: center;
 
   @include mq(sm) {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    display: grid;
+    grid-gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 200px));
+    justify-content: start;
   }
 }
