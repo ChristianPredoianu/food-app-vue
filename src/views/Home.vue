@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router';
 import { useFetch } from '@/composables/useFetch';
 import { useInfiniteScroll } from '@/composables/useInfiniteScroll';
 import { useModal } from '@/composables/useModal';
+import { useExtractIdFromUri } from '@/composables/useExtractIdFromUri';
 
 import SearchBox from '@/components/SearchBox.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
@@ -28,6 +29,7 @@ const scrollComponent = ref(null);
 
 const { isFetching } = useInfiniteScroll(fetchMoreMeals);
 const { isModalOpen, openModal, closeModal } = useModal();
+const { extractIdFromUri } = useExtractIdFromUri();
 
 const router = useRouter();
 
@@ -39,10 +41,6 @@ async function fetchMoreMeals() {
     state.mealsData.hits.push(...data.value.hits);
   }
   isFetching.value = false;
-}
-
-function extractIdFromUri(uri) {
-  return uri.split('#recipe_').pop();
 }
 
 function goToMealDetails(meal) {
