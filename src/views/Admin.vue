@@ -19,7 +19,6 @@ function setFavoriteMealsToLocalStorage() {
   const ids = Object.keys(userFavoriteMeals.value);
 
   for (let i = 0; i < ids.length; i++) {
-    console.log(ids[i]);
     localStorage.setItem(ids[i], true);
   }
 }
