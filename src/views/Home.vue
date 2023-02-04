@@ -78,8 +78,6 @@ onBeforeMount(async () => {
 
     state.mealsData = data.value;
     state.isLoadingMeals = isLoading.value;
-
-    console.log(data.value.hits);
   } else {
     setFilteredMeals(props.queriedMealData);
   }
