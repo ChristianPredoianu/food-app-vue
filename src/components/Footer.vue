@@ -2,4 +2,6 @@
 
 <template></template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@use '@/sass/components/footer';
+</style>
