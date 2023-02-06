@@ -1,6 +1,8 @@
 <script setup></script>
 
-<template></template>
+<template>
+  <footer></footer>
+</template>
 
 <style lang="scss" scoped>
 @use '@/sass/components/footer';
