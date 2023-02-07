@@ -11,6 +11,7 @@ import SignInForm from '@/components/forms/SignInForm.vue';
         class="sign-in-container__img"
       />
       <div class="form-container">
+        <!--  Could have used dynamic component SignInForm/SignUpForm -->
         <SignInForm />
       </div>
     </div>
