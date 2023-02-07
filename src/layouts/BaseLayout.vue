@@ -21,10 +21,8 @@ function setMealsData(mealsData) {
 </script>
 
 <template>
-  <div>
-    <NavBar :key="route.fullPath" @queryMeals="setMealsData" />
-    <router-view :queriedMealData="propsToPass" />
-  </div>
+  <NavBar :key="route.fullPath" @queryMeals="setMealsData" />
+  <router-view :queriedMealData="propsToPass" />
 </template>
 
 <style lang="scss" scoped></style>
