@@ -9,6 +9,8 @@ import MealDigestList from '@/components/meal/meal-digest/MealDigestList.vue';
 import IngredientsList from '@/components/meal/ingredients/IngredientsList.vue';
 import NutrientsList from '@/components/meal/nutrients/NutrientsList.vue';
 import MealTagsList from '@/components/meal/meal-tags/MealTagsList.vue';
+import MainBtn from '@/components/buttons/MainBtn.vue';
+import Footer from '@/components/Footer.vue';
 
 const state = reactive({
   mealData: null,
@@ -65,13 +67,20 @@ onMounted(async () => {
           <NutrientsList :mealNutrients="state.mealData.recipe.totalDaily" />
         </div>
       </section>
-      <a :href="state.mealData.recipe.utl" class="meal-link"
-        ><h4>Cook this meal</h4></a
-      >
+      <div class="link-btn">
+        <a
+          :href="state.mealData.recipe.url"
+          rel="noopener noreferrer"
+          target="_blank"
+          class="meal-link"
+          ><MainBtn>Cook this meal</MainBtn></a
+        >
+      </div>
       <section class="section-meal-tags">
         <MealTagsList :mealTags="state.mealData.recipe.healthLabels" />
       </section>
     </main>
+    <Footer v-if="state.mealData !== null" />
   </div>
 </template>
 
