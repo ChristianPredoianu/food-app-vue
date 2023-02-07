@@ -1,7 +1,11 @@
 <script setup>
+import { useCapitalizeFirstLetter } from '@/composables/useCapitalizeFirstLetter';
+
 const props = defineProps({
   mealIngredients: Array,
 });
+
+const { capitalizeFirstLetter } = useCapitalizeFirstLetter();
 </script>
 
 <template>
@@ -13,7 +17,7 @@ const props = defineProps({
         class="ingredients-item__img"
       />
       <p class="ingredients-item__text">
-        {{ ingredient.text }}
+        {{ capitalizeFirstLetter(ingredient.text) }}
       </p>
     </div>
   </li>
