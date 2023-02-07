@@ -14,6 +14,7 @@ const { extractIdFromUri } = useExtractIdFromUri();
 
 const currentUser = ref(auth.currentUser);
 const userFavoriteMeals = ref(null);
+const isDataLoaded = ref(false);
 
 function setFavoriteMealsToLocalStorage() {
   if (userFavoriteMeals.value !== null) {
@@ -34,8 +35,6 @@ function goToMealDetails(meal) {
   });
 }
 
-if (userFavoriteMeals.value !== null) console.log(userFavoriteMeals.value);
-
 onBeforeMount(() => {
   const mealsListRef = dbRef(
     db,
@@ -45,6 +44,7 @@ onBeforeMount(() => {
   onValue(mealsListRef, (snapshot) => {
     const data = snapshot.val();
     userFavoriteMeals.value = data;
+    isDataLoaded.value = true;
 
     setFavoriteMealsToLocalStorage();
   });
@@ -53,11 +53,17 @@ onBeforeMount(() => {
 
 <template>
   <main class="main container">
-    <h1 class="heading-primary" v-if="userFavoriteMeals !== null">
-      {{ 'Your favorite recepies:' }}
-    </h1>
-    <h1 class="heading-primary" v-else>
+    <h1
+      class="heading-primary"
+      v-if="userFavoriteMeals === null && isDataLoaded"
+    >
       {{ 'You have no favorite recepies yet' }}
+    </h1>
+    <h1
+      class="heading-primary"
+      v-if="userFavoriteMeals !== null && isDataLoaded"
+    >
+      {{ 'Your favorite recepies:' }}
     </h1>
     <div class="meal-cards">
       <MealCard
