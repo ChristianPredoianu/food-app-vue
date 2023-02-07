@@ -10,20 +10,12 @@
 }
 
 .meal-cards {
-  /*  display: flex;
-  flex-wrap: wrap;
-    justify-content: center; 
-  gap: 2rem;
-  margin-top: 5rem; */
-
-  /*   @include mq(lg) {
-    justify-content: flex-start;
-  } */
   margin-top: 5rem;
   display: grid;
   grid-gap: 2rem;
   grid-template-columns: repeat(auto-fit, minmax(150px, 200px));
   justify-content: center;
+  padding-bottom: 20rem;
 
   @include mq(sm) {
     display: grid;
