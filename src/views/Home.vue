@@ -11,6 +11,7 @@ import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import MealCard from '@/components/cards/MealCard.vue';
 import Backdrop from '@/components/modal/Backdrop.vue';
 import Modal from '@/components/modal/Modal.vue';
+import Footer from '@/components/Footer.vue';
 
 const props = defineProps({
   queriedMealData: Object,
@@ -103,7 +104,9 @@ watch(
   <section class="section-top-meals container" ref="scrollComponent">
     <h2
       class="heading-secondary"
-      v-if="state.isInitialRecepies && state.isFoundMeals"
+      v-if="
+        state.isInitialRecepies && state.isFoundMeals && !state.isLoadingMeals
+      "
     >
       This weeks top recepies
     </h2>
@@ -131,6 +134,7 @@ watch(
       <LoadingSpinner />
     </div>
   </section>
+  <Footer v-if="!state.isLoadingMeals" />
 </template>
 
 <style lang="scss" scoped>
