@@ -27,7 +27,7 @@ export function useFirebaseAuth(formState) {
         }, 2000);
 
         updateProfile(auth.currentUser, {
-          displayName: state.username,
+          displayName: formState.username,
         });
       })
 
