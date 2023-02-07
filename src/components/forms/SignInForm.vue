@@ -61,6 +61,12 @@ function validateSignIn(e) {
           {{ error }}
         </li>
       </ul>
+      <p class="sign-up-paragraph">
+        Not a member? Sign up
+        <RouterLink to="/signup"
+          ><span class="sign-up-paragraph__span">here...</span></RouterLink
+        >
+      </p>
       <AuthSubmitBtn>Sign Up</AuthSubmitBtn>
       <p class="auth-error">{{ signInError }}</p>
     </form>
