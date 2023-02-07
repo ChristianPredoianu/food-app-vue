@@ -16,10 +16,12 @@ const currentUser = ref(auth.currentUser);
 const userFavoriteMeals = ref(null);
 
 function setFavoriteMealsToLocalStorage() {
-  const ids = Object.keys(userFavoriteMeals.value);
+  if (userFavoriteMeals.value !== null) {
+    const ids = Object.keys(userFavoriteMeals.value);
 
-  for (let i = 0; i < ids.length; i++) {
-    localStorage.setItem(ids[i], true);
+    for (let i = 0; i < ids.length; i++) {
+      localStorage.setItem(ids[i], true);
+    }
   }
 }
 
