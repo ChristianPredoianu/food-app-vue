@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onUpdated } from 'vue';
 import { useRouter } from 'vue-router';
 import { useExtractIdFromUri } from '@/composables/useExtractIdFromUri';
 import { getAuth } from 'firebase/auth';
@@ -30,6 +30,7 @@ function onGoToDetails() {
 
 function addFavoriteMealToDb() {
   isFavoriteMeal.value = !isFavoriteMeal.value;
+  console.log(isFavoriteMeal.value);
 
   if (currentUser.value === null) {
     router.push({ name: 'SignIn' });
@@ -68,6 +69,7 @@ function addFavoriteMealToDb() {
 
 function removeFavoriteMealFromDb() {
   if (currentUser.value !== null) {
+    localStorage.removeItem(extractIdFromUri(props.meal.recipe.uri));
     const mealsListRef = dbRef(
       db,
       `users/ ${currentUser.value.uid}/favoriteMeals/${extractIdFromUri(
@@ -75,9 +77,14 @@ function removeFavoriteMealFromDb() {
       )}`
     );
     remove(mealsListRef);
-    localStorage.removeItem(extractIdFromUri(props.meal.recipe.uri));
   }
 }
+
+onUpdated(() => {
+  isFavoriteMeal.value = localStorage.getItem(
+    extractIdFromUri(props.meal.recipe.uri)
+  );
+});
 </script>
 
 <template>
