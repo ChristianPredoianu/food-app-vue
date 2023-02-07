@@ -1,7 +1,30 @@
 <script setup></script>
 
 <template>
-  <footer></footer>
+  <footer class="footer">
+    <div class="footer-container container">
+      <div class="footer-logo">
+        <RouterLink to="/">
+          <p class="logo">Foo<span class="logo__span">die</span></p>
+        </RouterLink>
+      </div>
+      <div class="horizontal-line"></div>
+      <div class="social-media">
+        <font-awesome-icon
+          icon="fa-brands fa-instagram"
+          class="social-media__icon social-media__icon--instagram"
+        />
+        <font-awesome-icon
+          icon="fa-brands fa-facebook"
+          class="social-media__icon social-media__icon--facebook"
+        />
+        <font-awesome-icon
+          icon="fa-brands fa-youtube"
+          class="social-media__icon social-media__icon--youtube"
+        />
+      </div>
+    </div>
+  </footer>
 </template>
 
 <style lang="scss" scoped>
