@@ -10,7 +10,7 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 <br />
 <p align="center">
   <a href="https://github.com/ChristianPredoianu/food-app-vue">
-    <img src="src/assets/food.jpg" alt="Logo" width="250" height="200">
+    <img src="src/assets/food.jpg" alt="Logo" width="300" height="200">
   </a> 
  
   <h3 align="center">Food recipe app</h3>
