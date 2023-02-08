@@ -107,7 +107,7 @@ To get a local copy up and running follow these simple steps.
 
 The user is given some default recipes from the Edamam recipe Api when the home page loads. The user can either search for recipes
 in the navigation or the search box. When clicking the filter button a modal shows up where the user can filter recipes and also view details about the recipe, like nutrients, tags and other relevant information.
-When the user reaches the bottom of the page, additional recipes are loaded (infinite scroll) with some limitations (about 80 recipes max)
+When the user reaches the bottom of the page, additional recipes are loaded (infinite scroll) with some limitations (scrolling 3 times max)
 because of limit from the Edamam recipe API free plan. You can add recipes to your favorites. If the user tries to add a recipe without
 being authenticated the user is redirected to the sign in page. If the user is not a member he/she can become one by filling out a form 
 that uses validation to give information to the user what inputs are incorrect/correct. After being authenticated (Firebase auth) the user 
