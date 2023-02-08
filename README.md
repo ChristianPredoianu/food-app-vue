@@ -10,7 +10,7 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 <br />
 <p align="center">
   <a href="https://github.com/ChristianPredoianu/food-app-vue">
-    <img src="src/assets/food.jpg" alt="Logo" width="200" height="160">
+    <img src="src/assets/food.jpg" alt="Logo" width="200" height="200">
   </a> 
  
   <h3 align="center">Food recipe app</h3>
@@ -55,7 +55,7 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-A food recipe app for looking up recipe, see details about a recipe, serch for recipe, sign up, sign in to add favorite recipes to admin page.
+A food recipe app for looking up recipe, see details about a recipe, search for a recipe, sign up, sign in to add favorite recipes to admin page.
 
 ### Built With
 
