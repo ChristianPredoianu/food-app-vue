@@ -1,7 +1,7 @@
 @use '@/sass/abstracts' as *;
 
 .meal-tag-list-item {
-  @include flex-config($justify: space-between);
+  @include flex-config($justify: space-between, $align: center);
   width: 100%;
   background-color: hsl(0, 0%, 99%);
   font-size: 1.4rem;
