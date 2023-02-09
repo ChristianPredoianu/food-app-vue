@@ -1,9 +1,9 @@
 @use '@/sass/abstracts' as *;
 
 .sign-in-heading {
+  color: var(--clr-green-400);
   text-align: center;
   padding: 2rem 2rem 4rem 2rem;
-  color: var(--clr-green-400);
 }
 
 .sign-in-form {
