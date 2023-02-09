@@ -1,8 +1,8 @@
 @use '@/sass/abstracts/' as *;
 
 .header {
-  padding: 2rem 0;
   background-color: hsl(0, 0%, 96%);
+  padding: 2rem 0;
 }
 
 .nav {
@@ -61,9 +61,9 @@
     }
 
     &--btn-green {
-      padding: 0.6rem 1.5rem;
       background-color: var(--clr-green-400);
       color: var(--clr-white);
+      padding: 0.6rem 1.5rem;
       border-radius: 2rem;
     }
   }
