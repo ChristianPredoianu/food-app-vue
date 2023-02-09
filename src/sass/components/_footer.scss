@@ -1,12 +1,9 @@
 @use '@/sass/abstracts/' as *;
 
 .footer {
+  display: flex;
   background-color: var(--clr-dark-800);
   padding: 5rem 0;
-  display: flex;
-}
-
-.footer-cointainer {
 }
 
 .logo {
@@ -53,4 +50,9 @@
       margin-left: 2rem;
     }
   }
+}
+
+.edamam-logo {
+  width: 20rem;
+  margin: 5rem auto 0 auto;
 }

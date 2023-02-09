@@ -2,7 +2,7 @@
 
 <template>
   <footer class="footer">
-    <div class="footer-container container">
+    <div class="container">
       <div class="footer-logo">
         <RouterLink to="/">
           <p class="logo">Foo<span class="logo__span">die</span></p>
@@ -23,6 +23,11 @@
           class="social-media__icon social-media__icon--youtube"
         />
       </div>
+      <img
+        src="@/assets/Edamam_Badge_Transparent.svg"
+        alt="edamam logo"
+        class="edamam-logo"
+      />
     </div>
   </footer>
 </template>
