@@ -10,11 +10,11 @@
 }
 
 .meal-cards {
-  margin-top: 5rem;
   display: grid;
   grid-gap: 2rem;
   grid-template-columns: repeat(auto-fit, minmax(150px, 200px));
   justify-content: center;
+  margin-top: 5rem;
   padding-bottom: 20rem;
 
   @include mq(sm) {
