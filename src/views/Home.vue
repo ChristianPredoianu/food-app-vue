@@ -28,7 +28,7 @@ const state = reactive({
 
 const scrollComponent = ref(null);
 
-const { isFetching } = useInfiniteScroll(fetchMoreMeals);
+const { isFetchingOnScroll } = useInfiniteScroll(fetchMoreMeals);
 const { isModalOpen, openModal, closeModal } = useModal();
 const { extractIdFromUri } = useExtractIdFromUri();
 
@@ -41,7 +41,7 @@ async function fetchMoreMeals() {
     const { data } = await useFetch(nextMealsUrl);
     state.mealsData.hits.push(...data.value.hits);
   }
-  isFetching.value = false;
+  isFetchingOnScroll.value = false;
 }
 
 function goToMealDetails(meal) {
@@ -130,7 +130,10 @@ watch(
         @goToDetails="goToMealDetails(meal)"
       />
     </div>
-    <div class="loading-spinner" v-if="isFetching">
+    <div
+      class="loading-spinner"
+      v-if="state.isLoadingMeals || isFetchingOnScroll"
+    >
       <LoadingSpinner />
     </div>
   </section>

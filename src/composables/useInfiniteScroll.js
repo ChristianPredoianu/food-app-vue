@@ -1,7 +1,7 @@
 import { onMounted, onUnmounted, ref, watch } from 'vue';
 
 export function useInfiniteScroll(callback) {
-  const isFetching = ref(false);
+  const isFetchingOnScroll = ref(false);
 
   onMounted(() => {
     window.addEventListener('scroll', handleScroll);
@@ -11,8 +11,8 @@ export function useInfiniteScroll(callback) {
     window.removeEventListener('scroll', handleScroll);
   });
 
-  watch(isFetching, () => {
-    if (!isFetching.value) return;
+  watch(isFetchingOnScroll, () => {
+    if (!isFetchingOnScroll.value) return;
     callback();
   });
 
@@ -20,13 +20,13 @@ export function useInfiniteScroll(callback) {
     if (
       window.innerHeight + document.documentElement.scrollTop !==
         document.documentElement.offsetHeight ||
-      isFetching.value
+      isFetchingOnScroll.value
     )
       return;
-    isFetching.value = true;
+    isFetchingOnScroll.value = true;
   }
 
   return {
-    isFetching,
+    isFetchingOnScroll,
   };
 }
