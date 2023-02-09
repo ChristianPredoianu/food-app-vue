@@ -3,7 +3,7 @@
 .meal-tag-list-item {
   @include flex-config($justify: space-between);
   width: 100%;
-  background-color: rgb(252, 252, 252);
+  background-color: hsl(0, 0%, 99%);
   font-size: 1.4rem;
   padding: 1rem 2rem;
   border-radius: 0.5rem;
