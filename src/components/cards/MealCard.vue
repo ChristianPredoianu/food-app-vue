@@ -30,7 +30,6 @@ function onGoToDetails() {
 
 function addFavoriteMealToDb() {
   isFavoriteMeal.value = !isFavoriteMeal.value;
-  console.log(isFavoriteMeal.value);
 
   if (currentUser.value === null) {
     router.push({ name: 'SignIn' });
