@@ -2,7 +2,7 @@
 import { useCapitalizeFirstLetter } from '@/composables/useCapitalizeFirstLetter';
 
 const props = defineProps({
-  dishTags: Array,
+  dishTags: [Array, Object],
 });
 
 const emit = defineEmits(['removeTag']);

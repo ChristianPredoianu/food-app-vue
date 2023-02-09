@@ -2,7 +2,7 @@
 import MealFilterTagListItem from '@/components/meal/meal-tags/meal-filter-tags/MealFilterTagListItem.vue';
 
 const props = defineProps({
-  dishTags: Array,
+  dishTags: [Array, Object],
 });
 
 const emit = defineEmits(['removeTag']);
