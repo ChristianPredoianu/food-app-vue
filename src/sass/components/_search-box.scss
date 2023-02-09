@@ -41,13 +41,13 @@
 }
 
 .filter-btn {
-  padding: 1.3rem;
-  border-top-left-radius: 1rem;
-  border-bottom-left-radius: 1rem;
   background-color: hsl(234, 82%, 58%);
   color: var(--clr-white);
-  letter-spacing: 0.1rem;
+  padding: 1.3rem;
   border: none;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+  letter-spacing: 0.1rem;
   cursor: pointer;
 }
 
