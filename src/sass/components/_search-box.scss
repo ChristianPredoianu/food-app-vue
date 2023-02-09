@@ -4,7 +4,7 @@
   @include position($pos: absolute, $bottom: -8rem, $left: 50%);
   width: 95%;
   transform: translateX(-50%);
-  background-color: hsl(125, 83%, 77%);
+  background-color: var(--clr-green-300);
   padding: 2rem;
   border-radius: 1rem;
 
@@ -55,4 +55,5 @@
   @include position($pos: absolute, $top: 1.5rem, $right: 5%);
   color: var(--clr-dark-800);
   font-size: 1.2rem;
+  cursor: pointer;
 }

@@ -134,7 +134,7 @@ watch(
       <LoadingSpinner />
     </div>
   </section>
-  <Footer v-if="!state.isLoadingMeals" />
+  <Footer v-if="state.mealsData !== null" />
 </template>
 
 <style lang="scss" scoped>
