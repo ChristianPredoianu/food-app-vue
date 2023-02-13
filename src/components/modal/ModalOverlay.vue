@@ -1,8 +1,9 @@
 <script setup>
+import { ref, reactive, computed } from 'vue';
 import { meals } from '@/utils/filterData.js';
 import { useFetch } from '@/composables/useFetch';
-import { useFilterRecipies } from '@/composables/useFilterRecipies';
 import { useUrlToFetch } from '@/composables/useUrlToFetch';
+import { useDishTags } from '@/composables/useDishTags';
 
 import SelectDropdown from '@/components/filters/SelectDropdown.vue';
 import MealFilterTagList from '@/components/meal/meal-tags/meal-filter-tags/MealFilterTagList.vue';
@@ -10,16 +11,21 @@ import MainBtn from '@/components/buttons/MainBtn.vue';
 
 const emit = defineEmits(['closeModal', 'filteredData']);
 
+const tags = ref(null);
+
+const props = defineProps({
+  selectedOptions: Object,
+});
+
 const {
-  selectedOptions,
   getSelectValue,
   isOptionsSelected,
   dishTags,
   removeTag,
   isSelectedOptions,
-} = useFilterRecipies();
+} = useDishTags(props.selectedOptions);
 
-const { fetchUrl } = useUrlToFetch(selectedOptions);
+const { fetchUrl } = useUrlToFetch(props.selectedOptions);
 
 function onCloseModal() {
   emit('closeModal');
@@ -40,7 +46,7 @@ function getDropdownValue(value, index) {
 async function fetchFilteredMeals() {
   isOptionsSelected.value = isSelectedOptions();
 
-  const url = fetchUrl(selectedOptions);
+  const url = fetchUrl(props.selectedOptions);
 
   if (isOptionsSelected.value) {
     const { data } = await useFetch(url);

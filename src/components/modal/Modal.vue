@@ -1,7 +1,11 @@
 <script setup>
 import ModalOverlay from '@/components/modal/ModalOverlay.vue';
 
-const emit = defineEmits(['closeModal', 'filteredData', 'dishTags']);
+const props = defineProps({
+  selectedOptions: Object,
+});
+
+const emit = defineEmits(['closeModal', 'filteredData']);
 
 function onCloseModal() {
   emit('closeModal');
@@ -9,10 +13,6 @@ function onCloseModal() {
 
 function onFilteredData(mealsData) {
   emit('filteredData', mealsData);
-}
-
-function onEmitDishTags(dishTags) {
-  emit('dishTags', dishTags);
 }
 </script>
 
@@ -28,7 +28,7 @@ function onEmitDishTags(dishTags) {
         <ModalOverlay
           @closeModal="onCloseModal"
           @filteredData="onFilteredData"
-          @dishTags="onEmitDishTags"
+          :selectedOptions="selectedOptions"
         />
       </div>
     </teleport>

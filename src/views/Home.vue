@@ -1,13 +1,15 @@
 <script async setup>
-import { onBeforeMount, reactive, ref, watch } from 'vue';
+import { onBeforeMount, onUpdated, reactive, ref, watch, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useFetch } from '@/composables/useFetch';
+import { useDishTags } from '@/composables/useDishTags';
 import { useInfiniteScroll } from '@/composables/useInfiniteScroll';
 import { useModal } from '@/composables/useModal';
 import { useExtractIdFromUri } from '@/composables/useExtractIdFromUri';
 
 import SearchBox from '@/components/SearchBox.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
+import MealFilterTagList from '@/components/meal/meal-tags/meal-filter-tags/MealFilterTagList.vue';
 import MealCard from '@/components/cards/MealCard.vue';
 import Backdrop from '@/components/modal/Backdrop.vue';
 import Modal from '@/components/modal/Modal.vue';
@@ -15,6 +17,14 @@ import Footer from '@/components/Footer.vue';
 
 const props = defineProps({
   queriedMealData: Object,
+});
+
+const selectedOptions = reactive({
+  diet: null,
+  health: null,
+  mealType: null,
+  dishType: null,
+  cuisineType: null,
 });
 
 const state = reactive({
@@ -26,13 +36,20 @@ const state = reactive({
   isInitialRecepies: true,
 });
 
+const { dishTags, removeTag } = useDishTags(selectedOptions);
+
 const scrollComponent = ref(null);
 
 const { isFetchingOnScroll } = useInfiniteScroll(fetchMoreMeals);
 const { isModalOpen, openModal, closeModal } = useModal();
+
 const { extractIdFromUri } = useExtractIdFromUri();
 
 const router = useRouter();
+
+function removeTagHandler(tag) {
+  removeTag(tag);
+}
 
 async function fetchMoreMeals() {
   const nextMealsUrl = state.mealsData._links.next.href;
@@ -95,13 +112,18 @@ watch(
 <template>
   <div v-if="isModalOpen">
     <Backdrop @closeModal="closeModal" />
-    <Modal @closeModal="closeModal" @filteredData="setFilteredMeals" />
+    <Modal
+      :selectedOptions="selectedOptions"
+      @closeModal="closeModal"
+      @filteredData="setFilteredMeals"
+    />
   </div>
   <div class="showcase">
     <img src="@/assets/food.jpg" alt="food" class="showcase-img" />
     <SearchBox @openModal="openModal" @queryMeals="setFilteredMeals" />
   </div>
   <section class="section-top-meals container" ref="scrollComponent">
+    <MealFilterTagList :dishTags="dishTags" @removeTag="removeTagHandler" />
     <h2
       class="heading-secondary"
       v-if="
