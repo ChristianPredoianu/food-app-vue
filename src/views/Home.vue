@@ -124,7 +124,6 @@ watch(
 watch(
   () => ({ ...selectedOptions }),
   (newOptions) => {
-    console.log(dishTags.value);
     if (dishTags.value.length > 0) {
       console.log('fetching options');
     } else {
