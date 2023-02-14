@@ -1,14 +1,6 @@
 import { ref, reactive, computed } from 'vue';
 
 export function useDishTags(selectedOptions) {
-  /* const selectedOptions = reactive({
-    diet: null,
-    health: null,
-    mealType: null,
-    dishType: null,
-    cuisineType: null,
-  }); */
-
   const dishTags = computed(() => {
     const dishValues = Object.values(selectedOptions);
     const tags = [];
@@ -19,15 +11,6 @@ export function useDishTags(selectedOptions) {
     }
     return tags;
   });
-
-  const isOptionsSelected = ref(true);
-
-  function getSelectValue(value, index) {
-    value === ''
-      ? (selectedOptions[index] = null)
-      : (selectedOptions[index] = value);
-    isOptionsSelected.value = true;
-  }
 
   function removeTag(tag) {
     const foundTag = dishTags.value
@@ -40,17 +23,8 @@ export function useDishTags(selectedOptions) {
     }
   }
 
-  function isSelectedOptions() {
-    let isOptions = dishTags.value.length > 0 ? true : false;
-    return isOptions;
-  }
-
   return {
-    selectedOptions,
-    getSelectValue,
-    isOptionsSelected,
     dishTags,
-    isSelectedOptions,
     removeTag,
   };
 }
