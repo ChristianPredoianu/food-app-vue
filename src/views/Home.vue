@@ -1,11 +1,12 @@
 <script async setup>
-import { onBeforeMount, onUpdated, reactive, ref, watch, computed } from 'vue';
+import { onBeforeMount, reactive, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useFetch } from '@/composables/useFetch';
 import { useDishTags } from '@/composables/useDishTags';
 import { useInfiniteScroll } from '@/composables/useInfiniteScroll';
 import { useModal } from '@/composables/useModal';
 import { useExtractIdFromUri } from '@/composables/useExtractIdFromUri';
+import { useUrlToFetch } from '@/composables/useUrlToFetch';
 
 import SearchBox from '@/components/SearchBox.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
@@ -19,14 +20,6 @@ const props = defineProps({
   queriedMealData: Object,
 });
 
-const selectedOptions = reactive({
-  diet: null,
-  health: null,
-  mealType: null,
-  dishType: null,
-  cuisineType: null,
-});
-
 const state = reactive({
   mealsData: null,
   isLoadingMeals: true,
@@ -36,14 +29,22 @@ const state = reactive({
   isInitialRecepies: true,
 });
 
-const { dishTags, removeTag } = useDishTags(selectedOptions);
+const selectedOptions = reactive({
+  diet: null,
+  health: null,
+  mealType: null,
+  dishType: null,
+  cuisineType: null,
+});
 
 const scrollComponent = ref(null);
+const isFilteringMeals = ref(false);
 
+const { dishTags, removeTag } = useDishTags(selectedOptions);
 const { isFetchingOnScroll } = useInfiniteScroll(fetchMoreMeals);
 const { isModalOpen, openModal, closeModal } = useModal();
-
 const { extractIdFromUri } = useExtractIdFromUri();
+const { url } = useUrlToFetch();
 
 const router = useRouter();
 
@@ -59,6 +60,14 @@ async function fetchMoreMeals() {
     state.mealsData.hits.push(...data.value.hits);
   }
   isFetchingOnScroll.value = false;
+}
+
+async function fetchFilteredMeals() {
+  const url = fetchUrl(selectedOptions);
+
+  const { data } = await useFetch(url);
+
+  state.mealsData = data.value;
 }
 
 function goToMealDetails(meal) {
@@ -82,8 +91,12 @@ function setFilteredMeals(mealsData) {
   }
 }
 
+function setIsFiltering(isFiltering) {
+  isFilteringMeals.value = isFiltering.value;
+}
+
 onBeforeMount(async () => {
-  if (props.queriedMealData === null) {
+  if (props.queriedMealData === null || !isFilteringMeals) {
     const baseUrl = `https://api.edamam.com/api/recipes/v2?type=public`,
       appId = import.meta.env.VITE_APP_ID,
       apiKey = import.meta.env.VITE_API_KEY,
@@ -107,6 +120,18 @@ watch(
     setFilteredMeals(queriedMeals);
   }
 );
+
+watch(
+  () => ({ ...selectedOptions }),
+  (newOptions) => {
+    console.log(dishTags.value);
+    if (dishTags.value.length > 0) {
+      console.log('fetching options');
+    } else {
+      console.log('fetching defaulkt');
+    }
+  }
+);
 </script>
 
 <template>
@@ -116,6 +141,7 @@ watch(
       :selectedOptions="selectedOptions"
       @closeModal="closeModal"
       @filteredData="setFilteredMeals"
+      @isFiltering="setIsFiltering"
     />
   </div>
   <div class="showcase">
@@ -123,7 +149,13 @@ watch(
     <SearchBox @openModal="openModal" @queryMeals="setFilteredMeals" />
   </div>
   <section class="section-top-meals container" ref="scrollComponent">
-    <MealFilterTagList :dishTags="dishTags" @removeTag="removeTagHandler" />
+    <div class="filter-tags">
+      <MealFilterTagList
+        :dishTags="dishTags"
+        @removeTag="removeTagHandler"
+        v-if="isFilteringMeals"
+      />
+    </div>
     <h2
       class="heading-secondary"
       v-if="
