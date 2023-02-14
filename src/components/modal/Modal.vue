@@ -5,7 +5,7 @@ const props = defineProps({
   selectedOptions: Object,
 });
 
-const emit = defineEmits(['closeModal', 'filteredData']);
+const emit = defineEmits(['closeModal', 'filteredData', 'isFiltering']);
 
 function onCloseModal() {
   emit('closeModal');
@@ -13,6 +13,10 @@ function onCloseModal() {
 
 function onFilteredData(mealsData) {
   emit('filteredData', mealsData);
+}
+
+function onIsFiltering(isFiltering) {
+  emit('isFiltering', isFiltering);
 }
 </script>
 
@@ -26,9 +30,10 @@ function onFilteredData(mealsData) {
           @click="onCloseModal"
         />
         <ModalOverlay
+          :selectedOptions="selectedOptions"
           @closeModal="onCloseModal"
           @filteredData="onFilteredData"
-          :selectedOptions="selectedOptions"
+          git
         />
       </div>
     </teleport>
