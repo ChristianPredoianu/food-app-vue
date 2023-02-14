@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, computed } from 'vue';
+import { ref, watch } from 'vue';
 import { meals } from '@/utils/filterData.js';
 import { useFetch } from '@/composables/useFetch';
 import { useUrlToFetch } from '@/composables/useUrlToFetch';
@@ -9,23 +9,53 @@ import SelectDropdown from '@/components/filters/SelectDropdown.vue';
 import MealFilterTagList from '@/components/meal/meal-tags/meal-filter-tags/MealFilterTagList.vue';
 import MainBtn from '@/components/buttons/MainBtn.vue';
 
-const emit = defineEmits(['closeModal', 'filteredData']);
-
-const tags = ref(null);
+const emit = defineEmits(['closeModal', 'filteredData', 'isFiltering']);
 
 const props = defineProps({
   selectedOptions: Object,
 });
 
-const {
-  getSelectValue,
-  isOptionsSelected,
-  dishTags,
-  removeTag,
-  isSelectedOptions,
-} = useDishTags(props.selectedOptions);
+const isOptionsSelected = ref(true);
+const isFiltering = ref(false);
+
+const { dishTags, removeTag } = useDishTags(props.selectedOptions);
 
 const { fetchUrl } = useUrlToFetch(props.selectedOptions);
+
+function getSelectValue(value, index) {
+  value === ''
+    ? (props.selectedOptions[index] = null)
+    : (props.selectedOptions[index] = value);
+  isOptionsSelected.value = true;
+}
+
+function isSelectedOptions() {
+  let isOptions = dishTags.value.length > 0 ? true : false;
+  return isOptions;
+}
+
+function getDropdownValue(value, index) {
+  getSelectValue(value, index);
+}
+
+function removeTagHandler(tag) {
+  removeTag(tag);
+}
+
+async function fetchFilteredMeals() {
+  isFiltering.value = true;
+
+  isOptionsSelected.value = isSelectedOptions();
+
+  const url = fetchUrl(props.selectedOptions);
+
+  if (isOptionsSelected.value) {
+    const { data } = await useFetch(url);
+    onCloseModal();
+    onFilteredData(data.value);
+    onIsFiltering();
+  }
+}
 
 function onCloseModal() {
   emit('closeModal');
@@ -35,24 +65,8 @@ function onFilteredData(mealsData) {
   emit('filteredData', mealsData);
 }
 
-function removeTagHandler(tag) {
-  removeTag(tag);
-}
-
-function getDropdownValue(value, index) {
-  getSelectValue(value, index);
-}
-
-async function fetchFilteredMeals() {
-  isOptionsSelected.value = isSelectedOptions();
-
-  const url = fetchUrl(props.selectedOptions);
-
-  if (isOptionsSelected.value) {
-    const { data } = await useFetch(url);
-    onCloseModal(data.value);
-    onFilteredData(data.value);
-  }
+function onIsFiltering() {
+  emit('isFiltering', isFiltering);
 }
 </script>
 
