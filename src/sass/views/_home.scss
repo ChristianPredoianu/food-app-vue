@@ -16,6 +16,10 @@
   margin-top: 12rem;
 }
 
+.filter-tags {
+  padding: 2rem 0 4rem 0;
+}
+
 .loading-spinner {
   @include flex-config($justify: center);
   margin: 1rem 0;
