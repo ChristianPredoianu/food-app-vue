@@ -25,7 +25,6 @@ export function useUrlToFetch(selectedOptions) {
     const mealsUrl = `${baseUrl}&app_id=${appId}&app_key=${apiKey}${diet}${health}${cuisineType}${dishType}
       `;
 
-    console.log(mealsUrl);
     return mealsUrl;
   }
 
