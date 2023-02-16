@@ -47,7 +47,7 @@ async function fetchFilteredMeals() {
 
   isOptionsSelected.value = isSelectedOptions();
 
-  const url = fetchUrl(props.selectedOptions);
+  const url = fetchUrl();
 
   if (isOptionsSelected.value) {
     const { data } = await useFetch(url);
