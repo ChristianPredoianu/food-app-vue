@@ -44,12 +44,21 @@ const { dishTags, removeTag } = useDishTags(selectedOptions);
 const { isFetchingOnScroll } = useInfiniteScroll(fetchMoreMeals);
 const { isModalOpen, openModal, closeModal } = useModal();
 const { extractIdFromUri } = useExtractIdFromUri();
-const { url } = useUrlToFetch();
 
 const router = useRouter();
 
-function removeTagHandler(tag) {
-  removeTag(tag);
+async function fetchInitialMeals() {
+  const baseUrl = `https://api.edamam.com/api/recipes/v2?type=public`,
+    appId = import.meta.env.VITE_APP_ID,
+    apiKey = import.meta.env.VITE_API_KEY,
+    diet = 'balanced',
+    dishType = 'Main%20course';
+
+  const mealsUrl = `${baseUrl}&app_id=${appId}&app_key=${apiKey}&diet=${diet}&dishType=${dishType}`;
+
+  const { data, isLoading } = await useFetch(mealsUrl);
+
+  setInitialMeals(data, isLoading);
 }
 
 async function fetchMoreMeals() {
@@ -63,11 +72,38 @@ async function fetchMoreMeals() {
 }
 
 async function fetchFilteredMeals() {
-  const url = fetchUrl(selectedOptions);
+  const { fetchUrl } = useUrlToFetch(selectedOptions);
 
-  const { data } = await useFetch(url);
+  const url = fetchUrl();
 
+  const { data, isLoading } = await useFetch(url);
+  console.log(data);
+  console.log(isLoading);
+  setFilteredMeals(data.value, isLoading.value);
+}
+
+function setInitialMeals(data, isLoading) {
   state.mealsData = data.value;
+  state.isLoadingMeals = isLoading.value;
+  state.isInitialRecepies = true;
+  state.isFoundMeals = true;
+}
+
+function setFilteredMeals(mealsData, isLoading) {
+  if (mealsData.hits.length > 0) {
+    state.isInitialRecepies = false;
+    state.mealsData = mealsData;
+    state.isFoundMeals = true;
+
+    state.isLoadingMeals = isLoading;
+  } else {
+    state.mealsData = null;
+    state.isFoundMeals = false;
+  }
+}
+
+function setIsFiltering(isFiltering) {
+  isFilteringMeals.value = isFiltering.value;
 }
 
 function goToMealDetails(meal) {
@@ -79,36 +115,14 @@ function goToMealDetails(meal) {
   });
 }
 
-function setFilteredMeals(mealsData) {
-  if (mealsData.hits.length > 0) {
-    state.isInitialRecepies = false;
-    state.mealsData = mealsData;
-    state.isFoundMeals = true;
-    state.isLoadingMeals = false;
-  } else {
-    state.mealsData = null;
-    state.isFoundMeals = false;
-  }
-}
-
-function setIsFiltering(isFiltering) {
-  isFilteringMeals.value = isFiltering.value;
+function removeTagHandler(tag) {
+  removeTag(tag);
+  fetchFilteredMeals();
 }
 
 onBeforeMount(async () => {
   if (props.queriedMealData === null || !isFilteringMeals) {
-    const baseUrl = `https://api.edamam.com/api/recipes/v2?type=public`,
-      appId = import.meta.env.VITE_APP_ID,
-      apiKey = import.meta.env.VITE_API_KEY,
-      diet = 'balanced',
-      dishType = 'Main%20course';
-
-    const mealsUrl = `${baseUrl}&app_id=${appId}&app_key=${apiKey}&diet=${diet}&dishType=${dishType}`;
-
-    const { data, isLoading } = await useFetch(mealsUrl);
-
-    state.mealsData = data.value;
-    state.isLoadingMeals = isLoading.value;
+    fetchInitialMeals();
   } else {
     setFilteredMeals(props.queriedMealData);
   }
@@ -123,11 +137,9 @@ watch(
 
 watch(
   () => ({ ...selectedOptions }),
-  (newOptions) => {
-    if (dishTags.value.length > 0) {
-      console.log('fetching options');
-    } else {
-      console.log('fetching defaulkt');
+  () => {
+    if (dishTags.value.length === 0) {
+      fetchInitialMeals();
     }
   }
 );
