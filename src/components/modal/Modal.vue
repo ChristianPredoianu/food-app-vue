@@ -33,7 +33,7 @@ function onIsFiltering(isFiltering) {
           :selectedOptions="selectedOptions"
           @closeModal="onCloseModal"
           @filteredData="onFilteredData"
-          git
+          @isFiltering="onIsFiltering"
         />
       </div>
     </teleport>
