@@ -140,6 +140,7 @@ watch(
   () => {
     if (dishTags.value.length === 0) {
       fetchInitialMeals();
+      isFilteringMeals.value = false;
     }
   }
 );
