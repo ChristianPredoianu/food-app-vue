@@ -1,4 +1,4 @@
-import { ref, reactive, computed } from 'vue';
+import { computed } from 'vue';
 
 export function useDishTags(selectedOptions) {
   const dishTags = computed(() => {
