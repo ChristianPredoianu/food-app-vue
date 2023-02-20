@@ -2,15 +2,12 @@ import { reactive, toRefs } from 'vue';
 
 export async function useFetch(url) {
   const state = reactive({
-    isLoading: null,
+    data: null,
     isError: false,
     errorMessage: '',
-    data: null,
   });
 
   async function fetchData() {
-    state.isLoading = true;
-
     try {
       const response = await fetch(url);
 
@@ -23,8 +20,6 @@ export async function useFetch(url) {
       const typedError = error;
       state.isError = true;
       state.errorMessage = typedError.message;
-    } finally {
-      state.isLoading = false;
     }
   }
 
