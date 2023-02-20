@@ -1,5 +1,5 @@
 <script async setup>
-import { onBeforeMount, reactive, ref, watch } from 'vue';
+import { onBeforeMount, reactive, ref, watch, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useFetch } from '@/composables/useFetch';
 import { useDishTags } from '@/composables/useDishTags';
@@ -24,7 +24,6 @@ const state = reactive({
   mealsData: null,
   isLoadingMeals: true,
   isFetchError: false,
-  isLoadingMoreMeals: true,
   isFoundMeals: true,
   isInitialRecepies: true,
 });
@@ -56,9 +55,13 @@ async function fetchInitialMeals() {
 
   const mealsUrl = `${baseUrl}&app_id=${appId}&app_key=${apiKey}&diet=${diet}&dishType=${dishType}`;
 
-  const { data, isLoading } = await useFetch(mealsUrl);
+  const { data } = await useFetch(mealsUrl);
 
-  setInitialMeals(data, isLoading);
+  state.isInitialRecepies = true;
+  state.isLoadingMeals = false;
+  console.log(state.isInitialRecepies);
+  console.log(state.isLoadingMeals);
+  setMeals(data.value);
 }
 
 async function fetchMoreMeals() {
@@ -72,30 +75,37 @@ async function fetchMoreMeals() {
 }
 
 async function fetchFilteredMeals() {
-  const { fetchUrl } = useUrlToFetch(selectedOptions);
+  state.isLoadingMeals = true;
 
+  const { fetchUrl } = useUrlToFetch(selectedOptions);
   const url = fetchUrl();
 
-  const { data, isLoading } = await useFetch(url);
-  console.log(data);
-  console.log(isLoading);
-  setFilteredMeals(data.value, isLoading.value);
+  const { data } = await useFetch(url);
+
+  state.isLoadingMeals = false;
+
+  setMeals(data.value);
 }
 
-function setInitialMeals(data, isLoading) {
-  state.mealsData = data.value;
-  state.isLoadingMeals = isLoading.value;
-  state.isInitialRecepies = true;
-  state.isFoundMeals = true;
-}
+const mealsHeading = computed(() => {
+  if (state.isInitialRecepies && !state.isLoadingMeals) {
+    return 'This weeks top recepies';
+  } else if (
+    state.isFoundMeals &&
+    !state.isInitialRecepies &&
+    !state.isLoadingMeals
+  ) {
+    return 'Found meals';
+  } else if (!state.isFoundMeals) {
+    return ' No recepies found! Try another search query...';
+  }
+});
 
-function setFilteredMeals(mealsData, isLoading) {
+function setMeals(mealsData) {
   if (mealsData.hits.length > 0) {
     state.isInitialRecepies = false;
     state.mealsData = mealsData;
     state.isFoundMeals = true;
-
-    state.isLoadingMeals = isLoading;
   } else {
     state.mealsData = null;
     state.isFoundMeals = false;
@@ -120,18 +130,20 @@ function removeTagHandler(tag) {
   fetchFilteredMeals();
 }
 
-onBeforeMount(async () => {
+onBeforeMount(() => {
   if (props.queriedMealData === null || !isFilteringMeals) {
     fetchInitialMeals();
   } else {
-    setFilteredMeals(props.queriedMealData);
+    setMeals(props.queriedMealData);
   }
 });
 
 watch(
   () => props.queriedMealData,
   (queriedMeals) => {
-    setFilteredMeals(queriedMeals);
+    setMeals(queriedMeals);
+    state.isInitialRecepies = false;
+    console.log(state.isInitialRecepies);
   }
 );
 
@@ -152,13 +164,13 @@ watch(
     <Modal
       :selectedOptions="selectedOptions"
       @closeModal="closeModal"
-      @filteredData="setFilteredMeals"
+      @filteredData="setMeals"
       @isFiltering="setIsFiltering"
     />
   </div>
   <div class="showcase">
     <img src="@/assets/food.jpg" alt="food" class="showcase-img" />
-    <SearchBox @openModal="openModal" @queryMeals="setFilteredMeals" />
+    <SearchBox @openModal="openModal" @queryMeals="setMeals" />
   </div>
   <section class="section-top-meals container" ref="scrollComponent">
     <div class="filter-tags">
@@ -168,23 +180,22 @@ watch(
         v-if="isFilteringMeals"
       />
     </div>
-    <h2
-      class="heading-secondary"
-      v-if="
-        state.isInitialRecepies && state.isFoundMeals && !state.isLoadingMeals
-      "
-    >
-      This weeks top recepies
+    <h2 class="heading-secondary">
+      {{ mealsHeading }}
     </h2>
-    <h2
+    <!--   <h2
       class="heading-secondary"
       v-if="state.isFoundMeals && !state.isInitialRecepies"
     >
-      Found recepies
-    </h2>
-    <h3 class="heading-tertiary" v-if="!state.isFoundMeals">
+      {{
+        state.isFoundMeals && !state.isInitialRecepies
+          ? 'Found meals'
+          : 'No recepies found! Try another search query...'
+      }}
+    </h2> -->
+    <!--  <h3 class="heading-tertiary" v-if="!state.isFoundMeals">
       No recepies found! Try another search query...
-    </h3>
+    </h3> -->
     <div
       class="meal-cards"
       v-if="!state.isLoadingMeals && state.mealsData !== null"
