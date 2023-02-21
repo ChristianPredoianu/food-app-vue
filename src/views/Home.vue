@@ -24,8 +24,8 @@ const state = reactive({
   mealsData: null,
   isLoadingMeals: true,
   isFetchError: false,
-  isFoundMeals: true,
   isInitialRecepies: true,
+  isFilteringMeals: false,
 });
 
 const selectedOptions = reactive({
@@ -37,7 +37,6 @@ const selectedOptions = reactive({
 });
 
 const scrollComponent = ref(null);
-const isFilteringMeals = ref(false);
 
 const { dishTags, removeTag } = useDishTags(selectedOptions);
 const { isFetchingOnScroll } = useInfiniteScroll(fetchMoreMeals);
@@ -45,6 +44,16 @@ const { isModalOpen, openModal, closeModal } = useModal();
 const { extractIdFromUri } = useExtractIdFromUri();
 
 const router = useRouter();
+
+const mealsHeading = computed(() => {
+  if (state.isInitialRecepies && !state.isLoadingMeals) {
+    return 'This weeks top recepies';
+  } else if (!state.isInitialRecepies && !state.isFilteringMeals) {
+    return 'Found meals';
+  } else if (state.mealsData === null && !state.isLoadingMeals) {
+    return ' No recepies found! Try another search query...';
+  }
+});
 
 async function fetchInitialMeals() {
   const baseUrl = `https://api.edamam.com/api/recipes/v2?type=public`,
@@ -57,10 +66,9 @@ async function fetchInitialMeals() {
 
   const { data } = await useFetch(mealsUrl);
 
-  state.isInitialRecepies = true;
   state.isLoadingMeals = false;
-  console.log(state.isInitialRecepies);
-  console.log(state.isLoadingMeals);
+  state.isInitialRecepies = true;
+
   setMeals(data.value);
 }
 
@@ -75,45 +83,29 @@ async function fetchMoreMeals() {
 }
 
 async function fetchFilteredMeals() {
-  state.isLoadingMeals = true;
+  state.isFilteringMeals = true;
 
   const { fetchUrl } = useUrlToFetch(selectedOptions);
   const url = fetchUrl();
 
   const { data } = await useFetch(url);
 
-  state.isLoadingMeals = false;
+  state.isFilteringMeals = false;
 
   setMeals(data.value);
 }
 
-const mealsHeading = computed(() => {
-  if (state.isInitialRecepies && !state.isLoadingMeals) {
-    return 'This weeks top recepies';
-  } else if (
-    state.isFoundMeals &&
-    !state.isInitialRecepies &&
-    !state.isLoadingMeals
-  ) {
-    return 'Found meals';
-  } else if (!state.isFoundMeals) {
-    return ' No recepies found! Try another search query...';
-  }
-});
-
 function setMeals(mealsData) {
   if (mealsData.hits.length > 0) {
-    state.isInitialRecepies = false;
     state.mealsData = mealsData;
-    state.isFoundMeals = true;
   } else {
     state.mealsData = null;
-    state.isFoundMeals = false;
   }
 }
 
 function setIsFiltering(isFiltering) {
-  isFilteringMeals.value = isFiltering.value;
+  state.isFilteringMeals = isFiltering.value;
+  state.isInitialRecepies = false;
 }
 
 function goToMealDetails(meal) {
@@ -131,19 +123,15 @@ function removeTagHandler(tag) {
 }
 
 onBeforeMount(() => {
-  if (props.queriedMealData === null || !isFilteringMeals) {
-    fetchInitialMeals();
-  } else {
-    setMeals(props.queriedMealData);
-  }
+  props.queriedMealData === null || !state.isFilteringMeals
+    ? fetchInitialMeals()
+    : setMeals(props.queriedMealData);
 });
 
 watch(
   () => props.queriedMealData,
   (queriedMeals) => {
     setMeals(queriedMeals);
-    state.isInitialRecepies = false;
-    console.log(state.isInitialRecepies);
   }
 );
 
@@ -152,7 +140,6 @@ watch(
   () => {
     if (dishTags.value.length === 0) {
       fetchInitialMeals();
-      isFilteringMeals.value = false;
     }
   }
 );
@@ -177,28 +164,21 @@ watch(
       <MealFilterTagList
         :dishTags="dishTags"
         @removeTag="removeTagHandler"
-        v-if="isFilteringMeals"
+        v-if="dishTags.length > 0"
       />
     </div>
+
     <h2 class="heading-secondary">
       {{ mealsHeading }}
     </h2>
-    <!--   <h2
-      class="heading-secondary"
-      v-if="state.isFoundMeals && !state.isInitialRecepies"
-    >
-      {{
-        state.isFoundMeals && !state.isInitialRecepies
-          ? 'Found meals'
-          : 'No recepies found! Try another search query...'
-      }}
-    </h2> -->
-    <!--  <h3 class="heading-tertiary" v-if="!state.isFoundMeals">
-      No recepies found! Try another search query...
-    </h3> -->
+
     <div
       class="meal-cards"
-      v-if="!state.isLoadingMeals && state.mealsData !== null"
+      v-if="
+        !state.isLoadingMeals &&
+        state.mealsData !== null &&
+        !state.isFilteringMeals
+      "
     >
       <MealCard
         v-for="meal in state.mealsData.hits"
@@ -209,12 +189,20 @@ watch(
     </div>
     <div
       class="loading-spinner"
-      v-if="state.isLoadingMeals || isFetchingOnScroll"
+      v-if="
+        state.isLoadingMeals || isFetchingOnScroll || state.isFilteringMeals
+      "
     >
       <LoadingSpinner />
     </div>
   </section>
-  <Footer v-if="state.mealsData !== null" />
+  <Footer
+    v-if="
+      state.mealsData !== null &&
+      !state.isLoadingMeals &&
+      !state.isFilteringMeals
+    "
+  />
 </template>
 
 <style lang="scss" scoped>
