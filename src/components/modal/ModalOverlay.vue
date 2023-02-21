@@ -44,6 +44,7 @@ function removeTagHandler(tag) {
 
 async function fetchFilteredMeals() {
   isFiltering.value = true;
+  onIsFiltering();
 
   isOptionsSelected.value = isSelectedOptions();
 
@@ -51,6 +52,9 @@ async function fetchFilteredMeals() {
 
   if (isOptionsSelected.value) {
     const { data } = await useFetch(url);
+
+    isFiltering.value = false;
+
     onCloseModal();
     onFilteredData(data.value);
     onIsFiltering();
