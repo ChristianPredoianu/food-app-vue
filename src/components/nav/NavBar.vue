@@ -51,8 +51,8 @@ async function searchMeals() {
 
   onQueryMeals(data.value);
   closeSearch();
+
   searchQuery.value = '';
-  router.push({ name: 'Home' });
 }
 
 function signUserOut() {
