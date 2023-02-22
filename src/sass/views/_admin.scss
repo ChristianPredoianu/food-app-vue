@@ -11,16 +11,8 @@
 
 .meal-cards {
   display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   grid-gap: 2rem;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 200px));
-  justify-content: center;
   margin-top: 5rem;
   padding-bottom: 20rem;
-
-  @include mq(sm) {
-    display: grid;
-    grid-gap: 5rem;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 250px));
-    justify-content: start;
-  }
 }
