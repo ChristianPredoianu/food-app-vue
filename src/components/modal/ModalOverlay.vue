@@ -43,6 +43,7 @@ function removeTagHandler(tag) {
 
 async function fetchFilteredMeals() {
   isFiltering.value = true;
+
   onIsFiltering();
 
   isOptionsSelected.value = isSelectedOptions();
