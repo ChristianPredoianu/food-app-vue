@@ -56,20 +56,22 @@ const mealsHeading = computed(() => {
 });
 
 async function fetchInitialMeals() {
-  const baseUrl = `https://api.edamam.com/api/recipes/v2?type=public`,
-    appId = import.meta.env.VITE_APP_ID,
-    apiKey = import.meta.env.VITE_API_KEY,
-    diet = 'balanced',
-    dishType = 'Main%20course';
+  if (!isModalOpen.value) {
+    const baseUrl = `https://api.edamam.com/api/recipes/v2?type=public`,
+      appId = import.meta.env.VITE_APP_ID,
+      apiKey = import.meta.env.VITE_API_KEY,
+      diet = 'balanced',
+      dishType = 'Main%20course';
 
-  const mealsUrl = `${baseUrl}&app_id=${appId}&app_key=${apiKey}&diet=${diet}&dishType=${dishType}`;
+    const mealsUrl = `${baseUrl}&app_id=${appId}&app_key=${apiKey}&diet=${diet}&dishType=${dishType}`;
 
-  const { data } = await useFetch(mealsUrl);
+    const { data } = await useFetch(mealsUrl);
 
-  state.isLoadingMeals = false;
-  state.isInitialRecepies = true;
+    state.isLoadingMeals = false;
+    state.isInitialRecepies = true;
 
-  setMeals(data.value);
+    setMeals(data.value);
+  }
 }
 
 async function fetchMoreMeals() {
@@ -109,6 +111,7 @@ function setIsFiltering(isFiltering) {
 }
 
 function goToMealDetails(meal) {
+  console.log('hoing');
   router.push({
     name: 'MealDetails',
     params: {
