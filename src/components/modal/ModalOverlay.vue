@@ -19,7 +19,6 @@ const isOptionsSelected = ref(true);
 const isFiltering = ref(false);
 
 const { dishTags, removeTag } = useDishTags(props.selectedOptions);
-
 const { fetchUrl } = useUrlToFetch(props.selectedOptions);
 
 function getSelectValue(value, index) {
