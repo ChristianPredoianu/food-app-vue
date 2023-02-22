@@ -48,10 +48,14 @@ const router = useRouter();
 const mealsHeading = computed(() => {
   if (state.isInitialRecepies && !state.isLoadingMeals) {
     return 'This weeks top recepies';
-  } else if (!state.isInitialRecepies && !state.isFilteringMeals) {
+  } else if (
+    !state.isInitialRecepies &&
+    state.mealsData !== null &&
+    !state.isLoadingMeals
+  ) {
     return 'Found meals';
   } else if (state.mealsData === null && !state.isLoadingMeals) {
-    return ' No recepies found! Try another search query...';
+    return ' No recepies found!';
   }
 });
 
@@ -69,17 +73,23 @@ async function fetchInitialMeals() {
 
     state.isLoadingMeals = false;
     state.isInitialRecepies = true;
+    state.isFilteringMeals = false;
 
     setMeals(data.value);
   }
 }
 
 async function fetchMoreMeals() {
-  const nextMealsUrl = state.mealsData._links.next.href;
+  const isNextPage = Object.keys(state.mealsData._links).length > 0;
+  const maxHits = state.mealsData.hits.length >= 60;
 
-  if (state.mealsData.hits.length < 60) {
-    const { data } = await useFetch(nextMealsUrl);
-    state.mealsData.hits.push(...data.value.hits);
+  if (isNextPage) {
+    const nextMealsUrl = state.mealsData._links.next.href;
+
+    if (!maxHits) {
+      const { data } = await useFetch(nextMealsUrl);
+      state.mealsData.hits.push(...data.value.hits);
+    }
   }
   isFetchingOnScroll.value = false;
 }
@@ -111,7 +121,6 @@ function setIsFiltering(isFiltering) {
 }
 
 function goToMealDetails(meal) {
-  console.log('hoing');
   router.push({
     name: 'MealDetails',
     params: {
