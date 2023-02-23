@@ -16,10 +16,11 @@ const props = defineProps({
 });
 
 const isOptionsSelected = ref(true);
-const isFiltering = ref(false);
+const isFiltering = ref(null);
 
 const { dishTags, removeTag } = useDishTags(props.selectedOptions);
 const { fetchUrl } = useUrlToFetch(props.selectedOptions);
+const { data, isLoading, fetchData } = useFetch();
 
 function getSelectValue(value, index) {
   value === ''
@@ -42,16 +43,15 @@ function removeTagHandler(tag) {
 }
 
 async function fetchFilteredMeals() {
-  isFiltering.value = true;
-
-  onIsFiltering();
-
   isOptionsSelected.value = isSelectedOptions();
 
   const url = fetchUrl();
 
   if (isOptionsSelected.value) {
-    const { data } = await useFetch(url);
+    isFiltering.value = true;
+
+    await fetchData(url);
+    console.log(isLoading.value);
 
     isFiltering.value = false;
 
