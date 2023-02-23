@@ -192,7 +192,7 @@ onMounted(() => {
   <div class="loading-spinner" v-if="isLoading || isFetchingOnScroll">
     <LoadingSpinner />
   </div>
-  <Footer v-if="isLoading" />
+  <Footer v-if="!isLoading" />
 </template>
 
 <style lang="scss" scoped>
