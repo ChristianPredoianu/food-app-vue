@@ -12,11 +12,7 @@ import MealTagsList from '@/components/meal/meal-tags/MealTagsList.vue';
 import MainBtn from '@/components/buttons/MainBtn.vue';
 import Footer from '@/components/Footer.vue';
 
-const state = reactive({
-  mealData: null,
-  isLoadingMeal: false,
-  isFetchError: false,
-});
+const { data, isLoading, fetchData } = useFetch();
 
 const route = useRoute();
 
@@ -25,33 +21,28 @@ const { capitalizeFirstLetter } = useCapitalizeFirstLetter();
 const mealUrl = `https://api.edamam.com/api/recipes/v2/${route.params.id}?type=public&app_id=2d7284f7&app_key=0a6f557d15da76ad2dea06845fbe542c`;
 
 onMounted(async () => {
-  state.isLoadingMeal = true;
-
-  const { data } = await useFetch(mealUrl);
-
-  state.isLoadingMeal = false;
-  state.mealData = data.value;
+  await fetchData(mealUrl);
 });
 </script>
 <template>
   <div>
-    <div class="loading-spinner" v-if="state.isLoadingMeal">
+    <div class="loading-spinner" v-if="isLoading">
       <LoadingSpinner />
     </div>
-    <main class="main container" v-if="state.mealData && !state.isLoadingMeal">
+    <main class="main container" v-if="data">
       <section class="section-meal">
         <div class="meal-info">
-          <h1 class="heading-primary">{{ state.mealData.recipe.label }}</h1>
+          <h1 class="heading-primary">{{ data.recipe.label }}</h1>
           <h2 class="heading-secondary">
-            {{ capitalizeFirstLetter(state.mealData.recipe.dishType[0]) }}
+            {{ capitalizeFirstLetter(data.recipe.dishType[0]) }}
           </h2>
           <div class="meal-digest">
-            <MealDigestList :mealDigest="state.mealData.recipe.digest" />
+            <MealDigestList :mealDigest="data.recipe.digest" />
           </div>
         </div>
         <div class="meal-img-container">
           <img
-            :src="state.mealData.recipe.image"
+            :src="data.recipe.image"
             alt="meal"
             class="meal-img-container__img"
           />
@@ -60,18 +51,16 @@ onMounted(async () => {
       <section class="section-ingredients">
         <div class="ingredients-wrapper">
           <h3 class="heading-tertiary">Ingredients</h3>
-          <IngredientsList
-            :mealIngredients="state.mealData.recipe.ingredients"
-          />
+          <IngredientsList :mealIngredients="data.recipe.ingredients" />
         </div>
         <div class="nutrients-wrapper">
           <h3 class="heading-tertiary">Daily Nutrients</h3>
-          <NutrientsList :mealNutrients="state.mealData.recipe.totalDaily" />
+          <NutrientsList :mealNutrients="data.recipe.totalDaily" />
         </div>
       </section>
       <div class="link-btn">
         <a
-          :href="state.mealData.recipe.url"
+          :href="data.recipe.url"
           rel="noopener noreferrer"
           target="_blank"
           class="meal-link"
@@ -79,10 +68,10 @@ onMounted(async () => {
         >
       </div>
       <section class="section-meal-tags">
-        <MealTagsList :mealTags="state.mealData.recipe.healthLabels" />
+        <MealTagsList :mealTags="data.recipe.healthLabels" />
       </section>
     </main>
-    <Footer v-if="state.mealData !== null" />
+    <Footer v-if="!isLoading" />
   </div>
 </template>
 
