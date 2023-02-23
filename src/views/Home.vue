@@ -1,5 +1,5 @@
 <script async setup>
-import { onBeforeMount, reactive, ref, watch, computed } from 'vue';
+import { onMounted, reactive, ref, watch, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useFetch } from '@/composables/useFetch';
 import { useDishTags } from '@/composables/useDishTags';
@@ -20,10 +20,11 @@ const props = defineProps({
   queriedMealData: Object,
 });
 
+const recepies = ref(null);
+
 const state = reactive({
   mealsData: null,
   isLoadingMeals: true,
-  isFetchError: false,
   isInitialRecepies: true,
   isFilteringMeals: false,
 });
@@ -38,57 +39,56 @@ const selectedOptions = reactive({
 
 const scrollComponent = ref(null);
 
-const { dishTags, removeTag } = useDishTags(selectedOptions);
-const { isFetchingOnScroll } = useInfiniteScroll(fetchMoreMeals);
-const { isModalOpen, openModal, closeModal } = useModal();
-const { extractIdFromUri } = useExtractIdFromUri();
+const mealsUrl = computed(() => {
+  const baseUrl = `https://api.edamam.com/api/recipes/v2?type=public`,
+    appId = import.meta.env.VITE_APP_ID,
+    apiKey = import.meta.env.VITE_API_KEY,
+    diet = 'balanced',
+    dishType = 'Main%20course';
 
-const router = useRouter();
+  const url = `${baseUrl}&app_id=${appId}&app_key=${apiKey}&diet=${diet}&dishType=${dishType}`;
+
+  return url;
+});
 
 const mealsHeading = computed(() => {
-  if (state.isInitialRecepies && !state.isLoadingMeals) {
+  if (state.isInitialRecepies) {
     return 'This weeks top recepies';
-  } else if (
-    !state.isInitialRecepies &&
-    state.mealsData !== null &&
-    !state.isLoadingMeals
-  ) {
+  } else if (state.isFilteringMeals && isLoading) {
     return 'Found meals';
   } else if (state.mealsData === null && !state.isLoadingMeals) {
     return ' No recepies found!';
   }
 });
 
+const router = useRouter();
+const { fetchUrl } = useUrlToFetch(selectedOptions);
+const { data, isLoading, fetchData } = useFetch();
+const { isFetchingOnScroll } = useInfiniteScroll(fetchMoreMeals);
+const { extractIdFromUri } = useExtractIdFromUri();
+const { isModalOpen, openModal, closeModal } = useModal();
+const { dishTags, removeTag } = useDishTags(selectedOptions);
+
 async function fetchInitialMeals() {
   if (!isModalOpen.value) {
-    const baseUrl = `https://api.edamam.com/api/recipes/v2?type=public`,
-      appId = import.meta.env.VITE_APP_ID,
-      apiKey = import.meta.env.VITE_API_KEY,
-      diet = 'balanced',
-      dishType = 'Main%20course';
+    await fetchData(mealsUrl.value);
+    recepies.value = data.value;
 
-    const mealsUrl = `${baseUrl}&app_id=${appId}&app_key=${apiKey}&diet=${diet}&dishType=${dishType}`;
-
-    const { data } = await useFetch(mealsUrl);
-
-    state.isLoadingMeals = false;
     state.isInitialRecepies = true;
     state.isFilteringMeals = false;
-
-    setMeals(data.value);
   }
 }
 
 async function fetchMoreMeals() {
-  const isNextPage = Object.keys(state.mealsData._links).length > 0;
-  const maxHits = state.mealsData.hits.length >= 60;
+  const isNextPage = Object.keys(recepies.value._links).length > 0;
+  const maxHits = recepies.value.hits.length >= 60;
 
   if (isNextPage) {
-    const nextMealsUrl = state.mealsData._links.next.href;
+    const nextMealsUrl = recepies.value._links.next.href;
 
     if (!maxHits) {
-      const { data } = await useFetch(nextMealsUrl);
-      state.mealsData.hits.push(...data.value.hits);
+      await fetchData(nextMealsUrl);
+      recepies.value.hits.push(...data.value.hits);
     }
   }
   isFetchingOnScroll.value = false;
@@ -97,22 +97,18 @@ async function fetchMoreMeals() {
 async function fetchFilteredMeals() {
   state.isFilteringMeals = true;
 
-  const { fetchUrl } = useUrlToFetch(selectedOptions);
   const url = fetchUrl();
 
-  const { data } = await useFetch(url);
-
-  state.isFilteringMeals = false;
-
-  setMeals(data.value);
+  await fetchData(url);
+  recepies.value = data.value;
 }
 
-function setMeals(mealsData) {
-  if (mealsData.hits.length > 0) {
-    state.mealsData = mealsData;
-  } else {
-    state.mealsData = null;
-  }
+function setFilteredMeals(filteredMeals) {
+  recepies.value = filteredMeals;
+}
+
+function setQueriedMeals(queriedMeals) {
+  recepies.value = queriedMeals;
 }
 
 function setIsFiltering(isFiltering) {
@@ -134,16 +130,10 @@ function removeTagHandler(tag) {
   fetchFilteredMeals();
 }
 
-onBeforeMount(() => {
-  props.queriedMealData === null || !state.isFilteringMeals
-    ? fetchInitialMeals()
-    : setMeals(props.queriedMealData);
-});
-
 watch(
   () => props.queriedMealData,
   (queriedMeals) => {
-    setMeals(queriedMeals);
+    recepies.value = queriedMeals;
   }
 );
 
@@ -155,6 +145,12 @@ watch(
     }
   }
 );
+
+onMounted(() => {
+  props.queriedMealData === null || !state.isFilteringMeals
+    ? fetchInitialMeals()
+    : (recepies.value = props.queriedMeals);
+});
 </script>
 
 <template>
@@ -163,13 +159,13 @@ watch(
     <Modal
       :selectedOptions="selectedOptions"
       @closeModal="closeModal"
-      @filteredData="setMeals"
+      @filteredData="setFilteredMeals"
       @isFiltering="setIsFiltering"
     />
   </div>
   <div class="showcase">
     <img src="@/assets/food.jpg" alt="food" class="showcase-img" />
-    <SearchBox @openModal="openModal" @queryMeals="setMeals" />
+    <SearchBox @openModal="openModal" @queryMeals="setQueriedMeals" />
   </div>
   <section class="section-top-meals container" ref="scrollComponent">
     <div class="filter-tags">
@@ -184,37 +180,19 @@ watch(
       {{ mealsHeading }}
     </h2>
 
-    <div
-      class="meal-cards"
-      v-if="
-        !state.isLoadingMeals &&
-        state.mealsData !== null &&
-        !state.isFilteringMeals
-      "
-    >
+    <div class="meal-cards" v-if="recepies">
       <MealCard
-        v-for="meal in state.mealsData.hits"
+        v-for="meal in recepies.hits"
         :key="meal.recipe.image"
         :meal="meal"
         @goToDetails="goToMealDetails(meal)"
       />
     </div>
-    <div
-      class="loading-spinner"
-      v-if="
-        state.isLoadingMeals || isFetchingOnScroll || state.isFilteringMeals
-      "
-    >
-      <LoadingSpinner />
-    </div>
   </section>
-  <Footer
-    v-if="
-      state.mealsData !== null &&
-      !state.isLoadingMeals &&
-      !state.isFilteringMeals
-    "
-  />
+  <div class="loading-spinner" v-if="isLoading || isFetchingOnScroll">
+    <LoadingSpinner />
+  </div>
+  <Footer v-if="isLoading" />
 </template>
 
 <style lang="scss" scoped>
