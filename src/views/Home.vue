@@ -25,7 +25,7 @@ const recepies = ref(null);
 const state = reactive({
   mealsData: null,
   isLoadingMeals: true,
-  isInitialRecepies: true,
+  isInitialMeals: true,
   isFilteringMeals: false,
 });
 
@@ -52,7 +52,7 @@ const mealsUrl = computed(() => {
 });
 
 const mealsHeading = computed(() => {
-  if (state.isInitialRecepies) {
+  if (state.isInitialMeals) {
     return 'This weeks top recepies';
   } else if (state.isFilteringMeals && isLoading) {
     return 'Found meals';
@@ -73,7 +73,7 @@ async function fetchInitialMeals() {
   if (!isModalOpen.value) {
     await fetchData(mealsUrl.value);
     recepies.value = data.value;
-    state.isInitialRecepies = true;
+    state.isInitialMeals = true;
     state.isFilteringMeals = false;
   }
 }
@@ -95,8 +95,10 @@ async function fetchMoreMeals() {
 
 async function fetchFilteredMeals() {
   state.isFilteringMeals = true;
+
   const url = fetchUrl();
   await fetchData(url);
+
   recepies.value = data.value;
 }
 
@@ -106,11 +108,13 @@ function setFilteredMeals(filteredMeals) {
 
 function setQueriedMeals(queriedMeals) {
   recepies.value = queriedMeals;
+  state.isInitialMeals = false;
+  state.isFilteringMeals = true;
 }
 
 function setIsFiltering(isFiltering) {
   state.isFilteringMeals = isFiltering.value;
-  state.isInitialRecepies = false;
+  state.isInitialMeals = false;
 }
 
 function goToMealDetails(meal) {
