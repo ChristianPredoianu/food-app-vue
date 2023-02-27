@@ -31,12 +31,14 @@ function onSearching() {
 async function fetchSearchQuery() {
   isSearching.value = true;
 
-  const url = queryUrl(searchQuery.value);
-  await fetchData(url);
+  if (searchQuery.value !== null) {
+    const url = queryUrl(searchQuery.value);
+    await fetchData(url);
 
-  isSearching.value = false;
+    isSearching.value = false;
 
-  onQueryMeals(data.value);
+    onQueryMeals(data.value);
+  }
 
   if (searchQuery.value === '') {
     onFetchInitialMeals();
