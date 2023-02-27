@@ -3,7 +3,12 @@ import { ref, watch } from 'vue';
 import { useQueryUrl } from '@/composables/useQueryUrl';
 import { useFetch } from '@/composables/useFetch';
 
-const emit = defineEmits(['openModal', 'queryMeals', 'isSearching']);
+const emit = defineEmits([
+  'openModal',
+  'queryMeals',
+  'isSearching',
+  'fetchInitialMeals',
+]);
 
 const searchQuery = ref(null);
 const isSearching = ref(false);
@@ -27,12 +32,19 @@ async function fetchSearchQuery() {
   isSearching.value = true;
 
   const url = queryUrl(searchQuery.value);
-
   await fetchData(url);
 
   isSearching.value = false;
 
   onQueryMeals(data.value);
+
+  if (searchQuery.value === '') {
+    onFetchInitialMeals();
+  }
+}
+
+function onFetchInitialMeals() {
+  emit('fetchInitialMeals');
 }
 
 watch(
@@ -53,7 +65,6 @@ watch(
         class="input-icon"
         @click="fetchSearchQuery"
       />
-      <h1 v-if="isSearching">dsadsa</h1>
       <input
         class="input-field"
         type="text"
