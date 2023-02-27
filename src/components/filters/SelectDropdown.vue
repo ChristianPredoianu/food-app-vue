@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { useCapitalizeFirstLetter } from '@/composables/useCapitalizeFirstLetter';
+import { useCapitalizeFirstLetter } from '@/composables/helpers/useCapitalizeFirstLetter';
 
 const props = defineProps({
   meals: Array,

@@ -5,8 +5,8 @@ import { useFetch } from '@/composables/useFetch';
 import { useDishTags } from '@/composables/useDishTags';
 import { useInfiniteScroll } from '@/composables/useInfiniteScroll';
 import { useModal } from '@/composables/useModal';
-import { useExtractIdFromUri } from '@/composables/useExtractIdFromUri';
-import { useUrlToFetch } from '@/composables/useUrlToFetch';
+import { useExtractIdFromUri } from '@/composables/url/useExtractIdFromUri';
+import { useUrlToFetch } from '@/composables/url/useUrlToFetch';
 
 import SearchBox from '@/components/SearchBox.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
@@ -73,7 +73,6 @@ async function fetchInitialMeals() {
   if (!isModalOpen.value) {
     await fetchData(mealsUrl.value);
     recepies.value = data.value;
-
     state.isInitialRecepies = true;
     state.isFilteringMeals = false;
   }
@@ -96,9 +95,7 @@ async function fetchMoreMeals() {
 
 async function fetchFilteredMeals() {
   state.isFilteringMeals = true;
-
   const url = fetchUrl();
-
   await fetchData(url);
   recepies.value = data.value;
 }
@@ -140,9 +137,7 @@ watch(
 watch(
   () => ({ ...selectedOptions }),
   () => {
-    if (dishTags.value.length === 0) {
-      fetchInitialMeals();
-    }
+    if (dishTags.value.length === 0) fetchInitialMeals();
   }
 );
 
@@ -165,7 +160,11 @@ onMounted(() => {
   </div>
   <div class="showcase">
     <img src="@/assets/food.jpg" alt="food" class="showcase-img" />
-    <SearchBox @openModal="openModal" @queryMeals="setQueriedMeals" />
+    <SearchBox
+      @openModal="openModal"
+      @queryMeals="setQueriedMeals"
+      @fetchInitialMeals="fetchInitialMeals"
+    />
   </div>
   <section class="section-top-meals container" ref="scrollComponent">
     <div class="filter-tags">

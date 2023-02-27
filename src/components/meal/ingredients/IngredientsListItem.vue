@@ -1,5 +1,5 @@
 <script setup>
-import { useCapitalizeFirstLetter } from '@/composables/useCapitalizeFirstLetter';
+import { useCapitalizeFirstLetter } from '@/composables/helpers/useCapitalizeFirstLetter';
 
 const props = defineProps({
   mealIngredients: Array,

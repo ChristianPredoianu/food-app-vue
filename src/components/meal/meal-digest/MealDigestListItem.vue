@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue';
-import { useRoundNumber } from '@/composables/useRoundNumber';
+import { useRoundNumber } from '@/composables/helpers/useRoundNumber';
 
 const props = defineProps({
   mealDigest: Array,

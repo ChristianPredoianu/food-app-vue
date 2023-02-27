@@ -1,5 +1,5 @@
 <script setup>
-import { useRoundNumber } from '@/composables/useRoundNumber';
+import { useRoundNumber } from '@/composables/helpers/useRoundNumber';
 
 const props = defineProps({
   mealNutrients: Object,

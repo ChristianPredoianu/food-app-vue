@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { useQueryUrl } from '@/composables/useQueryUrl';
+import { useQueryUrl } from '@/composables/url/useQueryUrl';
 import { useFetch } from '@/composables/useFetch';
 import { getAuth, signOut } from 'firebase/auth';
 

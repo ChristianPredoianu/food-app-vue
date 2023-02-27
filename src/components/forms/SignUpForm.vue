@@ -1,7 +1,7 @@
 <script setup>
 import { reactive } from 'vue';
-import { useAuthForm } from '@/composables/useAuthForm';
-import { useFirebaseAuth } from '@/composables/useFirebaseAuth';
+import { useAuthForm } from '@/composables/auth/useAuthForm';
+import { useFirebaseAuth } from '@/composables/auth/useFirebaseAuth';
 
 import AuthCard from '@/components/cards/AuthCard.vue';
 import AuthSubmitBtn from '@/components/buttons/AuthSubmitBtn.vue';

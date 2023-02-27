@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch } from 'vue';
-import { useQueryUrl } from '@/composables/useQueryUrl';
+import { useQueryUrl } from '@/composables/url/useQueryUrl';
 import { useFetch } from '@/composables/useFetch';
 
 const emit = defineEmits([

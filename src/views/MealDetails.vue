@@ -1,8 +1,8 @@
 <script setup>
-import { onMounted, reactive } from 'vue';
+import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useFetch } from '@/composables/useFetch';
-import { useCapitalizeFirstLetter } from '@/composables/useCapitalizeFirstLetter';
+import { useCapitalizeFirstLetter } from '@/composables/helpers/useCapitalizeFirstLetter';
 
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import MealDigestList from '@/components/meal/meal-digest/MealDigestList.vue';

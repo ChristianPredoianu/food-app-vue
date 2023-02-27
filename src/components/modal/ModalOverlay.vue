@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { meals } from '@/utils/filterData.js';
 import { useFetch } from '@/composables/useFetch';
-import { useUrlToFetch } from '@/composables/useUrlToFetch';
+import { useUrlToFetch } from '@/composables/url/useUrlToFetch';
 import { useDishTags } from '@/composables/useDishTags';
 
 import SelectDropdown from '@/components/filters/SelectDropdown.vue';
