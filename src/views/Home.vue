@@ -18,6 +18,7 @@ import Footer from '@/components/Footer.vue';
 
 const props = defineProps({
   queriedMealData: Object,
+  isNavFiltering: Boolean,
 });
 
 const recepies = ref(null);
@@ -54,9 +55,9 @@ const mealsUrl = computed(() => {
 const mealsHeading = computed(() => {
   if (state.isInitialMeals) {
     return 'This weeks top recepies';
-  } else if (state.isFilteringMeals && isLoading) {
+  } else if (state.isFilteringMeals && state.mealsData.hits.length > 0) {
     return 'Found meals';
-  } else if (state.mealsData === null && !state.isLoadingMeals) {
+  } else if (state.mealsData.hits.length === 0) {
     return ' No recepies found!';
   }
 });
@@ -72,10 +73,8 @@ const { dishTags, removeTag } = useDishTags(selectedOptions);
 async function fetchInitialMeals() {
   if (!isModalOpen.value) {
     await fetchData(mealsUrl.value);
-    recepies.value = data.value;
 
-    state.isInitialMeals = true;
-    state.isFilteringMeals = false;
+    setInitialMeals(data.value);
   }
 }
 
@@ -97,18 +96,24 @@ async function fetchMoreMeals() {
 async function fetchFilteredMeals() {
   state.isFilteringMeals = true;
 
-  const url = fetchUrl();
-  await fetchData(url);
+  await fetchData(fetchUrl.value);
 
-  recepies.value = data.value;
+  setFilteredMeals(data.value);
+}
+
+function setInitialMeals(initialMeals) {
+  state.isInitialMeals = true;
+  state.isFilteringMeals = false;
+  state.mealsData = initialMeals;
 }
 
 function setFilteredMeals(filteredMeals) {
-  recepies.value = filteredMeals;
+  state.mealsData = filteredMeals;
+  state.isInitialMeals = false;
 }
 
 function setQueriedMeals(queriedMeals) {
-  recepies.value = queriedMeals;
+  state.mealsData = queriedMeals;
   state.isInitialMeals = false;
   state.isFilteringMeals = true;
 }
@@ -133,9 +138,11 @@ function removeTagHandler(tag) {
 }
 
 watch(
-  () => props.queriedMealData,
-  (queriedMeals) => {
-    recepies.value = queriedMeals;
+  () => [props.queriedMealData, props.isNavFiltering],
+  ([queriedMeals, isFiltering]) => {
+    isFiltering ? setQueriedMeals(queriedMeals) : fetchInitialMeals();
+
+    console.log(state.isFiltering);
   }
 );
 
@@ -147,56 +154,58 @@ watch(
 );
 
 onMounted(() => {
-  props.queriedMealData === null || !state.isFilteringMeals
+  props.queriedMealData === null
     ? fetchInitialMeals()
-    : (recepies.value = props.queriedMeals);
+    : setQueriedMeals(props.queriedMealData);
 });
 </script>
 
 <template>
-  <div v-if="isModalOpen">
-    <Backdrop @closeModal="closeModal" />
-    <Modal
-      :selectedOptions="selectedOptions"
-      @closeModal="closeModal"
-      @filteredData="setFilteredMeals"
-      @isFiltering="setIsFiltering"
-    />
-  </div>
-  <div class="showcase">
-    <img src="@/assets/food.jpg" alt="food" class="showcase-img" />
-    <SearchBox
-      @openModal="openModal"
-      @queryMeals="setQueriedMeals"
-      @fetchInitialMeals="fetchInitialMeals"
-    />
-  </div>
-  <section class="section-top-meals container" ref="scrollComponent">
-    <div class="filter-tags">
-      <MealFilterTagList
-        :dishTags="dishTags"
-        @removeTag="removeTagHandler"
-        v-if="dishTags.length > 0"
+  <div>
+    <div v-if="isModalOpen">
+      <Backdrop @closeModal="closeModal" />
+      <Modal
+        :selectedOptions="selectedOptions"
+        @closeModal="closeModal"
+        @filteredData="setFilteredMeals"
       />
     </div>
-
-    <h2 class="heading-secondary">
-      {{ mealsHeading }}
-    </h2>
-
-    <div class="meal-cards" v-if="recepies">
-      <MealCard
-        v-for="meal in recepies.hits"
-        :key="meal.recipe.image"
-        :meal="meal"
-        @goToDetails="goToMealDetails(meal)"
+    <div class="showcase">
+      <img src="@/assets/food.jpg" alt="food" class="showcase-img" />
+      <SearchBox
+        @openModal="openModal"
+        @queryMeals="setQueriedMeals"
+        @fetchInitialMeals="fetchInitialMeals"
+        @isSearching="setIsFiltering"
       />
     </div>
-  </section>
-  <div class="loading-spinner" v-if="isLoading || isFetchingOnScroll">
-    <LoadingSpinner />
+    <section class="section-top-meals container" ref="scrollComponent">
+      <div class="filter-tags">
+        <MealFilterTagList
+          :dishTags="dishTags"
+          @removeTag="removeTagHandler"
+          v-if="dishTags.length > 0"
+        />
+      </div>
+
+      <h2 class="heading-secondary">
+        {{ mealsHeading }}
+      </h2>
+
+      <div class="meal-cards" v-if="state.mealsData">
+        <MealCard
+          v-for="meal in state.mealsData.hits"
+          :key="meal.recipe.image"
+          :meal="meal"
+          @goToDetails="goToMealDetails(meal)"
+        />
+      </div>
+    </section>
+    <div class="loading-spinner" v-if="isLoading || isFetchingOnScroll">
+      <LoadingSpinner />
+    </div>
+    <Footer v-if="!isLoading" />
   </div>
-  <Footer v-if="!isLoading" />
 </template>
 
 <style lang="scss" scoped>
