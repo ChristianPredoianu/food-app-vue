@@ -1,3 +1,5 @@
+import { computed } from 'vue';
+
 export function useQueryUrl() {
   function queryUrl(searchQuery) {
     const baseUrl = 'https://api.edamam.com/api/recipes/v2?type=public',
