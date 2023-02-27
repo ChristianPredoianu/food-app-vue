@@ -73,6 +73,7 @@ async function fetchInitialMeals() {
   if (!isModalOpen.value) {
     await fetchData(mealsUrl.value);
     recepies.value = data.value;
+
     state.isInitialMeals = true;
     state.isFilteringMeals = false;
   }
