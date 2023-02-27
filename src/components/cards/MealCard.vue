@@ -26,18 +26,6 @@ const firstThreeDigestValues = computed(() =>
   props.meal.recipe.digest.slice(0, 3)
 );
 
-const mealToAddToDb = {
-  recipe: {
-    uri: extractIdFromUri(props.meal.recipe.uri),
-    label: props.meal.recipe.label,
-    dishType: props.meal.recipe.mealType,
-    digest: firstThreeDigestValues.value,
-    image: props.meal.recipe.image,
-    ingredients: props.meal.recipe.ingredientLines,
-    nutrients: props.meal.recipe.totalDaily,
-  },
-};
-
 const db = getDatabase();
 
 function onGoToDetails() {
@@ -49,7 +37,19 @@ function addFavoriteMealToDb() {
 
   if (currentUser.value === null) {
     router.push({ name: 'SignIn' });
-  } else {
+  } else if (isFavoriteMeal.value) {
+    const mealToAddToDb = {
+      recipe: {
+        uri: extractIdFromUri(props.meal.recipe.uri),
+        label: props.meal.recipe.label,
+        dishType: props.meal.recipe.mealType,
+        digest: firstThreeDigestValues.value,
+        image: props.meal.recipe.image,
+        ingredients: props.meal.recipe.ingredientLines,
+        nutrients: props.meal.recipe.totalDaily,
+      },
+    };
+
     const mealsListRef = dbRef(
       db,
       `users/ ${currentUser.value.uid}/favoriteMeals/${extractIdFromUri(
@@ -57,12 +57,10 @@ function addFavoriteMealToDb() {
       )}`
     );
 
-    if (isFavoriteMeal.value) {
-      set(mealsListRef, mealToAddToDb);
-      localStorage.setItem(extractIdFromUri(props.meal.recipe.uri), 'true');
-    } else {
-      removeFavoriteMealFromDb();
-    }
+    set(mealsListRef, mealToAddToDb);
+    localStorage.setItem(extractIdFromUri(props.meal.recipe.uri), 'true');
+  } else {
+    removeFavoriteMealFromDb();
   }
 }
 
