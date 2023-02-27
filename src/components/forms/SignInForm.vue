@@ -67,7 +67,7 @@ function validateSignIn(e) {
           ><span class="sign-up-paragraph__span">here...</span></RouterLink
         >
       </p>
-      <AuthSubmitBtn>Sign Up</AuthSubmitBtn>
+      <AuthSubmitBtn>Sign In</AuthSubmitBtn>
       <p class="auth-error">{{ signInError }}</p>
     </form>
   </AuthCard>
