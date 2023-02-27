@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { meals } from '@/utils/filterData.js';
 import { useFetch } from '@/composables/useFetch';
 import { useUrlToFetch } from '@/composables/url/useUrlToFetch';
@@ -16,11 +16,11 @@ const props = defineProps({
 });
 
 const isOptionsSelected = ref(true);
-const isFiltering = ref(null);
+const isFiltering = ref(false);
 
 const { dishTags, removeTag } = useDishTags(props.selectedOptions);
 const { fetchUrl } = useUrlToFetch(props.selectedOptions);
-const { data, isLoading, fetchData } = useFetch();
+const { data, fetchData } = useFetch();
 
 function getSelectValue(value, index) {
   value === ''
@@ -45,14 +45,10 @@ function removeTagHandler(tag) {
 async function fetchFilteredMeals() {
   isOptionsSelected.value = isSelectedOptions();
 
-  const url = fetchUrl();
-
   if (isOptionsSelected.value) {
     isFiltering.value = true;
 
-    await fetchData(url);
-
-    isFiltering.value = false;
+    await fetchData(fetchUrl.value);
 
     onCloseModal();
     onFilteredData(data.value);
