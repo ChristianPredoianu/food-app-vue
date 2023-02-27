@@ -51,7 +51,6 @@ async function fetchFilteredMeals() {
     isFiltering.value = true;
 
     await fetchData(url);
-    console.log(isLoading.value);
 
     isFiltering.value = false;
 
