@@ -1,7 +1,7 @@
 <script setup>
 import { onBeforeMount, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useExtractIdFromUri } from '@/composables/useExtractIdFromUri';
+import { useExtractIdFromUri } from '@/composables/url/useExtractIdFromUri';
 import { getAuth } from 'firebase/auth';
 import { getDatabase, ref as dbRef, onValue } from 'firebase/database';
 
