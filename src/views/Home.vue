@@ -1,4 +1,4 @@
-<script async setup>
+<script setup>
 import { onMounted, reactive, ref, watch, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useInitialMealsUrl } from '@/composables/url/useInitialMealsUrl';
