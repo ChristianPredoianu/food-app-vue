@@ -44,7 +44,7 @@ function setIsQuerying(isFiltering) {
       :isNavFiltering="isQueryingProp"
     />
   </div>
-  <Footer />
+  <Footer v-if="route.name !== 'Admin'" />
 </template>
 
 <style lang="scss" scoped></style>
