@@ -17,7 +17,7 @@ import Backdrop from '@/components/modal/Backdrop.vue';
 import Modal from '@/components/modal/Modal.vue';
 
 const props = defineProps({
-  queriedMealsData: Object,
+  queriedMealData: Object,
   isNavFiltering: Boolean,
 });
 
