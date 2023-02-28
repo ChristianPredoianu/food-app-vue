@@ -1,24 +1,26 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useInitialMealsUrl } from '@/composables/url/useInitialMealsUrl';
 import { useQueryUrl } from '@/composables/url/useQueryUrl';
 import { useFetch } from '@/composables/useFetch';
 import { getAuth, signOut } from 'firebase/auth';
 
-const emit = defineEmits(['queryMeals']);
+const emit = defineEmits(['queryMeals', 'isFiltering']);
 
-const router = useRouter();
 const auth = getAuth();
 
 const isNavOpen = ref(false);
 const isMobileView = ref(true);
 const isSearchOpen = ref(false);
-const searchQuery = ref('');
+const searchQuery = ref(null);
 const currentUser = ref(auth.currentUser);
+const isFiltering = ref(false);
 
-function onQueryMeals(mealsData) {
-  emit('queryMeals', mealsData);
-}
+const router = useRouter();
+const { initialMealsUrl } = useInitialMealsUrl();
+const { queryUrl } = useQueryUrl();
+const { data, fetchData } = useFetch();
 
 function toggleNav() {
   isNavOpen.value = !isNavOpen.value;
@@ -45,14 +47,29 @@ function closeSearch() {
   isSearchOpen.value = false;
 }
 
-async function searchMeals() {
-  const { searchQueryUrl } = useQueryUrl(searchQuery.value);
-  const { data } = await useFetch(searchQueryUrl);
+async function fetchQueriedMeals() {
+  isFiltering.value = true;
 
+  if (searchQuery.value !== null && searchQuery.value !== '') {
+    const url = queryUrl(searchQuery.value);
+    await fetchData(url);
+
+    onQueryMeals(data.value);
+    onIsFiltering();
+    closeSearch();
+  }
+  if (searchQuery.value === '') {
+    fetchInititalMeals();
+  }
+}
+
+async function fetchInititalMeals() {
+  isFiltering.value = false;
+
+  await fetchData(initialMealsUrl.value);
+
+  onIsFiltering();
   onQueryMeals(data.value);
-  closeSearch();
-
-  searchQuery.value = '';
 }
 
 function signUserOut() {
@@ -60,6 +77,14 @@ function signUserOut() {
   closeNav();
   router.push({ name: 'SignIn' });
   localStorage.clear();
+}
+
+function onQueryMeals(mealsData) {
+  emit('queryMeals', mealsData);
+}
+
+function onIsFiltering() {
+  emit('isFiltering', isFiltering);
 }
 
 onMounted(() => {
@@ -90,7 +115,7 @@ onUnmounted(() => {
                 type="text"
                 class="search-input"
                 placeholder="Search meals.."
-                @keyup.enter="searchMeals"
+                @keyup.enter="fetchQueriedMeals"
                 v-model="searchQuery"
                 v-if="isSearchOpen"
             /></Transition>
