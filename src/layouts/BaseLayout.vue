@@ -1,14 +1,16 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
+
 import NavBar from '@/components/nav/NavBar.vue';
+import Footer from '@/components/Footer.vue';
 
 const emit = defineEmits(['queryMeals', 'isFiltering']);
 
 const route = useRoute();
 
 const queriedMealsData = ref(null);
-const isUserFiltering = ref(null);
+const isQuerying = ref(null);
 
 // Pass the queriedMealsData only to Home view
 const queriedMealDataProp = computed(() => {
@@ -16,18 +18,17 @@ const queriedMealDataProp = computed(() => {
   return mealsData;
 });
 
-const isFilteringProp = computed(() => {
-  const isFilteringMeals =
-    route.name === 'Home' ? isUserFiltering.value : undefined;
-  return isFilteringMeals;
+const isQueryingProp = computed(() => {
+  const isQueryingMeals = route.name === 'Home' ? isQuerying.value : undefined;
+  return isQueryingMeals;
 });
 
 function setMealsData(mealsData) {
   queriedMealsData.value = mealsData;
 }
 
-function setIsFiltering(isFiltering) {
-  isUserFiltering.value = isFiltering.value;
+function setIsQuerying(isFiltering) {
+  isQuerying.value = isFiltering.value;
 }
 </script>
 
@@ -36,13 +37,14 @@ function setIsFiltering(isFiltering) {
     <NavBar
       :key="route.fullPath"
       @queryMeals="setMealsData"
-      @isFiltering="setIsFiltering"
+      @isQuerying="setIsQuerying"
     />
     <router-view
       :queriedMealData="queriedMealDataProp"
-      :isNavFiltering="isFilteringProp"
+      :isNavFiltering="isQueryingProp"
     />
   </div>
+  <Footer />
 </template>
 
 <style lang="scss" scoped></style>
