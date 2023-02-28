@@ -15,7 +15,6 @@ import MealFilterTagList from '@/components/meal/meal-tags/meal-filter-tags/Meal
 import MealCard from '@/components/cards/MealCard.vue';
 import Backdrop from '@/components/modal/Backdrop.vue';
 import Modal from '@/components/modal/Modal.vue';
-import Footer from '@/components/Footer.vue';
 
 const props = defineProps({
   queriedMealsData: Object,
@@ -68,15 +67,15 @@ async function fetchInitialMeals() {
 }
 
 async function fetchMoreMeals() {
-  const isNextPage = Object.keys(recepies.value._links).length > 0;
-  const maxHits = recepies.value.hits.length >= 60;
+  const isNextPage = Object.keys(state.mealsData._links).length > 0;
+  const maxHits = state.mealsData.hits.length >= 60;
 
   if (isNextPage) {
-    const nextMealsUrl = recepies.value._links.next.href;
+    const nextMealsUrl = state.mealsData._links.next.href;
 
     if (!maxHits) {
       await fetchData(nextMealsUrl);
-      recepies.value.hits.push(...data.value.hits);
+      state.mealsData.hits.push(...data.value.hits);
     }
   }
   isFetchingOnScroll.value = false;
@@ -181,7 +180,6 @@ onMounted(() => {
     <div class="loading-spinner" v-if="isLoading || isFetchingOnScroll">
       <LoadingSpinner />
     </div>
-    <Footer v-if="!isLoading" />
   </div>
 </template>
 
