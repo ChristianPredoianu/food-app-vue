@@ -1,7 +1,14 @@
 <script setup>
+/* There is a aws token set on the image url when fetching recipe image from edamam Api that expires
+after a short period of time, setting that image to firebase database when adding favorite recipe
+and fetching the data from firebase at a later point will result in the image token being expired
+hence resulting in a 403 error. I'm using the edamam logo insted as a card image when fetching
+recipes from firebase */
+
 import { ref, computed, onUpdated } from 'vue';
 import { useRouter } from 'vue-router';
 import { useExtractIdFromUri } from '@/composables/url/useExtractIdFromUri';
+import { useCapitalizeFirstLetter } from '@/composables/helpers/useCapitalizeFirstLetter';
 import { getAuth } from 'firebase/auth';
 import { getDatabase, ref as dbRef, remove, set } from 'firebase/database';
 
@@ -16,6 +23,7 @@ const emit = defineEmits(['goToDetails']);
 const auth = getAuth();
 const router = useRouter();
 const { extractIdFromUri } = useExtractIdFromUri();
+const { capitalizeFirstLetter } = useCapitalizeFirstLetter();
 
 const isFavoriteMeal = ref(
   localStorage.getItem(extractIdFromUri(props.meal.recipe.uri))
@@ -44,7 +52,6 @@ function addFavoriteMealToDb() {
         label: props.meal.recipe.label,
         dishType: props.meal.recipe.mealType,
         digest: firstThreeDigestValues.value,
-        image: props.meal.recipe.image,
         ingredients: props.meal.recipe.ingredientLines,
         nutrients: props.meal.recipe.totalDaily,
       },
@@ -86,8 +93,30 @@ onUpdated(() => {
 
 <template>
   <div class="meal-card">
-    <img :src="meal.recipe.image" alt="meal" class="meal-card__img" />
-    <h3 class="meal-card__heading">{{ meal.recipe.label }}</h3>
+    <img
+      :src="meal.recipe.image"
+      alt="meal"
+      class="meal-card__img"
+      v-if="props.meal.recipe.image"
+    />
+    <img
+      src="@/assets/Edamam_Badge_Transparent.svg"
+      alt="meal"
+      class="meal-card__edamam-logo"
+      v-else
+    />
+    <h3
+      :class="
+        props.meal.recipe.image
+          ? 'meal-card__heading'
+          : 'meal-card__heading-edamam-logo'
+      "
+    >
+      {{ meal.recipe.label }}
+    </h3>
+    <h4 class="meal-card__dish-type" v-if="!props.meal.recipe.image">
+      {{ capitalizeFirstLetter(props.meal.recipe.dishType[0]) }}
+    </h4>
     <div class="meal-card-cta">
       <font-awesome-icon
         icon="fa-regular fa-heart"
