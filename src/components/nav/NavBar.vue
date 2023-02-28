@@ -6,7 +6,7 @@ import { useQueryUrl } from '@/composables/url/useQueryUrl';
 import { useFetch } from '@/composables/useFetch';
 import { getAuth, signOut } from 'firebase/auth';
 
-const emit = defineEmits(['queryMeals', 'isFiltering']);
+const emit = defineEmits(['queryMeals', 'isQuerying']);
 
 const auth = getAuth();
 
@@ -15,7 +15,7 @@ const isMobileView = ref(true);
 const isSearchOpen = ref(false);
 const searchQuery = ref(null);
 const currentUser = ref(auth.currentUser);
-const isFiltering = ref(false);
+const isQuerying = ref(false);
 
 const router = useRouter();
 const { initialMealsUrl } = useInitialMealsUrl();
@@ -48,14 +48,14 @@ function closeSearch() {
 }
 
 async function fetchQueriedMeals() {
-  isFiltering.value = true;
+  isQuerying.value = true;
 
   if (searchQuery.value !== null && searchQuery.value !== '') {
     const url = queryUrl(searchQuery.value);
     await fetchData(url);
 
     onQueryMeals(data.value);
-    onIsFiltering();
+    onIsQuerying();
     closeSearch();
   }
   if (searchQuery.value === '') {
@@ -64,11 +64,11 @@ async function fetchQueriedMeals() {
 }
 
 async function fetchInititalMeals() {
-  isFiltering.value = false;
+  isQuerying.value = false;
 
   await fetchData(initialMealsUrl.value);
 
-  onIsFiltering();
+  onIsQuerying();
   onQueryMeals(data.value);
 }
 
@@ -83,8 +83,8 @@ function onQueryMeals(mealsData) {
   emit('queryMeals', mealsData);
 }
 
-function onIsFiltering() {
-  emit('isFiltering', isFiltering);
+function onIsQuerying() {
+  emit('isQuerying', isQuerying);
 }
 
 onMounted(() => {
