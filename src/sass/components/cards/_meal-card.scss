@@ -9,10 +9,25 @@
     border-radius: 1rem;
   }
 
+  &__edamam-logo {
+    padding: 5rem 0 2rem 0;
+  }
+
   &__heading {
+    flex: 1;
     font-size: 1.5rem;
     padding: 2rem 0;
+  }
+
+  &__heading-edamam-logo {
     flex: 1;
+    font-size: 1.5rem;
+    padding: 4rem 0 2rem 0;
+  }
+
+  &__dish-type {
+    font-size: 1.3rem;
+    padding-bottom: 4rem;
   }
 
   &__icon {
