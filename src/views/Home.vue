@@ -62,7 +62,7 @@ const { dishTags, removeTag } = useDishTags(selectedOptions);
 async function fetchInitialMeals() {
   if (!isModalOpen.value) {
     await fetchData(initialMealsUrl.value);
-    setInitialMeals(data.value);
+    setMeals(data.value, true, false);
   }
 }
 
@@ -85,25 +85,21 @@ async function fetchFilteredMeals() {
   state.isFilteringMeals = true;
 
   await fetchData(fetchUrl.value);
-  setFilteredMeals(data.value);
+  setMeals(data.value, false, true);
 }
 
-function setInitialMeals(initialMeals) {
-  state.mealsData = initialMeals;
-  state.isInitialMeals = true;
-  state.isFilteringMeals = false;
+function setMeals(mealsData, isInitial, isFiltering) {
+  state.mealsData = mealsData;
+  state.isInitialMeals = isInitial;
+  state.isFilteringMeals = isFiltering;
 }
 
 function setFilteredMeals(filteredMeals) {
-  state.mealsData = filteredMeals;
-  state.isInitialMeals = false;
-  state.isFilteringMeals = true;
+  setMeals(filteredMeals, false, true);
 }
 
 function setQueriedMeals(queriedMeals) {
-  state.mealsData = queriedMeals;
-  state.isInitialMeals = false;
-  state.isFilteringMeals = true;
+  setMeals(queriedMeals, false, true);
 }
 
 function goToMealDetails(meal) {
@@ -123,7 +119,7 @@ function removeTagHandler(tag) {
 watch(
   () => [props.queriedMealData, props.isNavFiltering],
   ([queriedMeals, isFiltering]) => {
-    isFiltering ? setQueriedMeals(queriedMeals) : fetchInitialMeals();
+    isFiltering ? setMeals(queriedMeals, false, true) : fetchInitialMeals();
   }
 );
 
