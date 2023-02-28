@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useInitialMealsUrl } from '@/composables/url/useInitialMealsUrl';
 import { useQueryUrl } from '@/composables/url/useQueryUrl';
@@ -49,6 +49,7 @@ function closeSearch() {
 
 async function fetchQueriedMeals() {
   isQuerying.value = true;
+  console.log(searchQuery.value);
 
   if (searchQuery.value !== null && searchQuery.value !== '') {
     const url = queryUrl(searchQuery.value);
