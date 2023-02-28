@@ -1,12 +1,13 @@
 <script async setup>
 import { onMounted, reactive, ref, watch, computed } from 'vue';
 import { useRouter } from 'vue-router';
+import { useInitialMealsUrl } from '@/composables/url/useInitialMealsUrl';
+import { useUrlToFetch } from '@/composables/url/useUrlToFetch';
 import { useFetch } from '@/composables/useFetch';
 import { useDishTags } from '@/composables/useDishTags';
 import { useInfiniteScroll } from '@/composables/useInfiniteScroll';
 import { useModal } from '@/composables/useModal';
 import { useExtractIdFromUri } from '@/composables/url/useExtractIdFromUri';
-import { useUrlToFetch } from '@/composables/url/useUrlToFetch';
 
 import SearchBox from '@/components/SearchBox.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
@@ -17,7 +18,7 @@ import Modal from '@/components/modal/Modal.vue';
 import Footer from '@/components/Footer.vue';
 
 const props = defineProps({
-  queriedMealData: Object,
+  queriedMealsData: Object,
   isNavFiltering: Boolean,
 });
 
@@ -40,18 +41,6 @@ const selectedOptions = reactive({
 
 const scrollComponent = ref(null);
 
-const mealsUrl = computed(() => {
-  const baseUrl = `https://api.edamam.com/api/recipes/v2?type=public`,
-    appId = import.meta.env.VITE_APP_ID,
-    apiKey = import.meta.env.VITE_API_KEY,
-    diet = 'balanced',
-    dishType = 'Main%20course';
-
-  const url = `${baseUrl}&app_id=${appId}&app_key=${apiKey}&diet=${diet}&dishType=${dishType}`;
-
-  return url;
-});
-
 const mealsHeading = computed(() => {
   if (state.isInitialMeals) {
     return 'This weeks top recepies';
@@ -63,6 +52,7 @@ const mealsHeading = computed(() => {
 });
 
 const router = useRouter();
+const { initialMealsUrl } = useInitialMealsUrl();
 const { fetchUrl } = useUrlToFetch(selectedOptions);
 const { data, isLoading, fetchData } = useFetch();
 const { isFetchingOnScroll } = useInfiniteScroll(fetchMoreMeals);
@@ -72,8 +62,7 @@ const { dishTags, removeTag } = useDishTags(selectedOptions);
 
 async function fetchInitialMeals() {
   if (!isModalOpen.value) {
-    await fetchData(mealsUrl.value);
-
+    await fetchData(initialMealsUrl.value);
     setInitialMeals(data.value);
   }
 }
@@ -97,30 +86,25 @@ async function fetchFilteredMeals() {
   state.isFilteringMeals = true;
 
   await fetchData(fetchUrl.value);
-
   setFilteredMeals(data.value);
 }
 
 function setInitialMeals(initialMeals) {
+  state.mealsData = initialMeals;
   state.isInitialMeals = true;
   state.isFilteringMeals = false;
-  state.mealsData = initialMeals;
 }
 
 function setFilteredMeals(filteredMeals) {
   state.mealsData = filteredMeals;
   state.isInitialMeals = false;
+  state.isFilteringMeals = true;
 }
 
 function setQueriedMeals(queriedMeals) {
   state.mealsData = queriedMeals;
   state.isInitialMeals = false;
   state.isFilteringMeals = true;
-}
-
-function setIsFiltering(isFiltering) {
-  state.isFilteringMeals = isFiltering.value;
-  state.isInitialMeals = false;
 }
 
 function goToMealDetails(meal) {
@@ -141,8 +125,6 @@ watch(
   () => [props.queriedMealData, props.isNavFiltering],
   ([queriedMeals, isFiltering]) => {
     isFiltering ? setQueriedMeals(queriedMeals) : fetchInitialMeals();
-
-    console.log(state.isFiltering);
   }
 );
 
@@ -154,9 +136,7 @@ watch(
 );
 
 onMounted(() => {
-  props.queriedMealData === null
-    ? fetchInitialMeals()
-    : setQueriedMeals(props.queriedMealData);
+  fetchInitialMeals();
 });
 </script>
 
@@ -174,9 +154,8 @@ onMounted(() => {
       <img src="@/assets/food.jpg" alt="food" class="showcase-img" />
       <SearchBox
         @openModal="openModal"
-        @queryMeals="setQueriedMeals"
+        @queriedMealsData="setQueriedMeals"
         @fetchInitialMeals="fetchInitialMeals"
-        @isSearching="setIsFiltering"
       />
     </div>
     <section class="section-top-meals container" ref="scrollComponent">
@@ -187,11 +166,9 @@ onMounted(() => {
           v-if="dishTags.length > 0"
         />
       </div>
-
       <h2 class="heading-secondary">
         {{ mealsHeading }}
       </h2>
-
       <div class="meal-cards" v-if="state.mealsData">
         <MealCard
           v-for="meal in state.mealsData.hits"
