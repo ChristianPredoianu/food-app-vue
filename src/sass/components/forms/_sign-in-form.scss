@@ -17,9 +17,9 @@
   &__input {
     font-size: 1.5rem;
     outline: 0;
-    border: none;
     padding: 0.5rem;
     margin-bottom: 0.5rem;
+    border: none;
     border-bottom: 1px solid var(--clr-dark-400);
   }
 }
@@ -47,7 +47,7 @@
 }
 
 .auth-error {
+  font-size: 1.3rem;
   color: var(--clr-danger);
   margin-top: 1rem;
-  font-size: 1.3rem;
 }
