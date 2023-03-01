@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useInitialMealsUrl } from '@/composables/url/useInitialMealsUrl';
 import { useQueryUrl } from '@/composables/url/useQueryUrl';
