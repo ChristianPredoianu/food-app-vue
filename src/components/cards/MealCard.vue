@@ -92,7 +92,7 @@ onUpdated(() => {
 </script>
 
 <template>
-  <div class="meal-card">
+  <article class="meal-card">
     <img
       :src="meal.recipe.image"
       alt="meal"
@@ -126,7 +126,7 @@ onUpdated(() => {
       />
       <MainBtn @handleClick="onGoToDetails">Details</MainBtn>
     </div>
-  </div>
+  </article>
 </template>
 
 <style lang="scss" scoped>
