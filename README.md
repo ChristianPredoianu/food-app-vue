@@ -117,7 +117,7 @@ being authenticated the user is redirected to the sign in page. If the user is n
 that uses validation to give information to the user what inputs are incorrect/correct. After being authenticated (Firebase auth) the user 
 can add or remove favorite recipes to the admin page. The app uses Firebase realtime database to store a users favorite recipes.
 
-To try out the app just sign up with a username, email and password. The email doesn't have to be a real one as long as it follows the format for an email.
+To try out the app just sign up with a username, email and password. The email doesn't have to be a real one as long as it follows the format of an email.
 
 <!-- LICENSE -->
 ## License
