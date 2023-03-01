@@ -18,6 +18,7 @@ This template should help get you started developing with Vue 3 in Vite. The tem
   <p align="center">
     <a href="https://github.com/ChristianPredoianu/food-app-vue"><strong>Explore the docs »</strong></a>
     <br />
+    <br />
     <a href="https://foodrecipeappvue.netlify.app/">View Demo</a>
     ·
     <a href="https://github.com/ChristianPredoianu/food-app-vue/issues">Report Bug</a>
