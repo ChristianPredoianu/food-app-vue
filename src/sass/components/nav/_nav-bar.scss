@@ -24,7 +24,7 @@
   height: 100%;
   width: 100%;
   @include flex-config($direction: column, $justify: center, $align: center);
-  gap: 3rem;
+  gap: 1rem;
   @include position($pos: fixed, $top: 0, $left: 0);
   z-index: 2;
   background-color: var(--clr-green-400);
