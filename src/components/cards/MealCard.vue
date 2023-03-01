@@ -20,10 +20,6 @@ const props = defineProps({
 
 const emit = defineEmits(['goToDetails']);
 
-const isFavoriteMeal = ref(
-  localStorage.getItem(extractIdFromUri(props.meal.recipe.uri))
-);
-
 const firstThreeDigestValues = computed(() =>
   props.meal.recipe.digest.slice(0, 3)
 );
@@ -35,6 +31,10 @@ const currentUser = ref(auth.currentUser);
 const router = useRouter();
 const { extractIdFromUri } = useExtractIdFromUri();
 const { capitalizeFirstLetter } = useCapitalizeFirstLetter();
+
+const isFavoriteMeal = ref(
+  localStorage.getItem(extractIdFromUri(props.meal.recipe.uri))
+);
 
 function onGoToDetails() {
   emit('goToDetails');
