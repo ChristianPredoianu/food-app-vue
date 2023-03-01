@@ -57,6 +57,7 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 
 
 NOTE: PLEASE NOTE THAT THE EDAMAM FREE API ONLY ALLOWS 10 THROTTLING CALLS/MIN HENCE THE 429 Error – Too Many Requests AFTER 10 CALLS/MIN!
+<br>
 A food recipe app for looking up recipes, see details about a recipe, search for a recipe, sign up, sign in to add favorite recipes to admin page.
 
 ### Built With
