@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import { meals } from '@/utils/filterData.js';
 import { useFetch } from '@/composables/useFetch';
 import { useUrlToFetch } from '@/composables/url/useUrlToFetch';
