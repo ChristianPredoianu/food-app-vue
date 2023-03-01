@@ -10,7 +10,6 @@ import IngredientsList from '@/components/meal/ingredients/IngredientsList.vue';
 import NutrientsList from '@/components/meal/nutrients/NutrientsList.vue';
 import MealTagsList from '@/components/meal/meal-tags/MealTagsList.vue';
 import MainBtn from '@/components/buttons/MainBtn.vue';
-import Footer from '@/components/Footer.vue';
 
 const { data, isLoading, fetchData } = useFetch();
 
@@ -18,7 +17,11 @@ const route = useRoute();
 
 const { capitalizeFirstLetter } = useCapitalizeFirstLetter();
 
-const mealUrl = `https://api.edamam.com/api/recipes/v2/${route.params.id}?type=public&app_id=2d7284f7&app_key=0a6f557d15da76ad2dea06845fbe542c`;
+const baseUrl = 'https://api.edamam.com/api/recipes/v2/',
+  appId = import.meta.env.VITE_APP_ID,
+  apiKey = import.meta.env.VITE_API_KEY;
+
+const mealUrl = `${baseUrl}${route.params.id}?type=public&app_id=${appId}&app_key=${apiKey}`;
 
 onMounted(async () => {
   await fetchData(mealUrl);
@@ -71,7 +74,6 @@ onMounted(async () => {
         <MealTagsList :mealTags="data.recipe.healthLabels" />
       </section>
     </main>
-    <Footer v-if="!isLoading" />
   </div>
 </template>
 
