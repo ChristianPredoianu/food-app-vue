@@ -1,7 +1,7 @@
 <template>
-  <div class="auth-card">
+  <article class="auth-card">
     <slot></slot>
-  </div>
+  </article>
 </template>
 
 <style lang="scss" scoped>
