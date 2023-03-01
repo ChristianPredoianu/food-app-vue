@@ -16,6 +16,21 @@ const currentUser = ref(auth.currentUser);
 const userFavoriteMeals = ref(null);
 const isDataLoaded = ref(false);
 
+function getMealsFromDb() {
+  const mealsListRef = dbRef(
+    db,
+    `users/ ${currentUser.value.uid}/favoriteMeals`
+  );
+
+  onValue(mealsListRef, (snapshot) => {
+    const data = snapshot.val();
+    userFavoriteMeals.value = data;
+    isDataLoaded.value = true;
+
+    setFavoriteMealsToLocalStorage();
+  });
+}
+
 function setFavoriteMealsToLocalStorage() {
   if (userFavoriteMeals.value !== null) {
     const ids = Object.keys(userFavoriteMeals.value);
@@ -36,18 +51,7 @@ function goToMealDetails(meal) {
 }
 
 onBeforeMount(() => {
-  const mealsListRef = dbRef(
-    db,
-    `users/ ${currentUser.value.uid}/favoriteMeals`
-  );
-
-  onValue(mealsListRef, (snapshot) => {
-    const data = snapshot.val();
-    userFavoriteMeals.value = data;
-    isDataLoaded.value = true;
-
-    setFavoriteMealsToLocalStorage();
-  });
+  getMealsFromDb();
 });
 </script>
 
