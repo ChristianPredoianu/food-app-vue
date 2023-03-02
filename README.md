@@ -18,6 +18,7 @@ This template should help get you started developing with Vue 3 in Vite. The tem
   <p align="center">
     <a href="https://github.com/ChristianPredoianu/food-app-vue"><strong>Explore the docs »</strong></a>
     <br />
+    <br />
     <a href="https://foodrecipeappvue.netlify.app/">View Demo</a>
     ·
     <a href="https://github.com/ChristianPredoianu/food-app-vue/issues">Report Bug</a>
@@ -55,6 +56,9 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
+
+NOTE: PLEASE NOTE THAT THE EDAMAM FREE API ONLY ALLOWS 10 THROTTLING CALLS/MIN HENCE THE 429 Error – Too Many Requests AFTER 10 CALLS/MIN!
+<br>
 A food recipe app for looking up recipes, see details about a recipe, search for a recipe, sign up, sign in to add favorite recipes to admin page.
 
 ### Built With
@@ -113,7 +117,7 @@ being authenticated the user is redirected to the sign in page. If the user is n
 that uses validation to give information to the user what inputs are incorrect/correct. After being authenticated (Firebase auth) the user 
 can add or remove favorite recipes to the admin page. The app uses Firebase realtime database to store a users favorite recipes.
 
-To try out the app just sign up with a username, email and password. The email doesn't have to be a real one as long as it follows the format for an email.
+To try out the app just sign up with a username, email and password. The email doesn't have to be a real one as long as it follows the format of an email.
 
 <!-- LICENSE -->
 ## License
