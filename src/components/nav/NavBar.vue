@@ -49,7 +49,6 @@ function closeSearch() {
 
 async function fetchQueriedMeals() {
   isQuerying.value = true;
-  console.log(searchQuery.value);
 
   if (searchQuery.value !== null && searchQuery.value !== '') {
     const url = queryUrl(searchQuery.value);
