@@ -17,13 +17,10 @@ export function useInfiniteScroll(callback) {
   });
 
   function handleScroll() {
-    if (
-      window.innerHeight + document.documentElement.scrollTop !==
-        document.documentElement.offsetHeight ||
-      isFetchingOnScroll.value
-    )
-      return;
-    isFetchingOnScroll.value = true;
+    const endOfPage =
+      window.innerHeight + window.pageYOffset >= document.body.offsetHeight;
+
+    if (endOfPage) isFetchingOnScroll.value = true;
   }
 
   return {
