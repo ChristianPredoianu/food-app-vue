@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, reactive, ref, watch, computed } from 'vue';
+import { onMounted, onUpdated, reactive, ref, watch, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useInitialMealsUrl } from '@/composables/url/useInitialMealsUrl';
 import { useUrlToFetch } from '@/composables/url/useUrlToFetch';
@@ -85,6 +85,7 @@ async function fetchFilteredMeals() {
   state.isFilteringMeals = true;
 
   await fetchData(fetchUrl.value);
+
   setMeals(data.value, false, true);
 }
 
@@ -119,7 +120,9 @@ function removeTagHandler(tag) {
 watch(
   () => [props.queriedMealData, props.isNavFiltering],
   ([queriedMeals, isFiltering]) => {
-    isFiltering ? setMeals(queriedMeals, false, true) : fetchInitialMeals();
+    if (isFiltering) {
+      setMeals(queriedMeals, false, true);
+    }
   }
 );
 
@@ -131,7 +134,9 @@ watch(
 );
 
 onMounted(() => {
-  fetchInitialMeals();
+  props.isNavFiltering
+    ? setMeals(props.queriedMealData, false, true)
+    : fetchInitialMeals();
 });
 </script>
 
