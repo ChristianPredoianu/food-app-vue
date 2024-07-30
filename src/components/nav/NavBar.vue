@@ -18,6 +18,7 @@ const currentUser = ref(auth.currentUser);
 const isQuerying = ref(false);
 
 const router = useRouter();
+
 const { initialMealsUrl } = useInitialMealsUrl();
 const { queryUrl } = useQueryUrl();
 const { data, fetchData } = useFetch();
@@ -52,11 +53,16 @@ async function fetchQueriedMeals() {
 
   if (searchQuery.value !== null && searchQuery.value !== '') {
     const url = queryUrl(searchQuery.value);
+
     await fetchData(url);
 
     onQueryMeals(data.value);
     onIsQuerying();
     closeSearch();
+
+    if (router.currentRoute.value.name !== 'Home') {
+      router.push({ name: 'Home' });
+    }
   }
   if (searchQuery.value === '') {
     fetchInititalMeals();
@@ -65,7 +71,7 @@ async function fetchQueriedMeals() {
 
 async function fetchInititalMeals() {
   isQuerying.value = false;
-
+  console.log(initialMealsUrl.value);
   await fetchData(initialMealsUrl.value);
 
   onIsQuerying();
@@ -119,20 +125,13 @@ onUnmounted(() => {
                 v-model="searchQuery"
                 v-if="isSearchOpen"
             /></Transition>
-            <font-awesome-icon
-              icon="search"
-              class="search-icon"
-              @click="toggleSearch"
-            />
+            <font-awesome-icon icon="search" class="search-icon" @click="toggleSearch" />
           </div>
           <p @click="toggleSearch">Search</p>
         </li>
         <RouterLink to="/admin">
           <li class="nav-links__item">
-            <font-awesome-icon
-              icon="fa-regular fa-heart"
-              v-if="!isMobileView"
-            />Favorites
+            <font-awesome-icon icon="fa-regular fa-heart" v-if="!isMobileView" />Favorites
           </li>
         </RouterLink>
         <RouterLink to="/signin">
