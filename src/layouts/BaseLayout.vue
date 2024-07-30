@@ -15,6 +15,7 @@ const isQuerying = ref(null);
 // Pass the queriedMealsData only to Home view
 const queriedMealDataProp = computed(() => {
   const mealsData = router.name === 'Home' ? queriedMealsData.value : undefined;
+
   return mealsData;
 });
 
