@@ -7,19 +7,19 @@ import Footer from '@/components/Footer.vue';
 
 const emit = defineEmits(['queryMeals', 'isFiltering']);
 
-const route = useRoute();
+const router = useRoute();
 
 const queriedMealsData = ref(null);
 const isQuerying = ref(null);
 
 // Pass the queriedMealsData only to Home view
 const queriedMealDataProp = computed(() => {
-  const mealsData = route.name === 'Home' ? queriedMealsData.value : undefined;
+  const mealsData = router.name === 'Home' ? queriedMealsData.value : undefined;
   return mealsData;
 });
 
 const isQueryingProp = computed(() => {
-  const isQueryingMeals = route.name === 'Home' ? isQuerying.value : undefined;
+  const isQueryingMeals = router.name === 'Home' ? isQuerying.value : undefined;
   return isQueryingMeals;
 });
 
@@ -35,7 +35,7 @@ function setIsQuerying(isFiltering) {
 <template>
   <div>
     <NavBar
-      :key="route.fullPath"
+      :key="router.fullPath"
       @queryMeals="setMealsData"
       @isQuerying="setIsQuerying"
     />
@@ -44,7 +44,7 @@ function setIsQuerying(isFiltering) {
       :isNavFiltering="isQueryingProp"
     />
   </div>
-  <Footer v-if="route.name !== 'Admin'" />
+  <Footer v-if="router.name !== 'Admin'" />
 </template>
 
 <style lang="scss" scoped></style>
